@@ -25,6 +25,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { COLORS } from '../../utils/colors';
 import { store } from '../../redux/store';
 import OnTopScreen from '../../components/OnTopScreen';
+import AppText from '../../components/AppText';
 
 
 const ShopScreen = ({ navigation }) => {
@@ -184,7 +185,7 @@ const ShopScreen = ({ navigation }) => {
       <OnTopScreen>
         {/* Header with Location Icon and Add Location Text */}
         <View style={Commonstyles.header}>
-          <Text style={Commonstyles.locationtitle}>Location</Text>
+          <AppText style={Commonstyles.locationtitle}>Location</AppText>
           <View style={Commonstyles.addressRow}>
             <TouchableOpacity
               style={Commonstyles.locationContainer}
@@ -202,9 +203,9 @@ const ShopScreen = ({ navigation }) => {
                 }, ${addressText.city}` || 'Select Location'}
                  </Text> */}
 
-              <Text style={Commonstyles.locationText}>
+              <AppText style={Commonstyles.locationText}>
                 Vijay nagar, 150 ft ring road,Bhopal
-              </Text>
+              </AppText>
             </TouchableOpacity>
             <View style={[Commonstyles.reqgrid]}>
               <TouchableOpacity>
@@ -233,7 +234,7 @@ const ShopScreen = ({ navigation }) => {
         {/* Rest of the content (unchanged) */}
         <CustomSlider images={bannerImages} />
         <View style={Commonstyles.reqcontainer}>
-          <Text style={Commonstyles.reqtitle}>AC Category</Text>
+          <AppText style={Commonstyles.reqtitle}>AC Category</AppText>
           <View style={Commonstyles.reqgrid}>
             {bookServices.map((item, index) => (
               <TouchableOpacity
@@ -242,7 +243,7 @@ const ShopScreen = ({ navigation }) => {
                 onPress={item.action}
               >
                 <FastImage source={item.icon} style={Commonstyles.reqicon} />
-                <Text style={Commonstyles.reqlabel}>{item.label}</Text>
+                <AppText style={Commonstyles.reqlabel}>{item.label}</AppText>
               </TouchableOpacity>
             ))}
           </View>
@@ -250,7 +251,7 @@ const ShopScreen = ({ navigation }) => {
 
         {/* Accessories */}
         <View style={Commonstyles.reqcontainer}>
-          <Text style={Commonstyles.reqtitle}>Accessories</Text>
+          <AppText style={Commonstyles.reqtitle}>Accessories</AppText>
           <View style={Commonstyles.reqgrid}>
             {accessoriesItem.map((item, index) => (
               <TouchableOpacity
@@ -259,7 +260,7 @@ const ShopScreen = ({ navigation }) => {
                 onPress={item.action}
               >
                 <FastImage source={item.icon} style={Commonstyles.reqicon} />
-                <Text style={Commonstyles.reqlabel}>{item.label}</Text>
+                <AppText style={Commonstyles.reqlabel}>{item.label}</AppText>
               </TouchableOpacity>
             ))}
           </View>
@@ -272,7 +273,7 @@ const ShopScreen = ({ navigation }) => {
 
         {/* We sell all brands */}
         <View style={Commonstyles.reqcontainer}>
-          <Text style={Commonstyles.reqtitle}>We sell all brands</Text>
+          <AppText style={Commonstyles.reqtitle}>We sell all brands</AppText>
           <FlatList
             data={pages}
             horizontal
@@ -311,7 +312,7 @@ const ShopScreen = ({ navigation }) => {
           colors={['#ecd5d0ff', '#ede3dbff', '#b9d4e7ff']}
           style={Commonstyles.uticontainer}
         >
-          <Text style={Commonstyles.utititle}>Utilities</Text>
+          <AppText style={Commonstyles.utititle}>Utilities</AppText>
           <View style={Commonstyles.utigrid}>
             {utilities.map((item, index) => (
               <TouchableOpacity
@@ -320,7 +321,7 @@ const ShopScreen = ({ navigation }) => {
                 onPress={item.action}
               >
                 <FastImage source={item.icon} style={Commonstyles.utiicon} />
-                <Text style={Commonstyles.utilabel}>{item.label}</Text>
+                <AppText style={Commonstyles.utilabel}>{item.label}</AppText>
               </TouchableOpacity>
             ))}
           </View>
@@ -329,9 +330,9 @@ const ShopScreen = ({ navigation }) => {
         {/* Who Trust On Us */}
 
         <View style={[Commonstyles.uticontainer, { padding: wp('0%') }]}>
-          <Text style={[Commonstyles.utititle, dynamicStyles.title]}>
+          <AppText style={[Commonstyles.utititle, dynamicStyles.title]}>
             Who Trust On Us
-          </Text>
+          </AppText>
           <FlatList
             data={testimonialData}
             keyExtractor={item => item.id}
@@ -342,15 +343,15 @@ const ShopScreen = ({ navigation }) => {
               <View style={Commonstyles.testacard}>
                 <View style={Commonstyles.testaquoteContainer}>
                   <View style={Commonstyles.testaratingContainer}>
-                    <Text style={Commonstyles.testaquote}>“</Text>
+                    <AppText style={Commonstyles.testaquote}>“</AppText>
                   </View>
-                  <Text style={Commonstyles.testarating}>⭐ {item.rating}</Text>
+                  <AppText style={Commonstyles.testarating}>⭐ {item.rating}</AppText>
                 </View>
-                <Text style={Commonstyles.testimonialText} numberOfLines={4}>
+                <AppText style={Commonstyles.testimonialText} numberOfLines={4}>
                   {item.text}
-                </Text>
-                <Text style={Commonstyles.testalocation}>{item.location}</Text>
-                <Text style={Commonstyles.testauthor}>{item.author}</Text>
+                </AppText>
+                <AppText style={Commonstyles.testalocation}>{item.location}</AppText>
+                <AppText style={Commonstyles.testauthor}>{item.author}</AppText>
               </View>
             )}
           />
@@ -368,7 +369,7 @@ const ShopScreen = ({ navigation }) => {
             },
           ]}
         >
-          <Text style={Commonstyles.utititle}>Service Guarantee</Text>
+          <AppText style={Commonstyles.utititle}>Service Guarantee</AppText>
           <View
             style={[
               Commonstyles.sergrid,
@@ -381,7 +382,7 @@ const ShopScreen = ({ navigation }) => {
             >
               <Image source={images.remoteIcon} style={Commonstyles.sericon} />
               <View>
-                <Text style={Commonstyles.serstatTitle}>Rework Assurance</Text>
+                <AppText style={Commonstyles.serstatTitle}>Rework Assurance</AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -393,7 +394,7 @@ const ShopScreen = ({ navigation }) => {
                 style={Commonstyles.sericon}
               />
               <View>
-                <Text style={Commonstyles.serstatTitle}>100% Satisfaction</Text>
+                <AppText style={Commonstyles.serstatTitle}>100% Satisfaction</AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -405,9 +406,9 @@ const ShopScreen = ({ navigation }) => {
                 style={Commonstyles.sericon}
               />
               <View>
-                <Text style={Commonstyles.serstatTitle}>
+                <AppText style={Commonstyles.serstatTitle}>
                   Certified Engineers
-                </Text>
+                </AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -419,7 +420,7 @@ const ShopScreen = ({ navigation }) => {
                 style={Commonstyles.sericon}
               />
               <View>
-                <Text style={Commonstyles.serstatTitle}>Copyright 2023</Text>
+                <AppText style={Commonstyles.serstatTitle}>Copyright 2023</AppText>
               </View>
             </TouchableOpacity>
           </View>

@@ -17,6 +17,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { COLORS, Fonts } from '../utils/colors';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import AppText from '../components/AppText';
 
 const UserInfoModel = ({ visible, onClose, onProceed }) => {
   const navigation = useNavigation();
@@ -67,7 +68,7 @@ const UserInfoModel = ({ visible, onClose, onProceed }) => {
             keyboardShouldPersistTaps="handled"
           >
             <View style={styles.inFlexrow}>
-              <Text style={styles.headerText}>Enter Your Details</Text>
+              <AppText style={styles.headerText}>Enter Your Details</AppText>
 
               <TouchableOpacity
                 onPress={() => {
@@ -75,20 +76,22 @@ const UserInfoModel = ({ visible, onClose, onProceed }) => {
                   navigation.navigate('AddAddress', { from: 'UserInfoModel' });
                 }}
               >
-                <Text style={styles.addAddressText}>Add New Address</Text>
+                <AppText style={styles.addAddressText}>Add New Address</AppText>
               </TouchableOpacity>
             </View>
 
-            <Text style={styles.TitleheadText}>Name</Text>
+            <AppText style={styles.TitleheadText}>Name</AppText>
             <TextInput
               placeholder="Enter your Name"
               style={styles.inputContainer}
               value={userInfo.name}
               onChangeText={t => handleInputChange('name', t)}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
 
-            <Text style={styles.TitleheadText}>Number</Text>
+            <AppText style={styles.TitleheadText}>Number</AppText>
             <TextInput
               placeholder="Enter your Number"
               keyboardType="phone-pad"
@@ -97,9 +100,11 @@ const UserInfoModel = ({ visible, onClose, onProceed }) => {
               value={userInfo.number}
               onChangeText={t => handleInputChange('number', t)}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
 
-            <Text style={styles.TitleheadText}>Address</Text>
+            <AppText style={styles.TitleheadText}>Address</AppText>
             <TextInput
               placeholder="Enter your Address / state / pincode"
               multiline
@@ -108,13 +113,15 @@ const UserInfoModel = ({ visible, onClose, onProceed }) => {
               value={userInfo.address}
               onChangeText={t => handleInputChange('address', t)}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
 
             <TouchableOpacity
               style={styles.proceedButton}
               onPress={handleProceedPress}
             >
-              <Text style={styles.proceedButtonText}>Proceed</Text>
+              <AppText style={styles.proceedButtonText}>Proceed</AppText>
             </TouchableOpacity>
           </KeyboardAwareScrollView>
         </View>

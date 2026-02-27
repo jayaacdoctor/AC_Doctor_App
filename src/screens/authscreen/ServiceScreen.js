@@ -13,6 +13,7 @@ import Geolocation from '@react-native-community/geolocation';
 import GetLoaction from '../../components/GetLoaction';
 import CustomLoader from '../../components/CustomLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppText from '../../components/AppText';
 
 const ServiceScreen = () => {
   const navigation = useNavigation();
@@ -26,6 +27,7 @@ const ServiceScreen = () => {
   }, []);
 
   const { latitude, longitude, addressText, loading, error, getLocation } = GetLoaction();
+
   const handleUseCurrentLocation = () => {
     if (isFetching) return;
 
@@ -77,16 +79,16 @@ const ServiceScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Find Services Near You</Text>
+      <AppText style={styles.title}>Find Services Near You</AppText>
 
       <FastImage
         source={images.service}
         style={styles.image}
         resizeMode={FastImage.resizeMode.contain}
       />
-      <Text style={styles.subtitle}>
+      <AppText style={styles.subtitle}>
         Quickly detect your location for better service!
-      </Text>
+      </AppText>
 
       <TouchableOpacity
         style={styles.locationButton}
@@ -98,7 +100,7 @@ const ServiceScreen = () => {
             style={styles.backImg}
             resizeMode={'contain'}
           />
-          <Text style={styles.locationText}>{isFetching ? "Fetching Location..." : "Use Current Location"}</Text>
+          <AppText style={styles.locationText}>{isFetching ? "Fetching Location..." : "Use Current Location"}</AppText>
           {isFetching ? <CustomLoader size="small" color='white' /> : null}
         </View>
       </TouchableOpacity>
@@ -107,9 +109,9 @@ const ServiceScreen = () => {
         style={styles.locationManualButton}
         onPress={() => navigation.navigate('AddAddress', { from: 'ServiceScreen' })}
       >
-        <Text style={[styles.locationText, { color: COLORS.black }]}>
+        <AppText style={[styles.locationText, { color: COLORS.black }]}>
           Enter Location Manually
-        </Text>
+        </AppText>
       </TouchableOpacity>
     </View>
   );

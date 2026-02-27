@@ -15,6 +15,7 @@ import AMCScreen from '../screens/AMC/AMCScreen';
 import SmartControlScreen from '../screens/SmartControl/SmartControlScreen';
 import AccountScreen from '../screens/Account/AccountScreen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const Tab = createBottomTabNavigator();
 
@@ -51,7 +52,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               resizeMode={FastImage.resizeMode.contain}
             />
 
-            <Text
+            <AppText
               numberOfLines={1}
               style={[
                 styles.tabLabel,
@@ -59,7 +60,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
               ]}
             >
               {route.name}
-            </Text>
+            </AppText>
           </TouchableOpacity>
         );
       })}

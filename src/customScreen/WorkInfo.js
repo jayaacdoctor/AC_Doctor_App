@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   FlatList,
   TouchableOpacity,
   Image,
@@ -16,6 +15,7 @@ import Homstyles, {
 } from '../screens/Home/HomeScreenStyles';
 import ContentSection from '../customScreen/ContentSection';
 import images from '../assets/images';
+import AppText from '../components/AppText';
 
 const WorkInfo = ({
   paddingHorizontal = 0,
@@ -36,7 +36,7 @@ const WorkInfo = ({
       {/* How it works */}
       {Homwork && (
         <View style={Homstyles.workitem}>
-          <Text style={Homstyles.utititle}>How it works?</Text>
+          <AppText style={Homstyles.utititle}>How it works?</AppText>
 
           <View style={Homstyles.workContain}>
             <FlatList
@@ -50,9 +50,9 @@ const WorkInfo = ({
                   onPress={item.action}
                 >
                   <FastImage source={item.icon} style={Homstyles.workicon} />
-                  <Text style={[Homstyles.utilabel, { color: 'white' }]}>
+                  <AppText style={[Homstyles.utilabel, { color: 'white' }]}>
                     {item.text}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
               )}
             />
@@ -75,9 +75,9 @@ const WorkInfo = ({
       </View>
 
       {/* FAQ Header */}
-      <Text style={[Homstyles.workheadText, { marginTop: 8 }]}>
+      <AppText style={[Homstyles.workheadText, { marginTop: 8 }]}>
         FAQs
-      </Text>
+      </AppText>
 
       {/* FAQ Items */}
       {faqData.map((item, index) => (
@@ -87,14 +87,14 @@ const WorkInfo = ({
             onPress={() => toggleExpand(index)}
             activeOpacity={0.7}
           >
-            <Text style={Homstyles.faquestionText}>{item.question}</Text>
-            <Text style={Homstyles.faqarrow}>
+            <AppText style={Homstyles.faquestionText}>{item.question}</AppText>
+            <AppText style={Homstyles.faqarrow}>
               {expandedIndex === index ? '︿' : '﹀'}
-            </Text>
+            </AppText>
           </TouchableOpacity>
 
           {expandedIndex === index && (
-            <Text style={Homstyles.faqanswerText}>{item.answer}</Text>
+            <AppText style={Homstyles.faqanswerText}>{item.answer}</AppText>
           )}
         </View>
       ))}
@@ -109,7 +109,7 @@ const WorkInfo = ({
         <View style={Homstyles.brandcont}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image source={images.helpdesk} style={Homstyles.smallimage} />
-            <Text style={Homstyles.needHelp}> Need Help?</Text>
+            <AppText style={Homstyles.needHelp}> Need Help?</AppText>
           </View>
           <Image source={images.chatIcon} style={Homstyles.chaticon} />
         </View>

@@ -5,7 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { COLORS } from '../utils/colors';
 
 const CustomSearchBar = ({ placeholder, value, onChangeText, keyboardType, icon }) => {
-  
+
   return (
     <View style={styles.container}>
       {icon && <FastImage source={icon} style={styles.icon} resizeMode="contain" />}
@@ -17,6 +17,8 @@ const CustomSearchBar = ({ placeholder, value, onChangeText, keyboardType, icon 
         onChangeText={onChangeText}
         keyboardType={keyboardType || 'default'}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
     </View>
   );

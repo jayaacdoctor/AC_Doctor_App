@@ -19,6 +19,7 @@ import { COLORS, Fonts } from '../../utils/colors';
 import FastImage from 'react-native-fast-image';
 
 import { useCompare } from '../../hook/CompareContext';
+import AppText from '../../components/AppText';
 
 const CompareACScreen = ({ navigation, route }) => {
   const [selectCompare, setSelectCompare] = useState({});
@@ -52,8 +53,8 @@ const CompareACScreen = ({ navigation, route }) => {
     },
   ];
 
-//   logic and data store from compareContext screen
-  const { selectedACs, addAC, removeAC, allACsForCompare, defaultAC } =useCompare();
+  //   logic and data store from compareContext screen
+  const { selectedACs, addAC, removeAC, allACsForCompare, defaultAC } = useCompare();
 
   useEffect(() => {
     const newAC = route.params?.selectedAC;
@@ -85,16 +86,16 @@ const CompareACScreen = ({ navigation, route }) => {
           resizeMode={FastImage.resizeMode.contain}
         />
 
-        <Text style={styles.title} numberOfLines={1}>
+        <AppText style={styles.title} numberOfLines={1}>
           {item.title}
-        </Text>
-        <Text style={styles.title} numberOfLines={1}>
+        </AppText>
+        <AppText style={styles.title} numberOfLines={1}>
           {item.ton}
-        </Text>
+        </AppText>
 
         <View style={styles.mrpRow}>
-          <Text style={styles.price}>₹43437.00</Text>
-          <Text style={styles.mrpPrice}> ₹{item.mrp}</Text>
+          <AppText style={styles.price}>₹43437.00</AppText>
+          <AppText style={styles.mrpPrice}> ₹{item.mrp}</AppText>
         </View>
 
         <View style={styles.discountRow}>
@@ -107,12 +108,12 @@ const CompareACScreen = ({ navigation, route }) => {
               style={[Commonstyles.locationIcon]}
               resizeMode={FastImage.resizeMode.contain}
             />
-            <Text style={styles.mrp}>Compare</Text>
+            <AppText style={styles.mrp}>Compare</AppText>
           </TouchableOpacity>
           <View style={styles.ratingRow}>
             <View style={styles.stars}>
               {[...Array(5)].map((_, i) => (
-                <Text
+                <AppText
                   key={i}
                   style={
                     i < (item.rating || 0)
@@ -121,7 +122,7 @@ const CompareACScreen = ({ navigation, route }) => {
                   }
                 >
                   ★
-                </Text>
+                </AppText>
               ))}
             </View>
           </View>
@@ -142,32 +143,32 @@ const CompareACScreen = ({ navigation, route }) => {
         <View style={[Commonstyles.allSideRadiusStyle, { marginTop: hp(2) }]}>
           {selectedACs.length > 0 && (
             <TouchableOpacity style={styles.removeBtn}>
-              <Text style={styles.removeText}>x</Text>
+              <AppText style={styles.removeText}>x</AppText>
             </TouchableOpacity>
           )}
           <View style={Commonstyles.faquestionContainer}>
-            <Image source={{uri:'https://picsum.photos/200/300'}} style={styles.cardimage} />
+            <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.cardimage} />
             <View style={{ width: wp(55) }}>
-              <Text
+              <AppText
                 style={[
                   Commonstyles.locationtitle,
                   { color: COLORS.black, lineHeight: 23 },
                 ]}
               >
                 {defaultAC.title} {/* Context se title */}
-              </Text>
-              <Text style={Commonstyles.mediumText}>
+              </AppText>
+              <AppText style={Commonstyles.mediumText}>
                 ₹32,920.00
                 {'  '}
-                <Text
+                <AppText
                   style={[
                     Commonstyles.locationText,
                     { textDecorationLine: 'line-through', color: '#666' },
                   ]}
                 >
                   ₹ 67,546.00
-                </Text>
-              </Text>
+                </AppText>
+              </AppText>
             </View>
           </View>
           {selectedACs.length === 0 && (
@@ -175,7 +176,7 @@ const CompareACScreen = ({ navigation, route }) => {
               style={[styles.addButton, { width: wp(90) }]}
               onPress={goToSelect}
             >
-              <Text style={styles.addBtnText}> + Add AC</Text>
+              <AppText style={styles.addBtnText}> + Add AC</AppText>
             </TouchableOpacity>
           )}
         </View>
@@ -187,44 +188,44 @@ const CompareACScreen = ({ navigation, route }) => {
           renderItem={({ item }) => (
             <View>
               <View style={styles.vsContainer}>
-                <Text style={styles.vsText}>VS</Text>
+                <AppText style={styles.vsText}>VS</AppText>
               </View>
 
               <View
                 style={[
                   Commonstyles.allSideRadiusStyle,
-                  { marginHorizontal: 16, marginTop: hp(0)},
+                  { marginHorizontal: 16, marginTop: hp(0) },
                 ]}
               >
-                <TouchableOpacity style={styles.removeBtn} onPress={()=>removeAC(item.id)}>
-                  <Text style={styles.removeText}>x</Text>
+                <TouchableOpacity style={styles.removeBtn} onPress={() => removeAC(item.id)}>
+                  <AppText style={styles.removeText}>x</AppText>
                 </TouchableOpacity>
                 <View style={Commonstyles.faquestionContainer}>
                   <View>
-                    <Image source={{uri:'https://picsum.photos/200/300'}} style={styles.cardimage} />
+                    <Image source={{ uri: 'https://picsum.photos/200/300' }} style={styles.cardimage} />
                   </View>
                   <View style={{ width: wp(55) }}>
-                    <Text
+                    <AppText
                       style={[
                         Commonstyles.locationtitle,
                         { color: COLORS.black, lineHeight: 23 },
                       ]}
                     >
                       {item.title}
-                    </Text>
+                    </AppText>
 
-                    <Text style={Commonstyles.mediumText}>
+                    <AppText style={Commonstyles.mediumText}>
                       ₹{item.price.toLocaleString()}
                       {'  '}
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { textDecorationLine: 'line-through', color: '#666' },
                         ]}
                       >
                         ₹{item.originalPrice.toLocaleString()}
-                      </Text>
-                    </Text>
+                      </AppText>
+                    </AppText>
                   </View>
                 </View>
                 {/* BOTTOM BUTTONS */}
@@ -238,18 +239,20 @@ const CompareACScreen = ({ navigation, route }) => {
                       ]}
                       onPress={goToSelect}
                     >
-                      <Text style={styles.addBtnText}>Add AC</Text>
+                      <AppText style={styles.addBtnText}>Add AC</AppText>
                     </TouchableOpacity>
                   )}
 
-                  {selectedACs.length >= 1 &&  (
-                    <TouchableOpacity 
-                      style={[styles.compareBtn,{width: selectedACs.length === 2 ? wp(85) : wp(40),
-                        marginLeft:selectedACs.length === 2?  wp(0): wp(4)}]}
+                  {selectedACs.length >= 1 && (
+                    <TouchableOpacity
+                      style={[styles.compareBtn, {
+                        width: selectedACs.length === 2 ? wp(85) : wp(40),
+                        marginLeft: selectedACs.length === 2 ? wp(0) : wp(4)
+                      }]}
                       disabled={selectedACs.length === 0}
                       onPress={goToCompareResult}
                     >
-                      <Text style={styles.compareBtnText}>Compare</Text>
+                      <AppText style={styles.compareBtnText}>Compare</AppText>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -259,9 +262,9 @@ const CompareACScreen = ({ navigation, route }) => {
         />
 
         {/*  Selected Similar ACs */}
-        <Text style={[Commonstyles.mediumText, { marginVertical: hp(1.5) }]}>
+        <AppText style={[Commonstyles.mediumText, { marginVertical: hp(1.5) }]}>
           Selected Similar ACs
-        </Text>
+        </AppText>
         <View>
           <FlatList
             data={products}
@@ -384,7 +387,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     zIndex: 10,
   },
-  removeText: { fontSize: 22, color: COLORS.textHeading ,textAlign:"center"},
+  removeText: { fontSize: 22, color: COLORS.textHeading, textAlign: "center" },
   striked: { textDecorationLine: 'line-through', color: '#999', fontSize: 14 },
   vsContainer: { alignItems: 'center', },
   vsText: {

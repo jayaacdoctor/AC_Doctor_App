@@ -3,6 +3,7 @@ import React from 'react';
 import { TouchableOpacity, Text, Alert, Platform, Dimensions } from 'react-native';
 import { PDFDocument, StandardFonts, rgb } from 'rn-pdf-lib';
 import RNFS from 'react-native-fs';
+import AppText from '../components/AppText'
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -137,9 +138,9 @@ const GeneratePDFButton = ({ data, onSuccess }) => {
         alignItems: 'center',
       }}
     >
-      <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>
+      <AppText style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>
         Generate & Download PDF
-      </Text>
+      </AppText>
     </TouchableOpacity>
   );
 };

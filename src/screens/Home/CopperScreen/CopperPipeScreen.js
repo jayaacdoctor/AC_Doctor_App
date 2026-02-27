@@ -32,6 +32,7 @@ import OutdoorSelectionModal from '../../../customScreen/OutdoorSelectionModal';
 import PickerLabelUi from '../../../components/PickerLabelUi';
 import CunstomInput from '../../../components/CunstomInput';
 import { isTablet } from '../../../components/TabletResponsiveSize';
+import AppText from '../../../components/AppText';
 
 const CopperPipeScreen = ({ navigation }) => {
   const [modalSlotVisible, setModalSlotVisible] = useState(false); //booktime
@@ -122,9 +123,9 @@ const CopperPipeScreen = ({ navigation }) => {
               />
             </View>
 
-            <Text style={[screenStyles.workheadText]}>
+            <AppText style={[screenStyles.workheadText]}>
               Fill Copper Piping details
-            </Text>
+            </AppText>
 
             <View style={styles.FromStyle}>
               {/* Property Type */}
@@ -158,10 +159,10 @@ const CopperPipeScreen = ({ navigation }) => {
 
               {/* Pipe Run Length */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>
+                <AppText style={styles.label}>
                   Pipe Run Length{' '}
-                  <Text style={styles.labelInput}>(Optional)</Text>
-                </Text>
+                  <AppText style={styles.labelInput}>(Optional)</AppText>
+                </AppText>
               </View>
               <CunstomInput
                 placeholder="Enter number of length"
@@ -181,16 +182,16 @@ const CopperPipeScreen = ({ navigation }) => {
 
               {/* Select Date & Time */}
               <View style={styles.inputGroup}>
-                <Text style={styles.label}>Select Date & Time</Text>
+                <AppText style={styles.label}>Select Date & Time</AppText>
                 <TouchableOpacity
                   style={styles.pickerWrapper}
                   onPress={() => setModalSlotVisible(true)}
                 >
-                  <Text
+                  <AppText
                     style={[{ flex: 1, marginLeft: wp(4) }, styles.uploadText]}
                   >
                     {selectdate}
-                  </Text>
+                  </AppText>
                   <FastImage
                     source={images.Calendar}
                     style={styles.customIcon}
@@ -219,7 +220,7 @@ const CopperPipeScreen = ({ navigation }) => {
             <View
               style={[HomeScreenStyles.workitem, { marginBottom: hp('10%') }]}
             >
-              <Text style={HomeScreenStyles.utititle}>How it works?</Text>
+              <AppText style={HomeScreenStyles.utititle}>How it works?</AppText>
               <View style={HomeScreenStyles.workContain}>
                 <FlatList
                   data={works}
@@ -235,14 +236,14 @@ const CopperPipeScreen = ({ navigation }) => {
                         source={item.icon}
                         style={HomeScreenStyles.workicon}
                       />
-                      <Text
+                      <AppText
                         style={[
                           HomeScreenStyles.utilabel,
                           { color: COLORS.white },
                         ]}
                       >
                         {item.text}
-                      </Text>
+                      </AppText>
                     </TouchableOpacity>
                   )}
                 />

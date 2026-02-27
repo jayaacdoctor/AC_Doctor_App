@@ -31,6 +31,7 @@ import messaging from '@react-native-firebase/messaging';
 import { getFcmToken } from '../../services/getFcmToken';
 import { Gettokenfrofcm } from '../../services/Gettokenforfcm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppText from '../../components/AppText';
 const phoneSchema = yup.object().shape({
   phoneNumber: yup
     .string()
@@ -63,10 +64,7 @@ const LoginScreen = ({ navigation }) => {
       setLoading(true);
       // ==== Save Token ====
       const res = await loginUser(postdata);
-      await AsyncStorage.setItem(
-        'accessToken',
-        res?.data?.assessToken
-      );
+      await AsyncStorage.setItem('accessToken', res?.data?.assessToken);
       dispatch(setToken({ accessToken: res?.data?.assessToken }));
       navigation.navigate('Verification', {
         phoneNumber: data.phoneNumber,
@@ -76,7 +74,7 @@ const LoginScreen = ({ navigation }) => {
         isAutoTesting: false, //// only for development notification
       });
       // console.log('Login OTP Data:', res.data.otp);
-      Toast.show('Login Success', Toast.LONG);
+      // Toast.show('Login Success', Toast.LONG);
       Keyboard.dismiss();
     } catch (error) {
       console.log('Login Error Data:', error?.res?.data);
@@ -90,8 +88,7 @@ const LoginScreen = ({ navigation }) => {
         message = error.res.data.message;
       }
       // 🔴 Show error message from API
-      Toast.show(message, Toast.LONG);
-
+      // Toast.show(message, Toast.LONG);
     } finally {
       setLoading(false);
     }
@@ -109,8 +106,8 @@ const LoginScreen = ({ navigation }) => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.mainView}>
-            <Text style={styles.title}>Welcome</Text>
-            <Text style={styles.titleHead}>Let's Keep Your AC Healthy</Text>
+            <AppText style={styles.title}>Welcome</AppText>
+            <AppText style={styles.titleHead}>Let's Keep Your AC Healthy</AppText>
 
             <Image
               source={images.login}
@@ -118,9 +115,9 @@ const LoginScreen = ({ navigation }) => {
               resizeMode={'contain'}
             />
 
-            <Text style={styles.textNumber}>
+            <AppText style={styles.textNumber}>
               Enter your mobile number to continue
-            </Text>
+            </AppText>
 
             <Controller
               control={control}
@@ -138,11 +135,12 @@ const LoginScreen = ({ navigation }) => {
               )}
             />
 
-            <Text style={styles.secureText}>
+            <AppText style={styles.secureText}>
               Securing your personal information is our priority.
-            </Text>
+            </AppText>
 
-            <TouchableOpacity activeOpacity={1}
+            <TouchableOpacity
+              activeOpacity={1}
               style={[
                 styles.button,
                 {
@@ -155,7 +153,7 @@ const LoginScreen = ({ navigation }) => {
               disabled={!isValid || loading}
             >
               <View style={{ flexDirection: 'row' }}>
-                <Text style={styles.buttonText}>Get Verification Code</Text>
+                <AppText style={styles.buttonText}>Get Verification Code</AppText>
                 {loading ? <CustomLoader size="small" /> : null}
               </View>
             </TouchableOpacity>

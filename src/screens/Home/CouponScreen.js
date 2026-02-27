@@ -13,6 +13,7 @@ import {
 import { COLORS, Fonts } from '../../utils/colors';
 import Header from '../../components/Header';
 import CustomLoader from '../../components/CustomLoader';
+import AppText from '../../components/AppText';
 
 const CouponScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
@@ -58,26 +59,26 @@ const CouponScreen = ({ navigation }) => {
       {/* Header */}
       <View style={styles.rowBetween}>
         <View>
-          <Text style={styles.label}>Coupon Code</Text>
-          <Text style={styles.code}>{item.code}</Text>
+          <AppText style={styles.label}>Coupon Code</AppText>
+          <AppText style={styles.code}>{item.code}</AppText>
         </View>
         <View>
-          <Text style={styles.label}>Exp Date</Text>
-          <Text style={styles.expiry}>{item.expiry}</Text>
+          <AppText style={styles.label}>Exp Date</AppText>
+          <AppText style={styles.expiry}>{item.expiry}</AppText>
         </View>
       </View>
 
       {/* Content */}
       <View style={styles.rowBtw}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.desc}>{item.description}</Text>
+        <AppText style={styles.title}>{item.title}</AppText>
+        <AppText style={styles.desc}>{item.description}</AppText>
       </View>
 
       {/* Footer */}
       <View style={styles.footer}>
-        <Text style={styles.discount}>Discount</Text>
+        <AppText style={styles.discount}>Discount</AppText>
         <TouchableOpacity style={styles.applyBtn}>
-          <Text style={styles.applyText}>Apply Coupon</Text>
+          <AppText style={styles.applyText}>Apply Coupon</AppText>
         </TouchableOpacity>
       </View>
     </View>
@@ -88,9 +89,9 @@ const CouponScreen = ({ navigation }) => {
       <Header title="Your Coupon" onBack={() => navigation.goBack()} />
 
       <View style={styles.bgColor}>
-        <Text style={styles.headerText}>
+        <AppText style={styles.headerText}>
           {coupons.length} Coupon’s available
-        </Text>
+        </AppText>
       </View>
 
       <View style={styles.screnContainer}>

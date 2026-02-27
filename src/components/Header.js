@@ -23,6 +23,7 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { isTablet } from './TabletResponsiveSize';
+import AppText from './AppText';
 
 const Header = ({
   title = 'My App',
@@ -84,7 +85,7 @@ const Header = ({
           onPress={onBack}
           style={[styles.backButton, { flex: 1 }]}
         >
-          <Text style={[styles.title, dynamicStyles.title]}>{title}</Text>
+          <AppText style={[styles.title, dynamicStyles.title]}>{title}</AppText>
         </TouchableOpacity>
         {onHelp && (
           <TouchableOpacity style={styles.helpButton} onPress={onHelp}>

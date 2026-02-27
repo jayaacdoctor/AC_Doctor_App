@@ -16,6 +16,7 @@ import Header from '../../../components/Header';
 import HomeScreenStyles from '../HomeScreenStyles';
 import { useNavigation } from '@react-navigation/native';
 import DetailsCard from "../../../customScreen/DetailsCard";
+import AppText from '../../../components/AppText';
 
 const ErrorDetails = ({ route }) => {
     const { errorData, brandName } = route?.params || {};
@@ -49,48 +50,48 @@ const ErrorDetails = ({ route }) => {
                         <View style={styles.rowStyle}>
                             <Image source={images.brand_icon} style={styles.iconstyle} />
                             <View>
-                                <Text style={styles.labelTitle}>Brand</Text>
-                                <Text style={styles.valuestyle}>{brandName}</Text>
+                                <AppText style={styles.labelTitle}>Brand</AppText>
+                                <AppText style={styles.valuestyle}>{brandName}</AppText>
                             </View>
                         </View>
                         <View style={styles.rowStyle}>
                             <Image source={images.ac_cassette} style={styles.iconstyle} />
                             <View>
-                                <Text style={styles.labelTitle}>AC Type</Text>
-                                <Text style={styles.valuestyle}>{detailError?.acType}</Text>
+                                <AppText style={styles.labelTitle}>AC Type</AppText>
+                                <AppText style={styles.valuestyle}>{detailError?.acType}</AppText>
                             </View>
                         </View>
                         <View style={styles.rowStyle}>
                             <Image source={images.errorCodeIcon} style={styles.iconstyle} />
                             <View>
-                                <Text style={styles.labelTitle}>Error Code</Text>
-                                <Text style={styles.valuestyle}>{detailError?.code}</Text>
+                                <AppText style={styles.labelTitle}>Error Code</AppText>
+                                <AppText style={styles.valuestyle}>{detailError?.code}</AppText>
                             </View>
                         </View>
                     </View>
                     <View style={styles.boderLine} />
                     <View style={{ marginVertical: wp(2) }}>
-                        <Text style={styles.labelTitle}>Heading:</Text>
-                        <Text style={styles.valuestyle}>
+                        <AppText style={styles.labelTitle}>Heading:</AppText>
+                        <AppText style={styles.valuestyle}>
                             {detailError?.models}
-                        </Text>
+                        </AppText>
                     </View>
                     <View style={{ marginVertical: wp(1) }}>
-                        <Text style={styles.labelTitle}>Category</Text>
-                        <Text style={styles.valuestyle}>{detailError?.category}</Text>
+                        <AppText style={styles.labelTitle}>Category</AppText>
+                        <AppText style={styles.valuestyle}>{detailError?.category}</AppText>
                     </View>
 
                     {/* <View >
-                        <Text style={styles.labelTitle}>Meaning:</Text>
-                        <Text style={styles.valuestyle}>
+                        <AppText style={styles.labelTitle}>Meaning:</AppText>
+                        <AppText style={styles.valuestyle}>
                             Tempreature Sensor malfunction
-                        </Text>
+                        </AppText>
                     </View> */}
                     <View style={{ marginVertical: wp(3) }}>
-                        <Text style={styles.labelTitle}>Troubleshooting Steps:</Text>
-                        {detailError?.solution?.map((step, index) => (<Text style={styles.valuestyle}>
+                        <AppText style={styles.labelTitle}>Troubleshooting Steps:</AppText>
+                        {detailError?.solution?.map((step, index) => (<AppText style={styles.valuestyle}>
                             {step}
-                        </Text>))}
+                        </AppText>))}
                     </View>
                 </View>
 

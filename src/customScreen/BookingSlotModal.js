@@ -15,6 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const BookingSlotModal = ({
   visible,
@@ -102,7 +103,11 @@ const BookingSlotModal = ({
 
   const handleProceedPress = () => {
     if (selectedDay === null || selectedTime === null) return;
-
+    // 🔥 If reschedule mode & reason empty → don't proceed
+    if (isReschedule && !rescheduleReason.trim()) {
+      Alert.alert("Please enter reason for rescheduling");
+      return;
+    }
     const dayObj = days[selectedDay];
 
     setSelectedSlot({
@@ -116,27 +121,37 @@ const BookingSlotModal = ({
       reason: isReschedule ? rescheduleReason : undefined,
     });
     onBookProcess();
-
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide" statusBarTranslucent>
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, { justifyContent: 'flex-end' }]}>
         <Pressable style={styles.backdrop} onPress={onClose} />
         <KeyboardAvoidingView
+          style={{
+            flex: 1,
+            // justifyContent: isReschedule ? 'flex-end' : 'flex-start',
+          }}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        // keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 20}
         >
-          <View style={styles.modalContent}>
+          <View style={[
+            styles.modalContent,
+            { maxHeight: isReschedule ? '90%' : '85%', }
+          ]}>
 
             {/* Scrollable Content */}
             <ScrollView
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator={false}
-            // contentContainerStyle={{ padding: 16 }}
+              contentContainerStyle={{
+                paddingBottom: hp(8),
+              }}
             >
-              <Text style={styles.title}>Book a Slot</Text>
 
-              <Text style={styles.sectionLabel}>Date</Text>
+              <AppText allowFontScaling={false} style={styles.title}>Book a Slot</AppText>
+
+              <AppText allowFontScaling={false} style={styles.sectionLabel}>Date</AppText>
 
               <View style={styles.monthYearSelector}>
                 <TouchableOpacity
@@ -149,12 +164,12 @@ const BookingSlotModal = ({
                     }
                   }}
                 >
-                  <Text style={styles.navText}>{'<<'}</Text>
+                  <AppText allowFontScaling={false} style={styles.navText}>{'<<'}</AppText>
                 </TouchableOpacity>
 
-                <Text style={styles.monthText}>
+                <AppText allowFontScaling={false} style={styles.monthText}>
                   {monthNames[selectedMonth]} {selectedYear}
-                </Text>
+                </AppText>
 
                 <TouchableOpacity
                   onPress={() => {
@@ -166,7 +181,7 @@ const BookingSlotModal = ({
                     }
                   }}
                 >
-                  <Text style={styles.navText}>{'>>'}</Text>
+                  <AppText style={styles.navText}>{'>>'}</AppText>
                 </TouchableOpacity>
               </View>
 
@@ -189,22 +204,22 @@ const BookingSlotModal = ({
                       ]}
                       onPress={() => setSelectedDay(index)}
                     >
-                      <Text
+                      <AppText
                         style={[selectedDay === index ? styles.dateNumber : styles.disabledText, disabled && styles.disabledText,]}
                       >
                         {day.date}
-                      </Text>
-                      <Text
+                      </AppText>
+                      <AppText
                         style={[selectedDay === index ? styles.dayName : styles.disabledText, disabled && styles.disabledText,]}
                       >
                         {day.day}
-                      </Text>
+                      </AppText>
                     </TouchableOpacity>
                   );
                 })}
               </ScrollView>
 
-              <Text style={styles.sectionLabel}>Time</Text>
+              <AppText style={styles.sectionLabel}>Time</AppText>
 
               <View style={styles.timeContainer}>
                 {timeSlots.map((slot, index) => (
@@ -216,15 +231,15 @@ const BookingSlotModal = ({
                     ]}
                     onPress={() => setSelectedTime(index)}
                   >
-                    <Text style={selectedTime === index ? styles.selectedtimeLabel : styles.timeLabel}>{slot.label}</Text>
-                    <Text style={selectedTime === index ? styles.selectedtimeLabel : styles.timeText}>{slot.time}</Text>
+                    <AppText style={selectedTime === index ? styles.selectedtimeLabel : styles.timeLabel}>{slot.label}</AppText>
+                    <AppText style={selectedTime === index ? styles.selectedtimeLabel : styles.timeText}>{slot.time}</AppText>
                   </TouchableOpacity>
                 ))}
               </View>
 
               {isReschedule && (
                 <>
-                  <Text style={styles.sectionLabel}>Reason of Rescheduling</Text>
+                  <AppText style={styles.sectionLabel}>Reason of Rescheduling</AppText>
                   <TextInput
                     style={styles.reasonInput}
                     placeholder="Type here..."
@@ -233,6 +248,8 @@ const BookingSlotModal = ({
                     textAlignVertical="top"
                     value={rescheduleReason}
                     onChangeText={setRescheduleReason}
+                    allowFontScaling={false}
+                    includeFontPadding={false}
                   />
                 </>
               )}
@@ -266,22 +283,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalContent: {
-    backgroundColor: 'rgb(253, 253, 253)',
-    paddingHorizontal: hp('2%'),
-    paddingVertical: hp('2%'),
-    borderTopLeftRadius: wp('6.5%'),
-    borderTopRightRadius: wp('6.5%'),
-    // position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // right: 0,
-    // zIndex: 1000,
-    minHeight: hp(38),
-    maxHeight: hp(60),
-    alignSelf: 'center',
-    width: wp('100%'),
-    paddingBottom: hp(Platform.OS === 'android' ? 4 : 4),
-    marginBottom: hp(0),
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 16,
   },
   title: {
     fontSize: hp(2),

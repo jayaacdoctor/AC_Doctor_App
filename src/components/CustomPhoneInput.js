@@ -6,7 +6,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
-import {isTablet} from "../components/TabletResponsiveSize"
+import { isTablet } from "../components/TabletResponsiveSize"
+import AppText from "./AppText";
+
 const CustomPhoneInput = ({
   countryCode,
   setCountryCode,
@@ -35,9 +37,9 @@ const CustomPhoneInput = ({
           />
 
           {/* CALLING CODE */}
-          <Text style={styles.callingCode}>{callingCode}</Text>
+          <AppText style={styles.callingCode}>{callingCode}</AppText>
         </View>
-        <View style={[styles.container, { width: isTablet ? wp(70) :wp(62) }]}>
+        <View style={[styles.container, { width: isTablet ? wp(70) : wp(62) }]}>
           {/* PHONE INPUT */}
           <TextInput
             style={styles.input}
@@ -49,12 +51,14 @@ const CustomPhoneInput = ({
             maxLength={10}
             returnKeyType="done"
             onSubmitEditing={Keyboard.dismiss}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
         </View>
       </View>
 
       {/* ERROR MESSAGE */}
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && <AppText style={styles.errorText}>{error}</AppText>}
     </View>
   );
 };
@@ -63,13 +67,13 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: hp('1%'),
   },
- flexContain:{ 
-  flexDirection: 'row', 
-  justifyContent: 'space-between' 
-},
+  flexContain: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
   container: {
     flexDirection: 'row',
-    justifyContent:"center",
+    justifyContent: "center",
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#ccc',
@@ -86,8 +90,8 @@ const styles = StyleSheet.create({
   callingCode: {
     fontSize: hp('1.7%'),
     // fontSize: hp('1.7%'),
-    color:COLORS.black,
-    fontFamily:Fonts.medium,
+    color: COLORS.black,
+    fontFamily: Fonts.medium,
     // fontWeight: '500',
     marginRight: wp('2%'),
   },
@@ -95,8 +99,8 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: hp('1.7%'),
-    color:COLORS.black,
-    fontFamily:Fonts.medium,
+    color: COLORS.black,
+    fontFamily: Fonts.medium,
     paddingVertical: 0, // important for iOS
   },
 

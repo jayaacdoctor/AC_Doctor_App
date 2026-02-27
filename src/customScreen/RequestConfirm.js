@@ -11,6 +11,7 @@ import FastImage from 'react-native-fast-image';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import images from '../assets/images';
 import { COLORS } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const { width } = Dimensions.get("window");
 
@@ -33,7 +34,7 @@ const RequestConfirm = ({
 
           {/* Close Button */}
           <TouchableOpacity style={styles.closeBtn} onPress={onClose}>
-            <Text style={{ fontSize: hp(3), color: "#555" }}>×</Text>
+            <AppText style={{ fontSize: hp(3), color: "#555" }}>×</AppText>
           </TouchableOpacity>
 
           {/* Tick Icon */}
@@ -44,16 +45,16 @@ const RequestConfirm = ({
           />
 
           {/* Title */}
-          <Text style={styles.title}>Successful!</Text>
+          <AppText style={styles.title}>Successful!</AppText>
 
           {/* Subtitle */}
-          <Text style={styles.subtitle}>
+          <AppText style={styles.subtitle}>
             Your AMC Request has been successfully submitted.
-          </Text>
+          </AppText>
 
-          <Text style={styles.smallText}>
+          <AppText style={styles.smallText}>
             Our team will respond shortly.
-          </Text>
+          </AppText>
 
           {/* Divider */}
           <View style={styles.line} />
@@ -61,11 +62,11 @@ const RequestConfirm = ({
           {/* Buttons Row */}
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.outlineBtn} onPress={onViewRequest}>
-              <Text style={styles.outlineBtnText}>View Request</Text>
+              <AppText style={styles.outlineBtnText}>View Request</AppText>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.fillBtn} onPress={onClose}>
-              <Text style={styles.fillBtnText}>Done</Text>
+              <AppText style={styles.fillBtnText}>Done</AppText>
             </TouchableOpacity>
           </View>
 

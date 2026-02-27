@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+import AppText from '../../components/AppText'
 
 const SmartControlScreen = () => {
     return (
         <View>
-            <Text>SmartControlScreen</Text>
+            <AppText>SmartControlScreen</AppText>
         </View>
     )
 }

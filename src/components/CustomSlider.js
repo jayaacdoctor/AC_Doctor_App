@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, FlatList, Image, Dimensions, StyleSheet } from 'react-native';
+import { View, FlatList, Image, Dimensions, StyleSheet, ImageBackground } from 'react-native';
 import { isTablet } from './TabletResponsiveSize';
 import { wp, hp } from '../components/Resposive';
 
@@ -39,15 +39,18 @@ const CustomSlider = ({ images }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.sliderview}>
-      <Image
-        source={
-          item?.logo
-            ? { uri: item.logo }
-            : { item }
-        }
-        style={styles.image}
-        resizeMode="cover"
-      />
+      <View style={styles.imageWrapper}>
+        <ImageBackground
+          source={
+            item?.logo
+              ? { uri: item.logo }
+              : { item }
+          }
+          imageStyle={styles.imageBorder}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </View>
     </View>
   );
 
@@ -76,11 +79,14 @@ const CustomSlider = ({ images }) => {
         />
       ) : (
         <View style={styles.sliderview}>
-          <Image
-            source={{ uri: 'https://via.placeholder.com/800x400' }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          <View style={styles.imageWrapper}>
+            <Image
+              source={{ uri: 'https://via.placeholder.com/800x400' }}
+              style={styles.image}
+              imageStyle={styles.imageBorder}
+              resizeMode="cover"
+            />
+          </View>
         </View>
       )}
 
@@ -113,10 +119,18 @@ const styles = StyleSheet.create({
     marginHorizontal: isTablet ? wp(1.6) : wp(2),
     maxHeight: isTablet ? hp(30) : hp(18),
   },
+  imageWrapper: {
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+
   image: {
     width: isTablet ? wp(95) : wp(93),
-    height: isTablet ? hp(28) : hp(18),
-    borderRadius: 12,
+    height: isTablet ? hp(28) : hp(17),
+  },
+
+  imageBorder: {
+    borderRadius: 10, // 👈 same as wrapper
   },
   dots: {
     position: 'absolute',

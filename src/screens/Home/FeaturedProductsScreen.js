@@ -18,6 +18,7 @@ import {
 import { COLORS, Fonts } from '../../utils/colors';
 import images from '../../assets/images';
 import StarRating from '../../customScreen/StarRating';
+import AppText from '../../components/AppText';
 
 const FeaturedProductsScreen = ({ navigation }) => {
     const [allProducts, setAllProducts] = useState([]);
@@ -82,14 +83,14 @@ const FeaturedProductsScreen = ({ navigation }) => {
             />
 
             <View style={{ flex: 1 }}>
-                <Text style={styles.name} numberOfLines={2}>
+                <AppText style={styles.name} numberOfLines={2}>
                     {item.name}
-                </Text>
+                </AppText>
 
                 <View style={styles.viewRow}>
-                    <Text style={styles.price}>{item.price}{' '}</Text>
-                    <Text style={styles.mrp}>{item.mrp}</Text>
-                    <Text style={styles.mrp}>{item.discountedPercentage}</Text>
+                    <AppText style={styles.price}>{item.price}{' '}</AppText>
+                    <AppText style={styles.mrp}>{item.mrp}</AppText>
+                    <AppText style={styles.mrp}>{item.discountedPercentage}</AppText>
                 </View>
 
                 <StarRating
@@ -99,7 +100,7 @@ const FeaturedProductsScreen = ({ navigation }) => {
                 />
 
                 <View style={styles.badge}>
-                    <Text style={styles.badgeText}>{item.discount}</Text>
+                    <AppText style={styles.badgeText}>{item.discount}</AppText>
                 </View>
             </View>
         </TouchableOpacity>
@@ -128,6 +129,8 @@ const FeaturedProductsScreen = ({ navigation }) => {
                     value={search}
                     onChangeText={setSearch}
                     style={styles.searchInput}
+                    allowFontScaling={false}
+                    includeFontPadding={false}
                 />
             </View>
 
@@ -139,9 +142,9 @@ const FeaturedProductsScreen = ({ navigation }) => {
                 keyExtractor={item => item.id}
                 renderItem={renderItem}
                 ListEmptyComponent={
-                    <Text style={styles.emptyText}>
+                    <AppText style={styles.emptyText}>
                         No products found 😕
-                    </Text>
+                    </AppText>
                 }
                 contentContainerStyle={{ paddingBottom: 30, alignItems: 'center', paddingHorizontal: 12 }}
             />

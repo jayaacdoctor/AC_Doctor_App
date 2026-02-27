@@ -6,6 +6,7 @@ import {
     heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { COLORS } from "../utils/colors";
+import AppText from "../components/AppText";
 
 const DetailsCard = ({
     title = "Details",
@@ -16,13 +17,13 @@ const DetailsCard = ({
 }) => {
     return (
         <View style={[styles.card, containerStyle]}>
-            <Text style={styles.header}>{title}</Text>
+            <AppText style={styles.header}>{title}</AppText>
             <View style={styles.borderLine} />
 
             {points.map((item, index) => (
                 <View key={index} style={styles.row}>
                     <FastImage source={icon} style={styles.icon} />
-                    <Text style={styles.text}>{item.title}</Text>
+                    <AppText style={styles.text}>{item.title}</AppText>
                 </View>
             ))}
         </View>

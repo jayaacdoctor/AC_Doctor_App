@@ -15,6 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import images from '../../assets/images';
 import CustomSearchBar from '../../components/CustomSearchBar';
+import AppText from '../../components/AppText';
 
 const ACUnderServiceList = ({ route, navigation }) => {
   const { acType } = route.params;
@@ -135,7 +136,7 @@ const ACUnderServiceList = ({ route, navigation }) => {
         />
 
         <View style={styles.mainBox}>
-          <Text style={styles.heading}>Upcoming Service</Text>
+          <AppText style={styles.heading}>Upcoming Service</AppText>
           {filteredUpcoming.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -147,7 +148,7 @@ const ACUnderServiceList = ({ route, navigation }) => {
               <View style={styles.acIconCircle}>
                 <Image source={images.splitAC} style={styles.acIcon} />
               </View>
-              <Text style={styles.acName}>{item.name}</Text>
+              <AppText style={styles.acName}>{item.name}</AppText>
               <View style={styles.acIconCircle}>
                 <Image source={images.rightArrow} style={styles.arrowIcon} />
               </View>
@@ -156,7 +157,7 @@ const ACUnderServiceList = ({ route, navigation }) => {
         </View>
 
         <View style={styles.mainBox}>
-          <Text style={styles.heading}>Completed Service</Text>
+          <AppText style={styles.heading}>Completed Service</AppText>
           {filteredCompleted.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -168,7 +169,7 @@ const ACUnderServiceList = ({ route, navigation }) => {
               <View style={styles.acIconCircle}>
                 <Image source={images.splitAC} style={styles.acIcon} />
               </View>
-              <Text style={styles.acName}>{item.name}</Text>
+              <AppText style={styles.acName}>{item.name}</AppText>
               <View style={styles.acIconCircle}>
                 <Image source={images.rightArrow} style={styles.arrowIcon} />
               </View>

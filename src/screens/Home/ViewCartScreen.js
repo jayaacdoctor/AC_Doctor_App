@@ -22,7 +22,6 @@ import CustomButton from '../../components/CustomButton';
 import CustomModal from '../../components/CustomModal';
 import { useNavigation } from '@react-navigation/native';
 import BookingSlotModal from '../../customScreen/BookingSlotModal';
-import ConfirmationModal from '../../customScreen/ConfirmationModal';
 import { isTablet } from '../../components/TabletResponsiveSize';
 import { store } from '../../redux/store';
 import { getServiceList, postBookingRequest } from '../../api/homeApi';
@@ -31,6 +30,7 @@ import { clearCart, updateQuantity } from '../../redux/slices/cartSlice';
 import Toast from 'react-native-simple-toast';
 import OrderSummaryModel from '../../customScreen/OrderSummaryModel';
 import { rf } from '../../components/Resposive';
+import AppText from '../../components/AppText';
 
 const ViewCartScreen = ({ route }) => {
   const serviceDetails = useSelector(state => state.cart.items);
@@ -71,7 +71,7 @@ const ViewCartScreen = ({ route }) => {
       const list = res?.data || [];
       //  remove unwanted items
       const filteredList = list.filter(item =>
-        !['AMC', 'Copper Piping', 'Commercial AC'].includes(item.name)
+        !['Amc', 'Copper Piping', 'Commercial AC', 'Other'].includes(item.name)
       );
       setBookServices(filteredList);
     } catch (error) {
@@ -203,10 +203,8 @@ const ViewCartScreen = ({ route }) => {
     try {
       const response = await postBookingRequest(bodyData);
       if (response?.status === true) {
-        Toast.show(response?.message || 'Booking submitted successfully!');
+        // Toast.show(response?.message || 'Booking submitted successfully!');
         setShowSummary(false)
-
-        // navigation.replace('Tab', { screen: 'Home' });
         navigation.replace('BookingSuccessScreen');
         dispatch(clearCart());
       } else if (response?.status === false) {
@@ -240,9 +238,9 @@ const ViewCartScreen = ({ route }) => {
 
           return (
             <View key={serviceIndex}>
-              <Text style={[styles.headText, { marginBottom: hp('1%'), marginTop: 18 }]}>
+              <AppText style={[styles.headText, { marginBottom: hp('1%'), marginTop: 18 }]}>
                 {service.serviceType}
-              </Text>
+              </AppText>
 
               {visibleACs.length > 0 && (
                 <View style={[
@@ -251,7 +249,7 @@ const ViewCartScreen = ({ route }) => {
                 ]}>
                   {visibleACs.map((ac, acIndex) => (
                     <View key={acIndex} style={styles.serviceView}>
-                      <Text style={styles.workText}>{ac.name}</Text>
+                      <AppText style={styles.workText}>{ac.name}</AppText>
 
                       <View style={styles.workButtonContainer}>
                         <TouchableOpacity
@@ -266,7 +264,7 @@ const ViewCartScreen = ({ route }) => {
                           />
                         </TouchableOpacity>
 
-                        <Text style={styles.workCount}>{ac.quantity}</Text>
+                        <AppText style={styles.workCount}>{ac.quantity}</AppText>
 
                         <TouchableOpacity
                           onPress={() =>
@@ -304,7 +302,7 @@ const ViewCartScreen = ({ route }) => {
 
 
         {/* CouponScreen */}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           // onPress={() => navigation.navigate('CouponScreen')}
           style={[
             styles.ordercontainer,
@@ -313,24 +311,24 @@ const ViewCartScreen = ({ route }) => {
         >
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Image source={images.Offer} style={styles.carticon} />
-            <Text
+            <AppText
               style={[
                 styles.viewCartText,
                 { color: COLORS.black, fontFamily: Fonts.regular },
               ]}
             >
               Coupons
-            </Text>
+            </AppText>
           </View>
-          <Text
+          <AppText
             style={[
               styles.viewCartText,
               { color: COLORS.themeColor, marginRight: wp('4%') },
             ]}
           >
             {'2 Offers >'}
-          </Text>
-        </TouchableOpacity>
+          </AppText>
+        </TouchableOpacity> */}
 
 
 
@@ -432,9 +430,9 @@ const ViewCartScreen = ({ route }) => {
         </View> */}
 
         {/* CANCELLATION */}
-        <View
+        {/* <View
           style={styles.cancelView}>
-          <Text style={styles.headText}>Cancellation policy</Text>
+          <AppText style={styles.headText}>Cancellation policy</AppText>
           <View
             style={{
               flexDirection: 'row',
@@ -444,23 +442,23 @@ const ViewCartScreen = ({ route }) => {
             }}
           >
             <Image source={images.timeLight} style={styles.smallImag} />
-            <Text style={styles.cancelTextStyle}>
+            <AppText style={styles.cancelTextStyle}>
               Orders cannot be cancelled within 2 hours of the scheduled service
               time.
-            </Text>
+            </AppText>
           </View>
 
           <View style={{ flexDirection: 'row' }}>
-            <Text style={[styles.workText, { fontSize: hp('1.5%') }]}> ₹</Text>
-            <Text style={[styles.cancelTextStyle, { marginLeft: hp(1.5) }]}>
+            <AppText style={[styles.workText, { fontSize: hp('1.5%') }]}> ₹</AppText>
+            <AppText style={[styles.cancelTextStyle, { marginLeft: hp(1.5) }]}>
               In case of unexpected delays or issues, a refund will be
               provided.
-            </Text>
+            </AppText>
           </View>
-        </View>
+        </View> */}
 
         {/* Frequently Added Together */}
-        <Text style={[styles.headText, { marginVertical: hp(1) }]}>Add Together</Text>
+        <AppText style={[styles.headText, { marginVertical: hp(1) }]}>Add Together</AppText>
         <FlatList
           data={bookServices}
           keyExtractor={(_, index) => `work-${index}`}
@@ -474,7 +472,7 @@ const ViewCartScreen = ({ route }) => {
               onPress={() => handleProceedToCart(item)}
             >
               <FastImage source={{ uri: item.icon }} style={styles.utiicon} />
-              <Text
+              <AppText
                 style={[
                   styles.headText,
                   {
@@ -485,16 +483,15 @@ const ViewCartScreen = ({ route }) => {
                 ]}
               >
                 {item.name}
-              </Text>
+              </AppText>
               <View style={styles.addBtn}>
-                <Text style={[styles.workText, { fontSize: hp('1.3%') }]}>
+                <AppText style={[styles.workText, { fontSize: hp('1.3%') }]}>
                   Add
-                </Text>
+                </AppText>
               </View>
             </TouchableOpacity>
           )}
         />
-
       </ScrollView>
 
       <View

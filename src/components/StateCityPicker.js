@@ -5,12 +5,21 @@ import {
     TouchableOpacity,
     Modal,
     FlatList,
-    SafeAreaView,
     TextInput,
     StyleSheet,
+    PixelRatio,
+    Dimensions
 } from 'react-native';
 import { State, City } from 'country-state-city';
 import { Fonts } from '../utils/colors';
+import AppText from './AppText';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+// 🔹 Normalize size for font & layout consistency
+const scale = size => (SCREEN_WIDTH / 375) * size; // 375 = base iPhone width
+const normalize = size => Math.round(PixelRatio.roundToNearestPixel(scale(size)));
 
 const StateCityPicker = ({
     selectedState,
@@ -39,43 +48,49 @@ const StateCityPicker = ({
         setCitySearch('');
     };
 
-    // 🔥 Optimized Filtering using useMemo
+    // 🔹 Improved search: exact match first, startsWith priority
     const filteredStates = useMemo(() => {
-        return states.filter(item =>
-            item.name.toLowerCase().includes(stateSearch.toLowerCase()),
-        );
+        if (!stateSearch) return states;
+        const search = stateSearch.toLowerCase();
+        return [
+            ...states.filter(s => s.name.toLowerCase().startsWith(search)),
+            ...states.filter(s => !s.name.toLowerCase().startsWith(search) && s.name.toLowerCase().includes(search))
+        ];
     }, [stateSearch, states]);
 
     const filteredCities = useMemo(() => {
-        return cities.filter(item =>
-            item.name.toLowerCase().includes(citySearch.toLowerCase()),
-        );
+        if (!citySearch) return cities;
+        const search = citySearch.toLowerCase();
+        return [
+            ...cities.filter(c => c.name.toLowerCase().startsWith(search)),
+            ...cities.filter(c => !c.name.toLowerCase().startsWith(search) && c.name.toLowerCase().includes(search))
+        ];
     }, [citySearch, cities]);
 
     return (
         <View>
             {/* STATE FIELD */}
-            <Text style={styles.label}>State</Text>
+            <AppText style={styles.label}>State</AppText>
             <TouchableOpacity style={styles.box} onPress={() => setStateModal(true)}>
-                <Text style={styles.valueText}>{selectedState || 'Select State'}</Text>
+                <AppText style={styles.valueText}>{selectedState || 'Select State'}</AppText>
             </TouchableOpacity>
 
             {/* CITY FIELD */}
-            <Text style={styles.label}>City</Text>
+            <AppText style={styles.label}>City</AppText>
             <TouchableOpacity
                 style={styles.box}
                 onPress={() => selectedState && setCityModal(true)}
             >
-                <Text style={styles.valueText}>{selectedCity || 'Select City'}</Text>
+                <AppText style={styles.valueText}>{selectedCity || 'Select City'}</AppText>
             </TouchableOpacity>
 
             {/* ================= STATE MODAL ================= */}
             <Modal visible={stateModal} animationType="slide">
                 <SafeAreaView style={styles.modalContainer}>
                     <View style={styles.headerRow}>
-                        <Text style={styles.modalTitle}>Select State</Text>
+                        <AppText style={styles.modalTitle}>Select State</AppText>
                         <TouchableOpacity onPress={() => setStateModal(false)}>
-                            <Text style={styles.closeText}>Close</Text>
+                            <AppText style={styles.closeText}>Close</AppText>
                         </TouchableOpacity>
                     </View>
 
@@ -84,6 +99,8 @@ const StateCityPicker = ({
                         value={stateSearch}
                         onChangeText={setStateSearch}
                         style={styles.searchInput}
+                        allowFontScaling={false}
+                        includeFontPadding={false}
                     />
 
                     <FlatList
@@ -99,12 +116,12 @@ const StateCityPicker = ({
                                     style={[styles.item, isSelected && styles.selectedItem]}
                                     onPress={() => handleStatePress(item)}
                                 >
-                                    <Text style={styles.itemText}>{item.name}</Text>
+                                    <AppText style={styles.itemText}>{item.name}</AppText>
                                 </TouchableOpacity>
                             );
                         }}
                         ListEmptyComponent={
-                            <Text style={styles.emptyText}>No state found</Text>
+                            <AppText style={styles.emptyText}>No state found</AppText>
                         }
                     />
                 </SafeAreaView>
@@ -114,9 +131,9 @@ const StateCityPicker = ({
             <Modal visible={cityModal} animationType="slide">
                 <SafeAreaView style={styles.modalContainer}>
                     <View style={styles.headerRow}>
-                        <Text style={styles.modalTitle}>Select City</Text>
+                        <AppText style={styles.modalTitle}>Select City</AppText>
                         <TouchableOpacity onPress={() => setCityModal(false)}>
-                            <Text style={styles.closeText}>Close</Text>
+                            <AppText style={styles.closeText}>Close</AppText>
                         </TouchableOpacity>
                     </View>
 
@@ -126,6 +143,7 @@ const StateCityPicker = ({
                         value={citySearch}
                         onChangeText={setCitySearch}
                         style={styles.searchInput}
+                        allowFontScaling={false}
                     />
 
                     <FlatList
@@ -144,12 +162,12 @@ const StateCityPicker = ({
                                         setCityModal(false);
                                     }}
                                 >
-                                    <Text style={styles.itemText}>{item.name}</Text>
+                                    <AppText style={styles.itemText}>{item.name}</AppText>
                                 </TouchableOpacity>
                             );
                         }}
                         ListEmptyComponent={
-                            <Text style={styles.emptyText}>No city found</Text>
+                            <AppText style={styles.emptyText}>No city found</AppText>
                         }
                     />
                 </SafeAreaView>
@@ -160,28 +178,27 @@ const StateCityPicker = ({
 
 export default StateCityPicker;
 
-
 const styles = StyleSheet.create({
     label: {
-        fontSize: 16.5,
-        marginTop: 10,
-        marginBottom: 5,
+        fontSize: normalize(16),
+        marginTop: normalize(10),
+        marginBottom: normalize(5),
         color: '#333',
-        fontFamily: Fonts.semiBold
+        fontFamily: Fonts.semiBold,
     },
     box: {
-        height: 48,
+        minHeight: normalize(48),
         borderWidth: 1,
         borderColor: '#ccc',
-        borderRadius: 25,
+        borderRadius: normalize(25),
         justifyContent: 'center',
-        paddingHorizontal: 12,
+        paddingHorizontal: normalize(12),
         backgroundColor: '#fff',
     },
     valueText: {
-        fontSize: 14,
+        fontSize: normalize(14),
         color: '#888787',
-        fontFamily: '500'
+        fontFamily: Fonts.medium,
     },
     modalContainer: {
         flex: 1,
@@ -191,33 +208,35 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 15,
+        padding: normalize(15),
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
     },
     modalTitle: {
-        fontSize: 16,
+        fontSize: normalize(16),
         fontWeight: '600',
         color: '#333',
     },
     closeText: {
-        fontSize: 14,
+        fontSize: normalize(14),
         color: 'red',
         fontWeight: '600',
     },
     searchInput: {
-        height: 45,
+        minHeight: normalize(45),
         borderWidth: 1,
         borderColor: '#ddd',
-        borderRadius: 8,
-        margin: 10,
-        paddingHorizontal: 10,
-        fontSize: 14,
+        borderRadius: normalize(30),
+        margin: normalize(10),
+        paddingHorizontal: normalize(15),
+        fontSize: normalize(14),
         fontFamily: Fonts.medium,
         color: '#161616',
+        paddingVertical: normalize(2)
     },
     item: {
-        padding: 15,
+        paddingVertical: normalize(12),
+        paddingHorizontal: normalize(15),
         borderBottomWidth: 1,
         borderBottomColor: '#f0f0f0',
     },
@@ -225,13 +244,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#e6f0ff',
     },
     itemText: {
-        fontSize: 14,
+        fontSize: normalize(14),
         color: '#333',
     },
     emptyText: {
         textAlign: 'center',
-        marginTop: 20,
+        marginTop: normalize(20),
         color: '#999',
     },
 });
-

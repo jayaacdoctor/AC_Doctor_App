@@ -26,6 +26,7 @@ import { setAddress, setUser } from '../redux/slices/authSlice';
 import CustomLoader from './CustomLoader';
 import { getUserDeatil } from '../api/profileApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppText from './AppText';
 
 const CustomModal = ({
   visible,
@@ -42,7 +43,6 @@ const CustomModal = ({
 
   const userDetail = store?.getState()?.auth?.user;
   const selectedAddressRedux = store?.getState()?.auth?.address;
-  console.log(userDetail, 'pop');
   const [loading, setLoading] = useState(true);
   const [savedAddresses, setSavedAddresses] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
@@ -71,7 +71,7 @@ const CustomModal = ({
   };
 
   const userNme = AsyncStorage.getItem('UserName');
-  console.log(userNme, 'name from async storage');
+
 
   const fetchAddress = async () => {
     try {
@@ -108,7 +108,7 @@ const CustomModal = ({
     if (selectedAddress && setSelectedAddress) {
       setSelectedAddress(selectedAddress);
     }
-    onProceed();
+    onProceed(selectedAddress);
   };
 
   return (
@@ -134,7 +134,7 @@ const CustomModal = ({
           {/* 🔹 Old AC Input */}
           {addAcStatus === false && (
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Old AC do you want to sell</Text>
+              <AppText style={styles.label}>Old AC do you want to sell</AppText>
 
               <TextInput
                 value={numberofAC}
@@ -143,13 +143,15 @@ const CustomModal = ({
                 placeholder="Enter number of AC"
                 placeholderTextColor={COLORS.TextColor}
                 style={styles.numberInput}
+                allowFontScaling={false}
+                includeFontPadding={false}
               />
             </View>
           )}
 
           {/* 🔹 Header */}
           <View style={styles.inFlexrow}>
-            <Text style={styles.headerText}>Saved Addresses</Text>
+            <AppText style={styles.headerText}>Saved Addresses</AppText>
 
             <TouchableOpacity
               onPress={() => {
@@ -160,7 +162,7 @@ const CustomModal = ({
                 }, 300); // wait for modal close animation
               }}
             >
-              <Text style={styles.addButtonText}>+ Add new</Text>
+              <AppText style={styles.addButtonText}>+ Add new</AppText>
             </TouchableOpacity>
           </View>
 
@@ -169,7 +171,9 @@ const CustomModal = ({
             {loading ? (
               <CustomLoader size="large" />
             ) : savedAddresses.length === 0 ? (
-              <Text style={styles.emptyText}>Please Add Your Address</Text>
+              <AppText style={styles.emptyText}>
+                Please Add Your Address
+              </AppText>
             ) : (
               <FlatList
                 data={savedAddresses}
@@ -195,20 +199,20 @@ const CustomModal = ({
 
                       <View style={{ width: wp(78) }}>
                         <View style={styles.inFlexrow}>
-                          <Text style={styles.addressName}>{name}</Text>
+                          <AppText style={styles.addressName}>{name}</AppText>
                           {isSelected && (
-                            <Text style={styles.defaultTag}>Default</Text>
+                            <AppText style={styles.defaultTag}>Default</AppText>
                           )}
                         </View>
 
-                        <Text style={styles.addressDetails}>
+                        <AppText allowFontScaling={false} style={styles.addressDetails}>
                           {item?.street}, {item?.city}, {item?.state},{' '}
                           {item?.zipcode}
-                        </Text>
+                        </AppText>
 
-                        <Text style={styles.addressPhone}>
+                        <AppText allowFontScaling={false} style={styles.addressPhone}>
                           {userDetail?.phoneNumber}
-                        </Text>
+                        </AppText>
                       </View>
                     </TouchableOpacity>
                   );
@@ -231,7 +235,7 @@ const CustomModal = ({
                 // }
               }}
             >
-              <Text style={styles.proceedButtonText}>Proceed</Text>
+              <AppText style={styles.proceedButtonText}>Proceed</AppText>
             </TouchableOpacity>
           )}
         </View>

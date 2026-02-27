@@ -14,6 +14,7 @@ import {
 import SearchWithFilterIcon from '../../components/SearchWithFilterIcon';
 import FastImage from 'react-native-fast-image';
 import images from '../../assets/images';
+import AppText from '../../components/AppText';
 
 const SelectACmodel = ({ navigation, route }) => {
   const Sname = route?.params?.Sname || 'AC';
@@ -75,7 +76,7 @@ const SelectACmodel = ({ navigation, route }) => {
   const StarRating = ({ rating }) => (
     <View style={{ flexDirection: 'row' }}>
       {[...Array(5)].map((_, i) => (
-        <Text
+        <AppText
           key={i}
           style={{
             color: i < Math.floor(rating) ? '#FFD700' : '#E0E0E0',
@@ -83,7 +84,7 @@ const SelectACmodel = ({ navigation, route }) => {
           }}
         >
           {i < Math.floor(rating) ? '★' : '☆'}
-        </Text>
+        </AppText>
       ))}
     </View>
   );
@@ -113,41 +114,42 @@ const SelectACmodel = ({ navigation, route }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.productCard}
-            onPress={() =>{
-              navigation.navigate('CompareACScreen', { selectedAC: item,
-            //   refreshCompare: Date.now() 
-            });
+            onPress={() => {
+              navigation.navigate('CompareACScreen', {
+                selectedAC: item,
+                //   refreshCompare: Date.now() 
+              });
             }
             }
           >
             <FastImage source={{ uri: item.image }} style={styles.productImg} />
             <View style={styles.productInfo}>
-              <Text style={styles.productTitle} numberOfLines={2}>
+              <AppText style={styles.productTitle} numberOfLines={2}>
                 {item.title}
-              </Text>
+              </AppText>
               <View style={styles.ratingRow}>
                 <StarRating rating={item.rating} />
-                <Text style={styles.reviewCount}>({item.reviews})</Text>
+                <AppText style={styles.reviewCount}>({item.reviews})</AppText>
               </View>
               <View style={styles.ratingRow}>
-                <Text style={styles.price}>₹{item.price.toLocaleString()}</Text>
-                <Text
+                <AppText style={styles.price}>₹{item.price.toLocaleString()}</AppText>
+                <AppText
                   style={[
                     styles.reviewCount,
                     { textDecorationLine: 'line-through' },
                   ]}
                 >
                   ₹{item.originalPrice.toLocaleString()}
-                </Text>
-                <Text style={styles.freeDelivery}>{item.discount}</Text>
+                </AppText>
+                <AppText style={styles.freeDelivery}>{item.discount}</AppText>
               </View>
               {item.freeDelivery && (
-                <Text style={styles.freeDelivery}>Free Delivery</Text>
+                <AppText style={styles.freeDelivery}>Free Delivery</AppText>
               )}
             </View>
           </TouchableOpacity>
         )}
-        ListEmptyComponent={<Text style={styles.empty}>No products found</Text>}
+        ListEmptyComponent={<AppText style={styles.empty}>No products found</AppText>}
       />
     </View>
   );

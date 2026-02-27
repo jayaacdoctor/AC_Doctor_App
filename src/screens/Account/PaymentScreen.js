@@ -19,6 +19,7 @@ import Header from '../../components/Header';
 import { COLORS, Fonts } from '../../utils/colors';
 import CustomButton from '../../components/CustomButton';
 import { isTablet } from '../../components/TabletResponsiveSize';
+import AppText from '../../components/AppText';
 
 const PaymentScreen = ({ navigation, route }) => {
   const { selectedAddress, selectedSlot } = route.params || {};
@@ -97,7 +98,7 @@ const PaymentScreen = ({ navigation, route }) => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.paymentContainer}>
-          <Text style={styles.sectionLabel}>Select Payment Mode</Text>
+          <AppText style={styles.sectionLabel}>Select Payment Mode</AppText>
           {paymentMethods.map(method => (
             <TouchableOpacity
               key={method.id}
@@ -110,7 +111,7 @@ const PaymentScreen = ({ navigation, route }) => {
               <View style={styles.paymentRow}>
                 <View style={styles.paymentInfo}>
                   <Image source={method.icon} style={styles.paymentIcon} />
-                  <Text style={styles.paymentLabel}>{method.label}</Text>
+                  <AppText style={styles.paymentLabel}>{method.label}</AppText>
                 </View>
                 {method.arrow && (
                   <Image source={method.arrow} style={styles.paymentArrow} />
@@ -118,7 +119,7 @@ const PaymentScreen = ({ navigation, route }) => {
               </View>
               {method.id === 'card' && openCard && (
                 <View style={styles.cardDetailsContainer}>
-                  <Text style={styles.saveCardText}>Saved Cards</Text>
+                  <AppText style={styles.saveCardText}>Saved Cards</AppText>
                   <View style={styles.saveCardRow}>
                     <Image source={images.vista} style={styles.saveCardIcon} />
                     <Image
@@ -126,10 +127,10 @@ const PaymentScreen = ({ navigation, route }) => {
                       style={styles.saveCardIcon}
                     />
                     <TouchableOpacity style={styles.addNewStyle}>
-                      <Text style={styles.label}>+ Add new</Text>
+                      <AppText style={styles.label}>+ Add new</AppText>
                     </TouchableOpacity>
                   </View>
-                  <Text style={styles.label}>Cardholder Name</Text>
+                  <AppText style={styles.label}>Cardholder Name</AppText>
                   <View style={styles.inputContainer}>
                     <TextInput
                       style={styles.inputText}
@@ -138,13 +139,15 @@ const PaymentScreen = ({ navigation, route }) => {
                       placeholder="John Doe"
                       autoCapitalize="words"
                       onSubmitEditing={() => Keyboard.dismiss()}
+                      allowFontScaling={false}
+                      includeFontPadding={false}
                     />
                     <Image
                       source={images.UserFilled}
                       style={styles.inputIcon}
                     />
                   </View>
-                  <Text style={styles.label}>Card Number</Text>
+                  <AppText style={styles.label}>Card Number</AppText>
                   <View style={styles.inputContainer}>
                     <TextInput
                       style={styles.inputText}
@@ -154,12 +157,14 @@ const PaymentScreen = ({ navigation, route }) => {
                       keyboardType="numeric"
                       maxLength={16}
                       onSubmitEditing={() => Keyboard.dismiss()}
+                      allowFontScaling={false}
+                      includeFontPadding={false}
                     />
                     <Image source={images.Cardsnum} style={styles.inputIcon} />
                   </View>
                   <View style={styles.rowContainer}>
                     <View style={styles.halfInput}>
-                      <Text style={styles.label}>Expiry Date (MM/YY)</Text>
+                      <AppText style={styles.label}>Expiry Date (MM/YY)</AppText>
                       <View style={styles.inputContainer}>
                         <TextInput
                           style={styles.inputText}
@@ -169,6 +174,8 @@ const PaymentScreen = ({ navigation, route }) => {
                           keyboardType="numeric"
                           maxLength={5}
                           onSubmitEditing={() => Keyboard.dismiss()}
+                          allowFontScaling={false}
+                          includeFontPadding={false}
                         />
                         <Image
                           source={images.Calendar}
@@ -177,7 +184,7 @@ const PaymentScreen = ({ navigation, route }) => {
                       </View>
                     </View>
                     <View style={styles.halfInput}>
-                      <Text style={styles.label}>CVV</Text>
+                      <AppText style={styles.label}>CVV</AppText>
                       <View style={styles.inputContainer}>
                         <TextInput
                           style={styles.inputText}
@@ -187,6 +194,8 @@ const PaymentScreen = ({ navigation, route }) => {
                           keyboardType="numeric"
                           maxLength={3}
                           onSubmitEditing={() => Keyboard.dismiss()}
+                          allowFontScaling={false}
+                          includeFontPadding={false}
                         />
                       </View>
                     </View>

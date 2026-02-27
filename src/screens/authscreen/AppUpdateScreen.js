@@ -3,20 +3,21 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import images from '../../assets/images';
 import { COLORS, Fonts } from '../../utils/colors';
 import CustomButton from '../../components/CustomButton';
+import AppText from '../../components/AppText';
 
 const AppUpdateScreen = () => {
   // render
   return (
     <View style={styles.container}>
       <Image source={images.logoUpdate} style={styles.image} />
-      <Text style={styles.text}>Update Available</Text>
-      <Text style={styles.description}>New Version, New Vibe. Update now</Text>
+      <AppText style={styles.text}>Update Available</AppText>
+      <AppText style={styles.description}>New Version, New Vibe. Update now</AppText>
       <CustomButton
         buttonName="Update Now"
         btnTextColor={COLORS.white}
         btnColor={COLORS.themeColor}
         margingTOP={35}
-        onPress={() => {}}
+        onPress={() => { }}
       />
     </View>
   );

@@ -18,6 +18,7 @@ import { COLORS, Fonts } from '../../utils/colors';
 import Commonstyles, { CompareData, WindoData } from '../Home/HomeScreenStyles';
 import images from '../../assets/images';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import AppText from '../../components/AppText';
 
 const CompareResultScreen = ({ route, navigation }) => {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -37,7 +38,7 @@ const CompareResultScreen = ({ route, navigation }) => {
     const dirToSave = fs.dirs.DownloadDir;
 
     const options = {
-      fileCache: true,
+      fileCache: false,
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
@@ -80,7 +81,7 @@ const CompareResultScreen = ({ route, navigation }) => {
               {index < acs.length - 1 && (
                 <FastImage source={images.vsBtn} style={styles.VsStyle} />
               )}
-              <Text
+              <AppText
                 style={[
                   styles.title,
                   { width: acs.length === 2 ? wp(38) : wp(30) },
@@ -88,14 +89,14 @@ const CompareResultScreen = ({ route, navigation }) => {
                 numberOfLines={3}
               >
                 {ac.title}
-              </Text>
-              <Text style={styles.price}>
+              </AppText>
+              <AppText style={styles.price}>
                 ₹{ac.price.toLocaleString()}
-                <Text style={styles.originalPrice}>
+                <AppText style={styles.originalPrice}>
                   {' '}
                   ₹{ac.originalPrice.toLocaleString()}
-                </Text>
-              </Text>
+                </AppText>
+              </AppText>
             </View>
           ))}
         </View>
@@ -103,23 +104,23 @@ const CompareResultScreen = ({ route, navigation }) => {
         {/* ADD AC BUTTON - Sirf jab 2 AC ho */}
         {totalACs === 2 && (
           <TouchableOpacity style={styles.addAcBtn} onPress={() => navigation.navigate('BrandScreen', { from: 'CompareACScreen' })}>
-            <Text style={styles.addAcText}>Add AC</Text>
+            <AppText style={styles.addAcText}>Add AC</AppText>
           </TouchableOpacity>
         )}
 
         {/* COMPARISON TABLE */}
         <View style={styles.table}>
           <View style={styles.conditionView}>
-            <Text style={styles.categoryTitle}>Air Conditioner Category</Text>
+            <AppText style={styles.categoryTitle}>Air Conditioner Category</AppText>
           </View>
 
           <View style={styles.tableRow}>
-            <Text style={[styles.label, { color: COLORS.darkgreen }]}>
+            <AppText style={[styles.label, { color: COLORS.darkgreen }]}>
               Window Name
-            </Text>
+            </AppText>
             {acs.map((ac, index) => (
               // <View style={{ width: wp('20%') }}>
-              <Text
+              <AppText
                 key={ac.id}
                 style={[
                   styles.value,
@@ -128,62 +129,62 @@ const CompareResultScreen = ({ route, navigation }) => {
                 numberOfLines={3}
               >
                 {ac.title}
-              </Text>
+              </AppText>
               // </View>
             ))}
           </View>
 
           {/* Row 1 */}
           <View style={styles.tableRow}>
-            <Text style={styles.label}>Air- Conditioner Type</Text>
+            <AppText style={styles.label}>Air- Conditioner Type</AppText>
             {acs.map(ac => (
-              <Text key={ac.id} style={styles.value}>
+              <AppText key={ac.id} style={styles.value}>
                 Split
-              </Text>
+              </AppText>
             ))}
           </View>
 
           {/* Row 2 */}
           <View style={styles.tableRow}>
-            <Text style={styles.label}>Air Conditioner Capacity</Text>
+            <AppText style={styles.label}>Air Conditioner Capacity</AppText>
             {acs.map((ac, i) => (
-              <Text key={ac.id} style={styles.value}>
+              <AppText key={ac.id} style={styles.value}>
                 {i === 0 ? '1.3 Ton' : '1.5 Ton'}
-              </Text>
+              </AppText>
             ))}
           </View>
 
           {/* Row 3 */}
           <View style={styles.tableRow}>
-            <Text style={styles.label}>Coverage Area</Text>
+            <AppText style={styles.label}>Coverage Area</AppText>
             {acs.map((ac, i) => (
-              <Text key={ac.id} style={styles.value}>
+              <AppText key={ac.id} style={styles.value}>
                 {i === 0 ? '150 sq.Ft' : '170 sq.Ft'}
-              </Text>
+              </AppText>
             ))}
           </View>
 
           {/* Row 4 */}
           <View style={styles.tableRow}>
-            <Text style={styles.label}>Coverage Area(Sq.ft)</Text>
+            <AppText style={styles.label}>Coverage Area(Sq.ft)</AppText>
             {acs.map((ac, i) => (
-              <Text key={ac.id} style={styles.value}>
+              <AppText key={ac.id} style={styles.value}>
                 {i === 0 ? '13.93 Sq.M.' : '14.93 Sq.M.'}
-              </Text>
+              </AppText>
             ))}
           </View>
 
           {/* Row 5 */}
           <View style={styles.tableRow}>
-            <Text style={styles.label}>Installation Type</Text>
+            <AppText style={styles.label}>Installation Type</AppText>
             {acs.map(() => (
-              <Text style={styles.value}>Wall Mount</Text>
+              <AppText style={styles.value}>Wall Mount</AppText>
             ))}
           </View>
 
           {/* Row 6 - Brochure */}
           <View style={styles.tableRow}>
-            <Text style={styles.label}>Brochure</Text>
+            <AppText style={styles.label}>Brochure</AppText>
             {acs.map(() => (
               <TouchableOpacity
                 style={styles.downloadBtn}
@@ -194,7 +195,7 @@ const CompareResultScreen = ({ route, navigation }) => {
                   )
                 }
               >
-                <Text style={styles.downloadText}>Download</Text>
+                <AppText style={styles.downloadText}>Download</AppText>
               </TouchableOpacity>
             ))}
           </View>
@@ -208,21 +209,21 @@ const CompareResultScreen = ({ route, navigation }) => {
                 onPress={() => toggleExpand(index)}
                 style={Commonstyles.faquestionContainer}
               >
-                <Text style={Commonstyles.faquestionText}>{item.question}</Text>
-                <Text style={Commonstyles.faqarrow}>
+                <AppText style={Commonstyles.faquestionText}>{item.question}</AppText>
+                <AppText style={Commonstyles.faqarrow}>
                   {expandedIndex === index ? '﹀' : '>'}
-                </Text>
+                </AppText>
               </TouchableOpacity>
 
               {expandedIndex === index && (
                 <View style={{ paddingHorizontal: hp(1.5) }}>
                   <View style={styles.tableRow}>
-                    <Text style={[styles.label, { color: COLORS.darkgreen }]}>
+                    <AppText style={[styles.label, { color: COLORS.darkgreen }]}>
                       Window Name
-                    </Text>
+                    </AppText>
                     {acs.map((ac, index) => (
                       <View style={{ width: wp('20%') }}>
-                        <Text
+                        <AppText
                           key={ac.id}
                           style={[
                             styles.value,
@@ -234,32 +235,32 @@ const CompareResultScreen = ({ route, navigation }) => {
                           numberOfLines={3}
                         >
                           {ac.title}
-                        </Text>
+                        </AppText>
                       </View>
                     ))}
                   </View>
                   <View style={styles.tableRow}>
-                    <Text style={styles.label}>{item.secondTitle}</Text>
+                    <AppText style={styles.label}>{item.secondTitle}</AppText>
                     {acs.map((ac, i) => (
-                      <Text key={ac.id} style={styles.value}>
+                      <AppText key={ac.id} style={styles.value}>
                         {i === 0 ? 'Voltas' : 'Daikin'}
-                      </Text>
+                      </AppText>
                     ))}
                   </View>
                   <View style={styles.tableRow}>
-                    <Text style={styles.label}>{item.title}</Text>
+                    <AppText style={styles.label}>{item.title}</AppText>
                     {acs.map((ac, i) => (
-                      <Text key={ac.id} style={styles.value}>
+                      <AppText key={ac.id} style={styles.value}>
                         {i === 0 ? 'Vector' : 'Vector'}
-                      </Text>
+                      </AppText>
                     ))}
                   </View>
                   <View style={styles.tableRow}>
-                    <Text style={styles.label}>{item.Thirdtitle}</Text>
+                    <AppText style={styles.label}>{item.Thirdtitle}</AppText>
                     {acs.map((ac, i) => (
-                      <Text key={ac.id} style={styles.value}>
+                      <AppText key={ac.id} style={styles.value}>
                         {i === 0 ? '165v Vector Pearl' : '165v Vector Pearl'}
-                      </Text>
+                      </AppText>
                     ))}
                   </View>
                 </View>

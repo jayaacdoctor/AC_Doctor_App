@@ -13,6 +13,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from './AppText';
 
 const CunstomInput = ({
   label,
@@ -50,7 +51,7 @@ const CunstomInput = ({
         { marginBottom: MarginBottom, marginTop: MarginTop },
       ]}
     >
-      {label && <Text style={[styles.label, lablestyle]}>{label}</Text>}
+      {label && <AppText style={[styles.label, lablestyle]}>{label}</AppText>}
 
       <View
         style={[
@@ -63,6 +64,8 @@ const CunstomInput = ({
         )}
 
         <TextInput
+          allowFontScaling={false}
+          includeFontPadding={false}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -80,9 +83,9 @@ const CunstomInput = ({
 
         {secureTextEntry && showToggle && (
           <TouchableOpacity onPress={() => setSecure(p => !p)}>
-            <Text style={styles.toggleText}>
+            <AppText style={styles.toggleText}>
               {secure ? secureTextToggleLabel.show : secureTextToggleLabel.hide}
-            </Text>
+            </AppText>
           </TouchableOpacity>
         )}
 
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
 
   input: {
     flex: 1,
-    fontSize: hp(1.7),
+    fontSize: hp('1.8%'),
     color: COLORS.black,
     paddingVertical: Platform.OS === 'ios' ? 10 : 0,
   },

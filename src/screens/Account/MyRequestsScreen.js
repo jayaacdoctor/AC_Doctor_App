@@ -19,8 +19,9 @@ import Header from '../../components/Header';
 import images from '../../assets/images';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 import { store } from '../../redux/store';
-import { getAMC, getConsultancy } from '../../api/homeApi';
+import { getAllOldAcRequest, getAMC, getConsultancy } from '../../api/homeApi';
 import { isTablet } from '../../components/TabletResponsiveSize';
+import AppText from '../../components/AppText';
 
 const TABS = ['All', 'Scheduled', 'Completed', 'Cancelled'];
 
@@ -30,22 +31,25 @@ const MyRequestsScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [freeConsultancyList, setFreeConsultancyList] = useState([]);
   const [amcList, setAmcList] = useState([]);
+  const [oldACList, setOldACList] = useState([]);
 
 
   useEffect(() => {
     getFreeConsultancy();
     getAMCDetail()
+    getOLD_ACDetail()
   }, []);
 
   const getFreeConsultancy = async () => {
     try {
       const res = await getConsultancy(user?._id);
-
+      // console.log('free consultancy ---', res.data)
       const updatedData =
         res?.data?.map(item => ({
           ...item,
+          leadId: 'ACDEQ26022026-67',
           serviceName: 'Free Consultancy',
-          status: 'Under Review',
+          status: 'REQUESTED',
           requestType: 'FREE_CONSULTANCY', // ✅ IMPORTANT
         })) || [];
 
@@ -58,16 +62,46 @@ const MyRequestsScreen = ({ navigation }) => {
   const getAMCDetail = async () => {
     try {
       const res = await getAMC(user?._id);
-
       const updatedData =
         res?.data?.map(item => ({
           ...item,
           serviceName: 'AMC',
-          status: 'Under Review',
+          status: 'REQUESTED',
           requestType: 'AMC', // ✅ IMPORTANT
         })) || [];
 
       setAmcList(updatedData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getOLD_ACDetail = async () => {
+    try {
+      const res = await getAllOldAcRequest();
+      const updatedData =
+        res?.data?.map(item => ({
+          ...item,
+
+          // 🔥 UI Required Fields
+          serviceName: 'Old AC Purchase',
+          requestType: 'OLD_AC',
+
+          leadId: item?.enquiryId,   // UI me leadId use ho raha hai
+          createdAt: item?.createdAt,
+          slot: item?.schedule?.slot,
+          place: item?.addressDetails?.saveAs,
+          quantity: item?.noOfAc,
+
+          status:
+            item?.status === 'REQUESTED'
+              ? 'REQUESTED'
+              : item?.status === 'CANCELLED'
+                ? 'CANCELLED'
+                : item?.status,
+
+        })) || [];
+
+      setOldACList(updatedData);
     } catch (error) {
       console.log(error);
     }
@@ -77,16 +111,21 @@ const MyRequestsScreen = ({ navigation }) => {
   const combinedList = [
     ...freeConsultancyList,
     ...amcList,
-  ].sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt)); // 🔥 latest first
+    ...oldACList,
+  ].sort((a, b) => {
+    const dateA = a?.createdAt ? new Date(a.createdAt) : 0;
+    const dateB = b?.createdAt ? new Date(b.createdAt) : 0;
+    return dateB - dateA;
+  });// 🔥 latest first
 
 
   // Filter by Tab
   const filteredRequests = combinedList.filter(item => {
     if (activeTab === 'All') return true;
     if (activeTab === 'Scheduled')
-      return ['Scheduled', 'Re-scheduled'].includes(item.status);
-    if (activeTab === 'Completed') return item.status === 'Completed';
-    if (activeTab === 'Cancelled') return item.status === 'Cancelled';
+      return ['SCHEDULED', 'RESCHEDULED'].includes(item.status);
+    if (activeTab === 'Completed') return item.status === 'COMPLETE';
+    if (activeTab === 'Cancelled') return item.status === 'CANCELLED';
     return false;
   });
 
@@ -103,37 +142,37 @@ const MyRequestsScreen = ({ navigation }) => {
           <View style={styles.cardHeader}>
             <View style={styles.serviceBadge}>
               {/* <Image source={images.icon} style={styles.icon} /> */}
-              <Text style={styles.serviceText}>{item.serviceName}</Text>
+              <AppText style={styles.serviceText}>{item.serviceName}</AppText>
             </View>
             <View style={[styles.statusBadge, { backgroundColor: bg }]}>
-              <Text style={[styles.statusText, { color: text }]}>
-                {/* {item.status} */} Under Review
-              </Text>
+              <AppText style={[styles.statusText, { color: text }]}>
+                {item.status}
+              </AppText>
             </View>
           </View>
           {/* Request ID */}
-          <Text style={styles.requestId}>Request ID :{item?.leadId}</Text>
+          <AppText style={styles.requestId}>Request ID :{item?.leadId}</AppText>
         </View>
 
         {/* Date & Time */}
         <View style={styles.row}>
           <View>
-            <Text style={styles.label}>
+            <AppText style={styles.label}>
               {item.status === 'Cancelled'
                 ? 'Cancellation Reason'
                 : item.status === 'Completed'
                   ? 'Completion Date'
-                  : item.status === 'Under Review'
+                  : item.status === 'REQUESTED'
                     ? 'Reviewed on'
                     : 'Inspection Date & Time'}
-            </Text>
-            <Text style={styles.value}>
+            </AppText>
+            <AppText style={styles.value}>
               {item?.createdAt.split('T')[0]} {'\n'}{item.slot}
-            </Text>
+            </AppText>
           </View>
           <View style={{ width: wp(25) }}>
-            <Text style={styles.label}>Place Type</Text>
-            <Text style={styles.value}>{item?.place}</Text>
+            <AppText style={styles.label}>Place Type</AppText>
+            <AppText style={styles.value}>{item?.place}</AppText>
           </View>
         </View>
 
@@ -141,16 +180,16 @@ const MyRequestsScreen = ({ navigation }) => {
         <View style={styles.row}>
           {item.acCount !== null && (
             <View>
-              <Text style={styles.label}>Number of AC</Text>
-              <Text style={styles.value}>{item?.quantity}</Text>
+              <AppText style={styles.label}>Number of AC</AppText>
+              <AppText style={styles.value}>{item?.quantity}</AppText>
             </View>
           )}
           {item.agent && (
             <View style={{ width: wp(25) }}>
-              <Text style={styles.label}>Agent Assigned</Text>
-              <Text style={styles.value}>
+              <AppText style={styles.label}>Agent Assigned</AppText>
+              <AppText style={styles.value}>
                 {'-'}||{item.agent}
-              </Text>
+              </AppText>
             </View>
           )}
         </View>
@@ -160,12 +199,12 @@ const MyRequestsScreen = ({ navigation }) => {
           <>
             <View style={styles.row}>
               <View>
-                <Text style={styles.label}>Final Offer</Text>
-                <Text style={styles.value}>{item.finalOffer}</Text>
+                <AppText style={styles.label}>Final Offer</AppText>
+                <AppText style={styles.value}>{item.finalOffer}</AppText>
               </View>
               <View style={{ width: wp(25) }}>
-                <Text style={styles.label}>Payment Status</Text>
-                <Text style={styles.value}>{item.paymentStatus}</Text>
+                <AppText style={styles.label}>Payment Status</AppText>
+                <AppText style={styles.value}>{item.paymentStatus}</AppText>
               </View>
             </View>
           </>
@@ -189,7 +228,7 @@ const MyRequestsScreen = ({ navigation }) => {
 
           <View>
             <Text style={styles.reinitiateText}>
-              {item.status === 'Under Review'
+              {item.status === 'REQUESTED'
                 ? 'Cancel Request'
                 : item.status === 'Review' && 'Reschedule Request'}
             </Text>
@@ -238,14 +277,14 @@ const MyRequestsScreen = ({ navigation }) => {
             style={[styles.tab, activeTab === tab && styles.activeTab]}
             onPress={() => setActiveTab(tab)}
           >
-            <Text
+            <AppText
               style={[
                 styles.tabText,
                 activeTab === tab && styles.activeTabText,
               ]}
             >
               {tab}
-            </Text>
+            </AppText>
           </TouchableOpacity>
         ))}
       </View>
@@ -258,9 +297,9 @@ const MyRequestsScreen = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.list}
         ListEmptyComponent={
-          <Text style={styles.emptyText}>
+          <AppText style={styles.emptyText}>
             No requests found in {activeTab.toLowerCase()}
-          </Text>
+          </AppText>
         }
       />
     </View>
@@ -367,12 +406,14 @@ const styles = StyleSheet.create({
   },
   statusBadge: {
     paddingHorizontal: wp(2),
-    paddingVertical: hp(0.3),
-    borderRadius: wp(10),
+    paddingBottom: hp(0.5),
+    borderRadius: wp(1),
+    alignItems: "center"
   },
   statusText: {
     fontSize: hp(1.5),
     fontFamily: Fonts.semiBold,
+    textAlign: 'center'
   },
   requestId: {
     fontSize: hp(1.3),

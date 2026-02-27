@@ -17,6 +17,7 @@ import {
 import images from '../../assets/images';
 import { COLORS, Fonts } from '../../utils/colors';
 import FastImage from 'react-native-fast-image';
+import AppText from '../../components/AppText';
 
 const OrderSummaryScreen = ({ navigation }) => {
   const [listLike, setListLike] = useState({});
@@ -33,7 +34,7 @@ const OrderSummaryScreen = ({ navigation }) => {
     const newCount = count + 1;
     setCount(newCount);
   };
-  
+
   // list like or dislike
   const toggleLike = itemId => {
     setListLike(prev => ({
@@ -77,29 +78,29 @@ const OrderSummaryScreen = ({ navigation }) => {
           resizeMode={FastImage.resizeMode.contain}
         />
 
-        <Text style={styles.title} numberOfLines={1}>
+        <AppText style={styles.title} numberOfLines={1}>
           {item.title}
-        </Text>
+        </AppText>
 
         {item.limitedDeal && (
           <View style={styles.dealBadge}>
-            <Text style={styles.dealText}>Limited time deal</Text>
+            <AppText style={styles.dealText}>Limited time deal</AppText>
           </View>
         )}
 
-        <Text style={styles.price}>
+        <AppText style={styles.price}>
           ₹{item.price.toLocaleString('en-IN')}.00
-        </Text>
+        </AppText>
 
         <View style={styles.mrpRow}>
-          <Text style={styles.mrp}>M.R.P </Text>
-          <Text style={styles.mrpPrice}>
+          <AppText style={styles.mrp}>M.R.P </AppText>
+          <AppText style={styles.mrpPrice}>
             ₹{item.mrp.toLocaleString('en-IN')}
-          </Text>
+          </AppText>
         </View>
 
         <View style={styles.discountRow}>
-          <Text style={styles.discount}>{item.discount}</Text>
+          <AppText style={styles.discount}>{item.discount}</AppText>
           <TouchableOpacity
             style={styles.heartButton}
             onPress={() => toggleLike(item.id)}
@@ -113,7 +114,7 @@ const OrderSummaryScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.addText}>Add to cart</Text>
+          <AppText style={styles.addText}>Add to cart</AppText>
         </TouchableOpacity>
       </View>
     );
@@ -133,44 +134,44 @@ const OrderSummaryScreen = ({ navigation }) => {
               <Image source={images.acFrame} style={styles.cardimage} />
             </View>
             <View style={{ width: wp(55) }}>
-              <Text
+              <AppText
                 style={[
                   Commonstyles.locationtitle,
                   { color: COLORS.black, lineHeight: 23 },
                 ]}
               >
                 WindFree Inverter Split AC AR18CY5APWK, 5.00kw (1.5T) 5 Star
-              </Text>
+              </AppText>
             </View>
           </View>
           <View style={Commonstyles.faquestionContainer}>
-            <Text style={Commonstyles.mediumText}>
+            <AppText style={Commonstyles.mediumText}>
               ₹32,290.00{'  '}
-              <Text
+              <AppText
                 style={[
                   Commonstyles.locationText,
                   { textDecorationLine: 'line-through', color: '#666' },
                 ]}
               >
                 ₹63,900.00
-              </Text>
-            </Text>
+              </AppText>
+            </AppText>
             <View style={styles.addContainer}>
               <TouchableOpacity onPress={decrease}>
-                <Text style={[Commonstyles.locationText]}> - </Text>
+                <AppText style={[Commonstyles.locationText]}> - </AppText>
               </TouchableOpacity>
-              <Text style={[Commonstyles.locationText]}>{count}</Text>
+              <AppText style={[Commonstyles.locationText]}>{count}</AppText>
               <TouchableOpacity onPress={increase}>
-                <Text style={[Commonstyles.locationText]}> + </Text>
+                <AppText style={[Commonstyles.locationText]}> + </AppText>
               </TouchableOpacity>
             </View>
           </View>
         </View>
 
         {/* Frequently added together */}
-        <Text style={[Commonstyles.mediumText, { marginVertical: hp(1.5) }]}>
+        <AppText style={[Commonstyles.mediumText, { marginVertical: hp(1.5) }]}>
           Frequently added together
-        </Text>
+        </AppText>
         <View style={styles.container}>
           <FlatList
             data={products}
@@ -182,74 +183,74 @@ const OrderSummaryScreen = ({ navigation }) => {
           />
         </View>
 
- <View style={[Commonstyles.addressRow, { marginVertical: wp(3),backgroundColor:COLORS.white, padding:wp(1.5) }]}>
-  <View style={[Commonstyles.addressRow,]}>
-     <FastImage
-            source={images.couponIcon}
-            style={[Commonstyles.locationIcon]}
-            resizeMode={FastImage.resizeMode.contain}
-          />
-          <Text style={[Commonstyles.mediumText]}>Apply Coupon</Text>
-  </View>
-          <TouchableOpacity onPress={()=>navigation.navigate('ProfileDetail')}>
-          <FastImage
-            source={images.rightArrow}
-            style={[Commonstyles.locationIcon]}
-            resizeMode={FastImage.resizeMode.contain}
-          />
+        <View style={[Commonstyles.addressRow, { marginVertical: wp(3), backgroundColor: COLORS.white, padding: wp(1.5) }]}>
+          <View style={[Commonstyles.addressRow,]}>
+            <FastImage
+              source={images.couponIcon}
+              style={[Commonstyles.locationIcon]}
+              resizeMode={FastImage.resizeMode.contain}
+            />
+            <AppText style={[Commonstyles.mediumText]}>Apply Coupon</AppText>
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')}>
+            <FastImage
+              source={images.rightArrow}
+              style={[Commonstyles.locationIcon]}
+              resizeMode={FastImage.resizeMode.contain}
+            />
           </TouchableOpacity>
         </View>
 
         {/* Payment Summary */}
         <View style={[Commonstyles.allSideRadiusStyle, { borderRadius: 0 }]}>
-          <Text style={Commonstyles.mediumText}>Payment Summary</Text>
+          <AppText style={Commonstyles.mediumText}>Payment Summary</AppText>
           <View style={[Commonstyles.addressRow, { marginVertical: wp(1.5) }]}>
-            <Text style={styles.title}>Item total</Text>
-            <Text style={styles.title}>36,000</Text>
+            <AppText style={styles.title}>Item total</AppText>
+            <AppText style={styles.title}>36,000</AppText>
           </View>
           <View style={[Commonstyles.addressRow]}>
-            <Text style={styles.title}>Item discount</Text>
-            <Text style={styles.title}>300</Text>
+            <AppText style={styles.title}>Item discount</AppText>
+            <AppText style={styles.title}>300</AppText>
           </View>
           <View style={[Commonstyles.addressRow, { marginVertical: wp(1) }]}>
-            <Text style={styles.title}>Taxes and fee</Text>
-            <Text style={styles.title}>100</Text>
+            <AppText style={styles.title}>Taxes and fee</AppText>
+            <AppText style={styles.title}>100</AppText>
           </View>
           <View style={Commonstyles.bottomLine} />
           <View style={[Commonstyles.addressRow]}>
-            <Text
+            <AppText
               style={[Commonstyles.mediumText, { color: COLORS.themeColor }]}
             >
               Total
-            </Text>
-            <Text
+            </AppText>
+            <AppText
               style={[Commonstyles.mediumText, { color: COLORS.themeColor }]}
             >
               ₹35,000
-            </Text>
+            </AppText>
           </View>
         </View>
 
         {/* contact detail */}
         <View style={[Commonstyles.addressRow, { marginTop: wp(3) }]}>
-          <Text style={[Commonstyles.mediumText]}>Contact Details</Text>
-          <TouchableOpacity onPress={()=>navigation.navigate('ProfileDetail')}>
-          <FastImage
-            source={images.edit}
-            style={[Commonstyles.locationIcon]}
-            resizeMode={FastImage.resizeMode.contain}
-          />
+          <AppText style={[Commonstyles.mediumText]}>Contact Details</AppText>
+          <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')}>
+            <FastImage
+              source={images.edit}
+              style={[Commonstyles.locationIcon]}
+              resizeMode={FastImage.resizeMode.contain}
+            />
           </TouchableOpacity>
         </View>
 
         <View style={[Commonstyles.allSideRadiusStyle, { borderRadius: 0 }]}>
-          <Text style={styles.title}>Rahul Jain</Text>
-          <Text style={styles.title}>09999999999</Text>
-          <Text style={styles.title}>
+          <AppText style={styles.title}>Rahul Jain</AppText>
+          <AppText style={styles.title}>09999999999</AppText>
+          <AppText style={styles.title}>
             Address- um dolor sit amet consectetur. Egestas vulputate hac
             pulvinar scelerisque aliquam. Ipsum urna pellentesque eget urna
             tellus.
-          </Text>
+          </AppText>
         </View>
 
         <View
@@ -259,9 +260,9 @@ const OrderSummaryScreen = ({ navigation }) => {
             marginBottom: hp(15),
           }}
         >
-          <Text style={styles.title}>
+          <AppText style={styles.title}>
             By proceeding you accept our{' '}
-            <Text
+            <AppText
               style={[
                 styles.title,
                 {
@@ -272,8 +273,8 @@ const OrderSummaryScreen = ({ navigation }) => {
               ]}
             >
               Terms & Conditions
-            </Text>
-          </Text>
+            </AppText>
+          </AppText>
         </View>
       </ScrollView>
 
@@ -287,7 +288,7 @@ const OrderSummaryScreen = ({ navigation }) => {
             source={images.swipRight}
             style={[Commonstyles.chaticon, { width: wp(14) }]}
           />
-          <Text
+          <AppText
             style={[
               Commonstyles.mediumText,
               {
@@ -300,8 +301,8 @@ const OrderSummaryScreen = ({ navigation }) => {
             ]}
           >
             Pay
-          </Text>
-          <Text
+          </AppText>
+          <AppText
             style={[
               Commonstyles.mediumText,
               {
@@ -313,7 +314,7 @@ const OrderSummaryScreen = ({ navigation }) => {
             ]}
           >
             35,000
-          </Text>
+          </AppText>
         </TouchableOpacity>
       </View>
     </View>

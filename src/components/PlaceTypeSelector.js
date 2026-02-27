@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   Pressable,
   TextInput,
   StyleSheet,
@@ -15,10 +14,11 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import images from '../assets/images';
+import AppText from './AppText';
 
 const PlaceTypeSelector = ({
   headingText = 'Place Type',
-  onChange = () => {},
+  onChange = () => { },
   stylesContain,
 }) => {
   const [selectedType, setSelectedType] = useState('');
@@ -41,7 +41,7 @@ const PlaceTypeSelector = ({
 
   return (
     <View style={[styles.container, stylesContain]}>
-      <Text style={styles.label}>{headingText}</Text>
+      <AppText style={styles.label}>{headingText}</AppText>
 
       {/* When NOT Other → Show Dropdown */}
       {selectedType !== 'Other' && (
@@ -49,9 +49,9 @@ const PlaceTypeSelector = ({
           style={[styles.dropdown, styles.row]}
           onPress={() => setShowModal(true)}
         >
-          <Text style={styles.dropdownText}>
+          <AppText style={styles.dropdownText}>
             {selectedType || 'Select Any One'}
-          </Text>
+          </AppText>
           <Image source={images.dropdown} style={styles.arrowStyle} />
         </Pressable>
       )}
@@ -68,6 +68,8 @@ const PlaceTypeSelector = ({
             onChange(txt);
           }}
           onSubmitEditing={() => Keyboard.dismiss()}
+          allowFontScaling={false}
+          includeFontPadding={false}
         />
       )}
 
@@ -81,7 +83,7 @@ const PlaceTypeSelector = ({
                 style={styles.optionBtn}
                 onPress={() => handleSelect(item)}
               >
-                <Text style={styles.optionText}>{item}</Text>
+                <AppText style={styles.optionText}>{item}</AppText>
               </Pressable>
             ))}
           </View>

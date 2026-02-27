@@ -25,6 +25,7 @@ import HomeScreenStyles from '../HomeScreenStyles';
 import SuccessPopupModal from '../../../customScreen/SuccessPopupModal';
 import DeclineModal from '../../../customScreen/DeclineModal';
 import CustomButton from '../../../components/CustomButton';
+import AppText from '../../../components/AppText';
 
 const RequestDetail = ({ navigation }) => {
   const [reqStatus, setReqStatus] = useState('Under Review'); // 'Scheduled', 'ReScheduled', 'Under Review'
@@ -84,7 +85,7 @@ const RequestDetail = ({ navigation }) => {
       <Header
         title="Request Details"
         onBack={() => navigation.goBack()}
-        // onHelp={true}
+      // onHelp={true}
       />
       <ScrollView
         style={styles.scrollView}
@@ -93,33 +94,33 @@ const RequestDetail = ({ navigation }) => {
         {/* Tabs */}
         <View style={styles.tabContainer}>
           <View style={styles.tab}>
-            <Text style={[styles.tabNumber, getTabStyle('Request')]}>1</Text>
-            <Text style={styles.tabText}>Request</Text>
+            <AppText style={[styles.tabNumber, getTabStyle('Request')]}>1</AppText>
+            <AppText style={styles.tabText}>Request</AppText>
           </View>
-          <Text style={[styles.tabText, { color: '#cececeff' }]}>────</Text>
+          <AppText style={[styles.tabText, { color: '#cececeff' }]}>────</AppText>
           <View style={styles.tab}>
-            <Text style={[styles.tabNumber, getTabStyle('Quote')]}>2</Text>
-            <Text style={styles.tabText}>Quote</Text>
+            <AppText style={[styles.tabNumber, getTabStyle('Quote')]}>2</AppText>
+            <AppText style={styles.tabText}>Quote</AppText>
           </View>
-          <Text style={[styles.tabText, { color: '#cececeff' }]}>────</Text>
+          <AppText style={[styles.tabText, { color: '#cececeff' }]}>────</AppText>
           <View style={styles.tab}>
-            <Text style={[styles.tabNumber, getTabStyle('Payment')]}>3</Text>
-            <Text style={styles.tabText}>Payment details</Text>
+            <AppText style={[styles.tabNumber, getTabStyle('Payment')]}>3</AppText>
+            <AppText style={styles.tabText}>Payment details</AppText>
           </View>
         </View>
 
         {/* Inspection Details Section */}
         {detailStatus === 'Quote' && (
-          <Text style={[styles.label]}>
+          <AppText style={[styles.label]}>
             Request ID{' '}
-            <Text style={[styles.label, { color: COLORS.black }]}>#12334</Text>
-          </Text>
+            <AppText style={[styles.label, { color: COLORS.black }]}>#12334</AppText>
+          </AppText>
         )}
         {detailStatus === 'Request' && (
           <TouchableOpacity onPress={() => setReqStatus('Schedule')}>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               Inspection Details
-            </Text>
+            </AppText>
           </TouchableOpacity>
         )}
 
@@ -130,7 +131,7 @@ const RequestDetail = ({ navigation }) => {
               <View style={styles.statusBarRow}>
                 <View style={styles.statusInfo}>
                   <Image source={images.copperIcon} style={styles.icon} />
-                  <Text style={styles.statusText}>Copper Piping</Text>
+                  <AppText style={styles.statusText}>Copper Piping</AppText>
                 </View>
                 <View
                   style={[
@@ -140,14 +141,14 @@ const RequestDetail = ({ navigation }) => {
                         reqStatus === 'Scheduled'
                           ? '#FFE7CF'
                           : reqStatus === 'ReScheduled'
-                          ? COLORS.lightSky
-                          : reqStatus === 'complete'
-                          ? '#ECFFE9'
-                          : '#fff4c5ff',
+                            ? COLORS.lightSky
+                            : reqStatus === 'complete'
+                              ? '#ECFFE9'
+                              : '#fff4c5ff',
                     },
                   ]}
                 >
-                  <Text
+                  <AppText
                     style={[
                       styles.statusBadgeText,
                       {
@@ -155,86 +156,86 @@ const RequestDetail = ({ navigation }) => {
                           reqStatus === 'Scheduled'
                             ? '#D26900'
                             : reqStatus === 'ReScheduled'
-                            ? COLORS.themeColor
-                            : reqStatus === 'complete'
-                            ? '#128807'
-                            : '#ee9937ff',
+                              ? COLORS.themeColor
+                              : reqStatus === 'complete'
+                                ? '#128807'
+                                : '#ee9937ff',
                       },
                     ]}
                   >
                     {reqStatus === 'Scheduled'
                       ? 'Scheduled'
                       : reqStatus === 'ReScheduled'
-                      ? 'Re Scheduled'
-                      : reqStatus === 'complete'
-                      ? 'Completed'
-                      : 'Under Review'}
-                  </Text>
+                        ? 'Re Scheduled'
+                        : reqStatus === 'complete'
+                          ? 'Completed'
+                          : 'Under Review'}
+                  </AppText>
                 </View>
               </View>
               <View style={styles.statusInfo}>
-                <Text style={styles.label}>Request ID</Text>
-                <Text style={[styles.value, { marginLeft: hp(1) }]}>
+                <AppText style={styles.label}>Request ID</AppText>
+                <AppText style={[styles.value, { marginLeft: hp(1) }]}>
                   #12345
-                </Text>
+                </AppText>
               </View>
             </View>
 
             <View style={styles.copperRow}>
               <View style={styles.detailRow}>
-                <Text style={styles.label}>Submitted On</Text>
-                <Text style={styles.value}>05/03/2025</Text>
+                <AppText style={styles.label}>Submitted On</AppText>
+                <AppText style={styles.value}>05/03/2025</AppText>
               </View>
               <View style={[styles.detailRow, { paddingRight: hp(3) }]}>
-                <Text style={styles.label}>Type of AC</Text>
-                <Text style={styles.value}>Split AC-2{'\n'}Window AC-1</Text>
+                <AppText style={styles.label}>Type of AC</AppText>
+                <AppText style={styles.value}>Split AC-2{'\n'}Window AC-1</AppText>
               </View>
             </View>
             <View style={styles.copperRow}>
               <View style={styles.detailRow}>
-                <Text style={styles.label}>Pipe Run Length</Text>
-                <Text style={styles.value}>3-5m</Text>
+                <AppText style={styles.label}>Pipe Run Length</AppText>
+                <AppText style={styles.value}>3-5m</AppText>
               </View>
               <View style={[styles.detailRow, { paddingRight: hp(1) }]}>
-                <Text style={styles.label}>Agent Assigned</Text>
-                <Text style={styles.value}>-</Text>
+                <AppText style={styles.label}>Agent Assigned</AppText>
+                <AppText style={styles.value}>-</AppText>
               </View>
             </View>
 
             {/* Assigned Agent */}
             {['Scheduled', 'ReScheduled'].includes(reqStatus) && (
-  <>
-    <Text style={styles.sectionTitle}>Assigned Agent</Text>
-    <View style={styles.agentContainer}>
-      <View style={styles.agentInfo}>
-        <Image source={images.userphoto} style={styles.agentImage} />
-        <View style={styles.agentText}>
-          <View
-            style={[
-              styles.agentHeader,
-              { marginLeft: wp(-1), marginBottom: hp(1) },
-            ]}
-          >
-            <Image
-              source={images.profile}
-              style={[styles.icon, { resizeMode: 'contain' }]}
-            />
-            <Text style={styles.agentName}>Mohan Verma</Text>
-          </View>
-          <Text style={styles.agentTitle}>AC Doctor agent</Text>
-        </View>
-      </View>
-      <View style={styles.actionButtons}>
-        <TouchableOpacity style={styles.viewProfileButton}>
-          <Text style={styles.viewProfileText}>View Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.chatButton}>
-          <Image source={images.chatIcon} style={styles.chatIcon} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  </>
-)}
+              <>
+                <AppText style={styles.sectionTitle}>Assigned Agent</AppText>
+                <View style={styles.agentContainer}>
+                  <View style={styles.agentInfo}>
+                    <Image source={images.userphoto} style={styles.agentImage} />
+                    <View style={styles.agentText}>
+                      <View
+                        style={[
+                          styles.agentHeader,
+                          { marginLeft: wp(-1), marginBottom: hp(1) },
+                        ]}
+                      >
+                        <Image
+                          source={images.profile}
+                          style={[styles.icon, { resizeMode: 'contain' }]}
+                        />
+                        <AppText style={styles.agentName}>Mohan Verma</AppText>
+                      </View>
+                      <AppText style={styles.agentTitle}>AC Doctor agent</AppText>
+                    </View>
+                  </View>
+                  <View style={styles.actionButtons}>
+                    <TouchableOpacity style={styles.viewProfileButton}>
+                      <AppText style={styles.viewProfileText}>View Profile</AppText>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.chatButton}>
+                      <Image source={images.chatIcon} style={styles.chatIcon} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </>
+            )}
           </View>
         )}
 
@@ -242,125 +243,125 @@ const RequestDetail = ({ navigation }) => {
         {(detailStatus === 'Quote' ||
           (detailStatus !== 'Payment' &&
             ['Accepted', 'Decline'].includes(reqStatus))) && (
-          <View style={styles.section}>
-            {/* Status Row */}
-            {reqStatus === 'Accepted' && (
-              <View style={styles.copperRow}>
-                <Text style={styles.label}>Status</Text>
-                <Text
-                  style={[
-                    styles.value,
-                    {
-                      color: COLORS.darkgreen,
-                      fontFamily: Fonts.semiBold,
-                      backgroundColor: COLORS.lightgreen,
-                    },
-                  ]}
-                >
-                  {' '}
-                  ✅ Accepted
-                </Text>
-              </View>
-            )}
-            {reqStatus === 'Decline' && (
-              <View style={styles.copperRow}>
-                <Text style={styles.label}>Status</Text>
-                <Text
-                  style={[
-                    styles.value,
-                    {
-                      color: COLORS.red,
-                      fontFamily: Fonts.semiBold,
-                      backgroundColor: COLORS.Lightred,
-                    },
-                  ]}
-                >
-                  {' '}
-                  ❌ Declined
-                </Text>
-              </View>
-            )}
-
-            <View style={styles.copperRow}>
-              <Text style={styles.label}>Offer Amount</Text>
-              <Text style={[styles.value,{color:COLORS.themeColor}]}>₹ 25000/-</Text>
-            </View>
-            <View style={styles.copperRow}>
-              <Text style={styles.label}>Property Type</Text>
-              <Text style={styles.value}>Flat</Text>
-            </View>
-            <View style={styles.copperRow}>
-              <Text style={styles.label}>Type of AC</Text>
-              <Text style={styles.value}>Split AC-2{'\n'}Window AC-1</Text>
-            </View>
-            <View style={styles.copperRow}>
-              <Text style={styles.label}>Inspection Remarks</Text>
-              <Text style={styles.value}>LoremIpsum dolor sit amret</Text>
-            </View>
-            <View style={[styles.copperRow, { justifyContent: 'center' }]}>
-              <Text
-                style={[
-                  styles.label,
-                  {
-                    textDecorationLine: 'underline',
-                    color: COLORS.themeColor,
-                    textAlign: 'center',
-                  },
-                ]}
-              >
-                Hide Copper Piping Details
-              </Text>
-            </View>
-
-            {/* Buttons */}
-            {detailStatus === 'Quote' &&
-              reqStatus !== 'Accepted' &&
-              reqStatus !== 'Decline' && (
-              <View style={styles.copperRow}>
-                <TouchableOpacity
-                  style={[styles.doneButton, { backgroundColor: COLORS.white }]}
-                  onPress={() => setDeclineVisible(true)}
-                >
-                  <Text
+            <View style={styles.section}>
+              {/* Status Row */}
+              {reqStatus === 'Accepted' && (
+                <View style={styles.copperRow}>
+                  <AppText style={styles.label}>Status</AppText>
+                  <AppText
                     style={[
-                      styles.doneButtonText,
-                      { color: COLORS.textHeading },
+                      styles.value,
+                      {
+                        color: COLORS.darkgreen,
+                        fontFamily: Fonts.semiBold,
+                        backgroundColor: COLORS.lightgreen,
+                      },
                     ]}
                   >
-                    Decline
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.doneButton, styles.secondButton]}
-                  onPress={() => setSuccessPopupVisible(true)}
-                >
-                  <Text style={styles.doneButtonText}>Accept</Text>
-                </TouchableOpacity>
+                    {' '}
+                    ✅ Accepted
+                  </AppText>
+                </View>
+              )}
+              {reqStatus === 'Decline' && (
+                <View style={styles.copperRow}>
+                  <AppText style={styles.label}>Status</AppText>
+                  <AppText
+                    style={[
+                      styles.value,
+                      {
+                        color: COLORS.red,
+                        fontFamily: Fonts.semiBold,
+                        backgroundColor: COLORS.Lightred,
+                      },
+                    ]}
+                  >
+                    {' '}
+                    ❌ Declined
+                  </AppText>
+                </View>
+              )}
+
+              <View style={styles.copperRow}>
+                <AppText style={styles.label}>Offer Amount</AppText>
+                <AppText style={[styles.value, { color: COLORS.themeColor }]}>₹ 25000/-</AppText>
               </View>
-            )}
-          </View>
-        )}
+              <View style={styles.copperRow}>
+                <AppText style={styles.label}>Property Type</AppText>
+                <AppText style={styles.value}>Flat</AppText>
+              </View>
+              <View style={styles.copperRow}>
+                <AppText style={styles.label}>Type of AC</AppText>
+                <AppText style={styles.value}>Split AC-2{'\n'}Window AC-1</AppText>
+              </View>
+              <View style={styles.copperRow}>
+                <AppText style={styles.label}>Inspection Remarks</AppText>
+                <AppText style={styles.value}>LoremIpsum dolor sit amret</AppText>
+              </View>
+              <View style={[styles.copperRow, { justifyContent: 'center' }]}>
+                <AppText
+                  style={[
+                    styles.label,
+                    {
+                      textDecorationLine: 'underline',
+                      color: COLORS.themeColor,
+                      textAlign: 'center',
+                    },
+                  ]}
+                >
+                  Hide Copper Piping Details
+                </AppText>
+              </View>
+
+              {/* Buttons */}
+              {detailStatus === 'Quote' &&
+                reqStatus !== 'Accepted' &&
+                reqStatus !== 'Decline' && (
+                  <View style={styles.copperRow}>
+                    <TouchableOpacity
+                      style={[styles.doneButton, { backgroundColor: COLORS.white }]}
+                      onPress={() => setDeclineVisible(true)}
+                    >
+                      <AppText
+                        style={[
+                          styles.doneButtonText,
+                          { color: COLORS.textHeading },
+                        ]}
+                      >
+                        Decline
+                      </AppText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.doneButton, styles.secondButton]}
+                      onPress={() => setSuccessPopupVisible(true)}
+                    >
+                      <AppText style={styles.doneButtonText}>Accept</AppText>
+                    </TouchableOpacity>
+                  </View>
+                )}
+            </View>
+          )}
 
         {detailStatus === 'Payment' && (
           <>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               {' '}
               Request ID #1234
-            </Text>
+            </AppText>
             <View style={[styles.section]}>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Flat</Text>
-                <Text style={[styles.value, { fontFamily: Fonts.semiBold }]}>
+                <AppText style={styles.label}>Flat</AppText>
+                <AppText style={[styles.value, { fontFamily: Fonts.semiBold }]}>
                   ₹ 25000/-
-                </Text>
+                </AppText>
               </View>
-              <Text style={[styles.label, { paddingTop: hp(1) }]}>
+              <AppText style={[styles.label, { paddingTop: hp(1) }]}>
                 Split AC-2{'\n'}Window AC-1
-              </Text>
+              </AppText>
 
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Pipe Run Length 10m</Text>
-                <Text
+                <AppText style={styles.label}>Pipe Run Length 10m</AppText>
+                <AppText
                   style={[
                     styles.label,
                     {
@@ -371,7 +372,7 @@ const RequestDetail = ({ navigation }) => {
                   ]}
                 >
                   Download Offer Agreement
-                </Text>
+                </AppText>
               </View>
             </View>
           </>
@@ -379,10 +380,10 @@ const RequestDetail = ({ navigation }) => {
 
         {detailStatus === 'Payment' && (
           <>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               {' '}
               Payment mode selection
-            </Text>
+            </AppText>
             <View style={[styles.section]}>
               <TouchableOpacity
                 style={styles.statusInfo}
@@ -395,7 +396,7 @@ const RequestDetail = ({ navigation }) => {
                   }
                   style={styles.IconImage}
                 />
-                <Text style={styles.label}>{'  '}Bank Transfer</Text>
+                <AppText style={styles.label}>{'  '}Bank Transfer</AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.statusInfo}
@@ -408,7 +409,7 @@ const RequestDetail = ({ navigation }) => {
                   }
                   style={styles.IconImage}
                 />
-                <Text style={styles.label}>{'  '}UPI</Text>
+                <AppText style={styles.label}>{'  '}UPI</AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.statusInfo}
@@ -421,17 +422,17 @@ const RequestDetail = ({ navigation }) => {
                   }
                   style={styles.IconImage}
                 />
-                <Text style={styles.label}>{'  '}Cash on Pickup</Text>
+                <AppText style={styles.label}>{'  '}Cash on Pickup</AppText>
               </TouchableOpacity>
 
-              <Text
+              <AppText
                 style={[
                   styles.label,
                   { marginVertical: wp(1.5), color: COLORS.black },
                 ]}
               >
                 Enter your UPI ID
-              </Text>
+              </AppText>
               <View
                 style={{
                   borderRadius: hp(5),
@@ -447,7 +448,9 @@ const RequestDetail = ({ navigation }) => {
                   keyboardType="default"
                   value={upiId}
                   onChange={txt => setupiId(txt)}
-                   onSubmitEditing={() => Keyboard.dismiss()}
+                  onSubmitEditing={() => Keyboard.dismiss()}
+                  allowFontScaling={false}
+                  includeFontPadding={false}
                 />
               </View>
             </View>
@@ -458,7 +461,7 @@ const RequestDetail = ({ navigation }) => {
         {detailStatus !== 'Payment' && (
           <>
             {detailStatus !== 'Quote' && (
-              <Text style={styles.sectionTitle}>Copper Piping details</Text>
+              <AppText style={styles.sectionTitle}>Copper Piping details</AppText>
             )}
             <View
               style={[
@@ -467,26 +470,26 @@ const RequestDetail = ({ navigation }) => {
               ]}
             >
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Property type</Text>
-                <Text style={styles.value}>Flat</Text>
+                <AppText style={styles.label}>Property type</AppText>
+                <AppText style={styles.value}>Flat</AppText>
               </View>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Type of AC</Text>
-                <Text style={styles.value}>Split AC-2{'\n'}Window AC-1</Text>
+                <AppText style={styles.label}>Type of AC</AppText>
+                <AppText style={styles.value}>Split AC-2{'\n'}Window AC-1</AppText>
               </View>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Outdoor Condenser Location</Text>
-                <Text style={styles.value}>Wall mounted low</Text>
+                <AppText style={styles.label}>Outdoor Condenser Location</AppText>
+                <AppText style={styles.value}>Wall mounted low</AppText>
               </View>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Pipe Run Length</Text>
-                <Text style={styles.value}>3-5m</Text>
+                <AppText style={styles.label}>Pipe Run Length</AppText>
+                <AppText style={styles.value}>3-5m</AppText>
               </View>
 
               {/* Photos/Drawings Section */}
-              <Text style={[styles.sectionTitle, { marginVertical: hp(1.5) }]}>
+              <AppText style={[styles.sectionTitle, { marginVertical: hp(1.5) }]}>
                 Photos/Drawings
-              </Text>
+              </AppText>
               <View style={styles.photoGrid}>
                 <Image source={images.ShareImg} style={styles.photo} />
                 <Image source={images.ShareImg1} style={styles.photo} />
@@ -502,22 +505,22 @@ const RequestDetail = ({ navigation }) => {
                 style={styles.copperRow}
                 onPress={() => setModalSlotVisible(true)}
               >
-                <Text style={styles.label}>Preferred Inspection Date</Text>
-                <Text style={styles.value}>{selectDate}</Text>
+                <AppText style={styles.label}>Preferred Inspection Date</AppText>
+                <AppText style={styles.value}>{selectDate}</AppText>
               </TouchableOpacity>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Preferred Inspection Time</Text>
-                <Text style={styles.value}>{selectTime}</Text>
+                <AppText style={styles.label}>Preferred Inspection Time</AppText>
+                <AppText style={styles.value}>{selectTime}</AppText>
               </View>
 
               {/* Additional Note */}
-              <Text style={[styles.sectionTitle, { marginTop: hp(1) }]}>
+              <AppText style={[styles.sectionTitle, { marginTop: hp(1) }]}>
                 Additional Note
-              </Text>
-              <Text style={styles.noteText}>
+              </AppText>
+              <AppText style={styles.noteText}>
                 Lorem ipsum dolor sit amet consectetur. Neque orci lorem sed in.
                 Lectus aliquet mattis condimentum eu tempus ac lorem.
-              </Text>
+              </AppText>
             </View>
           </>
         )}
@@ -542,7 +545,7 @@ const RequestDetail = ({ navigation }) => {
                   source={images.helpdesk}
                   style={HomeScreenStyles.smallimage}
                 />
-                <Text style={HomeScreenStyles.needHelp}>Need Help?</Text>
+                <AppText style={HomeScreenStyles.needHelp}>Need Help?</AppText>
               </View>
               <Image
                 source={images.chatIcon}
@@ -560,17 +563,17 @@ const RequestDetail = ({ navigation }) => {
             onPress={() => setReqStatus(prev => prev === 'Scheduled' ? 'complete' : 'Scheduled')}
             style={[styles.doneButton, { backgroundColor: COLORS.white }]}
           >
-            <Text
+            <AppText
               style={[styles.doneButtonText, { color: COLORS.textHeading }]}
             >
               Next
-            </Text>
+            </AppText>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.doneButton, styles.secondButton]}
             onPress={() => setRescheduleReqVisible(true)}
           >
-            <Text style={styles.doneButtonText}>Reschedule</Text>
+            <AppText style={styles.doneButtonText}>Reschedule</AppText>
           </TouchableOpacity>
         </View>
       )}
@@ -613,16 +616,16 @@ const RequestDetail = ({ navigation }) => {
         )}
 
       {detailStatus === 'Payment' && (
-          <View style={HomeScreenStyles.servicesSection}>
-            <CustomButton
-              buttonName="Proceed to payment Details "
-              margingTOP={hp('0%')}
-              btnTextColor={COLORS.white}
-              btnColor={COLORS.themeColor}
-              onPress={() => setDetailStatus('Payment')}
-            />
-          </View>
-        )}
+        <View style={HomeScreenStyles.servicesSection}>
+          <CustomButton
+            buttonName="Proceed to payment Details "
+            margingTOP={hp('0%')}
+            btnTextColor={COLORS.white}
+            btnColor={COLORS.themeColor}
+            onPress={() => setDetailStatus('Payment')}
+          />
+        </View>
+      )}
 
       {reqStatus === 'ReScheduled' && (
         <View style={HomeScreenStyles.servicesSection}>
@@ -649,12 +652,12 @@ const RequestDetail = ({ navigation }) => {
       )}
 
 
- {/* Reschedulerequest Popup */}
+      {/* Reschedulerequest Popup */}
       <SuccessPopupModal
         visible={rescheduleReqVisible}
         onClose={() => {
           setRescheduleReqVisible(false),
-           setCancelReqVisible(true);
+            setCancelReqVisible(true);
         }}
         setIcon={images.questionMark}
         HeadTextColor="black"
@@ -669,7 +672,7 @@ const RequestDetail = ({ navigation }) => {
         }}
       />
 
-  {/* cancel request Popup */}
+      {/* cancel request Popup */}
       <SuccessPopupModal
         visible={cancelReqVisible}
         onClose={() => {
@@ -755,7 +758,7 @@ const RequestDetail = ({ navigation }) => {
         buttonCount={2}
         firstButtonText="Confirm Decline"
         secondButtonText="No"
-        secondButton={() => setDeclineVisible(false)}   
+        secondButton={() => setDeclineVisible(false)}
       />
 
       {/* Booking Slot Modal */}

@@ -6,6 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import Header from '../../components/Header';
 import { COLORS } from '../../utils/colors';
+import AppText from '../../components/AppText';
 
 
 const ServiceReportscreen = ({ navigation }) => {
@@ -45,58 +46,58 @@ const ServiceReportscreen = ({ navigation }) => {
         renderItem={({ item }) => (
           <View style={styles.card}>
             {/* --- Remove Header from here --- */}
-           
-              <View style={styles.headerRow}>
-                <>
-                <Text style={styles.label}>Order Id {' '}
-                <Text style={styles.value}>{item.orderId}</Text></Text>
-                </>
-               <View style={[styles.badge,{ backgroundColor:item.status === 'Pending' ? COLORS.pendingBg: item.paymentStatus === 'complete' ? COLORS.completedBg:COLORS.onHoldBg}]}>   
-                <Text style={[styles.label,{color:item.paymentStatus === 'Pending'? COLORS.pendingText :item.paymentStatus === 'complete' ? COLORS.completedText:COLORS.onHoldText}]}>{item.paymentStatus}</Text>
+
+            <View style={styles.headerRow}>
+              <>
+                <AppText style={styles.label}>Order Id {' '}
+                  <AppText style={styles.value}>{item.orderId}</AppText></AppText>
+              </>
+              <View style={[styles.badge, { backgroundColor: item.status === 'Pending' ? COLORS.pendingBg : item.paymentStatus === 'complete' ? COLORS.completedBg : COLORS.onHoldBg }]}>
+                <AppText style={[styles.label, { color: item.paymentStatus === 'Pending' ? COLORS.pendingText : item.paymentStatus === 'complete' ? COLORS.completedText : COLORS.onHoldText }]}>{item.paymentStatus}</AppText>
               </View>
-              </View>
-           
+            </View>
+
 
             {/* Row 1 */}
             <View style={styles.row}>
               <View>
-                <Text style={styles.label}>Category</Text>
-                <Text style={styles.value}>{item.category}</Text>
+                <AppText style={styles.label}>Category</AppText>
+                <AppText style={styles.value}>{item.category}</AppText>
               </View>
               <View>
-                <Text style={styles.label}>Total AC Service</Text>
-                <Text style={styles.value}>1</Text>
+                <AppText style={styles.label}>Total AC Service</AppText>
+                <AppText style={styles.value}>1</AppText>
               </View>
             </View>
 
             {/* Row 2 */}
             <View style={styles.row}>
               <View>
-                <Text style={styles.label}>Issue</Text>
-                <Text style={styles.value}>{item.issue}</Text>
+                <AppText style={styles.label}>Issue</AppText>
+                <AppText style={styles.value}>{item.issue}</AppText>
               </View>
               <View>
-                <Text style={styles.label}>Date</Text>
-                <Text style={styles.value}>{item.date}</Text>
+                <AppText style={styles.label}>Date</AppText>
+                <AppText style={styles.value}>{item.date}</AppText>
               </View>
             </View>
 
             {/* Row 3 */}
             <View style={styles.row}>
               <View>
-                <Text style={styles.label}>Total Amount</Text>
-                <Text style={styles.value}>₹{item.amount}</Text>
+                <AppText style={styles.label}>Total Amount</AppText>
+                <AppText style={styles.value}>₹{item.amount}</AppText>
               </View>
               <View>
-                <Text style={styles.label}>Payment Status</Text>
-                <Text style={styles.value}>{item.paymentStatus}</Text>
+                <AppText style={styles.label}>Payment Status</AppText>
+                <AppText style={styles.value}>{item.paymentStatus}</AppText>
               </View>
             </View>
 
             {/* Row 4 */}
             <View style={{ marginTop: hp('1%') }}>
-              <Text style={styles.label}>Payment Mode</Text>
-              <Text style={styles.value}>{item.paymentMode}</Text>
+              <AppText style={styles.label}>Payment Mode</AppText>
+              <AppText style={styles.value}>{item.paymentMode}</AppText>
             </View>
           </View>
         )}
@@ -124,13 +125,13 @@ const styles = StyleSheet.create({
   },
 
   headerRow: {
-     width: wp('91.6%'),
-     borderTopLeftRadius: hp('1.3%'),
-     borderTopRightRadius: hp('1.3%'),
-     alignSelf:'center',
+    width: wp('91.6%'),
+    borderTopLeftRadius: hp('1.3%'),
+    borderTopRightRadius: hp('1.3%'),
+    alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor:COLORS.lightSky,
+    backgroundColor: COLORS.lightSky,
     padding: hp('1%'),
     marginBottom: hp('1.5%'),
     alignItems: 'center',

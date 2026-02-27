@@ -13,6 +13,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import AppText from '../components/AppText';
 
 const DeclineModal = ({
   visible,
@@ -48,13 +49,13 @@ const DeclineModal = ({
           </View>
 
           {/* Messages */}
-          <Text style={[styles.title, { color: HeadTextColor }]}>{HeadText}</Text>
-          <Text style={styles.message}>{message1}</Text>
-          <Text style={styles.message}>{message2}</Text>
+          <AppText style={[styles.title, { color: HeadTextColor }]}>{HeadText}</AppText>
+          <AppText style={styles.message}>{message1}</AppText>
+          <AppText style={styles.message}>{message2}</AppText>
 
           {/* Reason Selection */}
           <View style={styles.reasonDelineStyle}>
-            <Text style={styles.message}>Let us know the reason for Decline</Text>
+            <AppText style={styles.message}>Let us know the reason for Decline</AppText>
 
             {['Expected a higher offer', 'Changed my mind', 'Want to sell later', 'Other'].map((reason) => (
               <TouchableOpacity
@@ -66,7 +67,7 @@ const DeclineModal = ({
                   source={finalReason === reason ? images.onbutton : images.offbutton}
                   style={styles.checkOutIcon}
                 />
-                <Text style={styles.textreson}>{reason}</Text>
+                <AppText style={styles.textreson}>{reason}</AppText>
               </TouchableOpacity>
             ))}
           </View>
@@ -88,9 +89,9 @@ const DeclineModal = ({
                   onFirstButtonPress(finalReason); // ← Sirf ek call
                 }}
               >
-                <Text style={[styles.doneButtonText, { color: COLORS.white }]}>
+                <AppText style={[styles.doneButtonText, { color: COLORS.white }]}>
                   {firstButtonText}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             )}
 
@@ -100,9 +101,9 @@ const DeclineModal = ({
                 style={[styles.doneButton, styles.secondButton, { backgroundColor: '#ffffff', width: wp('40%') }]}
                 onPress={() => onSecondButtonPress(finalReason)}
               >
-                <Text style={[styles.doneButtonText, { color: '#676464ff' }]}>
+                <AppText style={[styles.doneButtonText, { color: '#676464ff' }]}>
                   {secondButtonText}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             )}
           </View>

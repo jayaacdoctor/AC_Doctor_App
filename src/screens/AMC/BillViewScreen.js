@@ -15,6 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import images from '../../assets/images';
 import CustomButton from '../../components/CustomButton';
+import AppText from '../../components/AppText';
 
 const BillViewScreen = ({ navigation, route }) => {
   const { ticketId } = route.params;
@@ -32,8 +33,8 @@ const BillViewScreen = ({ navigation, route }) => {
         <View style={[styles.card, { padding: wp('4%') }]}>
           <View style={styles.rowBetween}>
             <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Customer Name</Text>
-              <Text style={styles.value}>Irshad Khan</Text>
+              <AppText style={styles.label}>Customer Name</AppText>
+              <AppText style={styles.value}>Irshad Khan</AppText>
             </View>
 
             <TouchableOpacity
@@ -44,12 +45,12 @@ const BillViewScreen = ({ navigation, route }) => {
                     ticketId.status === 'In Progress'
                       ? COLORS.pendingBg
                       : ticketId.status === 'On Hold'
-                      ? COLORS.onHoldBg
-                      : COLORS.completedBg,
+                        ? COLORS.onHoldBg
+                        : COLORS.completedBg,
                 },
               ]}
             >
-              <Text
+              <AppText
                 style={[
                   styles.changeText,
                   {
@@ -57,13 +58,13 @@ const BillViewScreen = ({ navigation, route }) => {
                       ticketId.status === 'In Progress'
                         ? COLORS.pendingText
                         : ticketId.status === 'On Hold'
-                        ? COLORS.onHoldText
-                        : COLORS.completedText,
+                          ? COLORS.onHoldText
+                          : COLORS.completedText,
                   },
                 ]}
               >
                 {ticketId.status}
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
 
@@ -71,34 +72,34 @@ const BillViewScreen = ({ navigation, route }) => {
 
           <View style={styles.rowBetween}>
             <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Ticket ID</Text>
-              <Text style={styles.value}>{ticketId.ticket}</Text>
+              <AppText style={styles.label}>Ticket ID</AppText>
+              <AppText style={styles.value}>{ticketId.ticket}</AppText>
             </View>
 
             <View style={{ alignItems: 'flex-start' }}>
-              <Text style={styles.label}>Date</Text>
-              <Text style={styles.value}>24 October 2025</Text>
+              <AppText style={styles.label}>Date</AppText>
+              <AppText style={styles.value}>24 October 2025</AppText>
             </View>
           </View>
         </View>
 
         {/* Payment Summary */}
         <View style={[styles.card, { paddingHorizontal: wp('4%') }]}>
-          <Text style={styles.headText}>Payment Summary</Text>
+          <AppText style={styles.headText}>Payment Summary</AppText>
 
           <View style={styles.flewView}>
-            <Text style={styles.workText}>Item Total</Text>
-            <Text style={styles.workText}>₹ 3680</Text>
+            <AppText style={styles.workText}>Item Total</AppText>
+            <AppText style={styles.workText}>₹ 3680</AppText>
           </View>
 
           <View style={styles.flewView}>
-            <Text style={styles.workText}>Item Discount</Text>
-            <Text style={styles.workText}>-₹ 150</Text>
+            <AppText style={styles.workText}>Item Discount</AppText>
+            <AppText style={styles.workText}>-₹ 150</AppText>
           </View>
 
           <View style={styles.flewView}>
-            <Text style={styles.workText}>Taxes and Fee</Text>
-            <Text style={styles.workText}>₹ 69</Text>
+            <AppText style={styles.workText}>Taxes and Fee</AppText>
+            <AppText style={styles.workText}>₹ 69</AppText>
           </View>
 
           <View
@@ -113,13 +114,13 @@ const BillViewScreen = ({ navigation, route }) => {
               },
             ]}
           >
-            <Text style={styles.workText}>Total</Text>
-            <Text style={styles.workText}>₹ 3540</Text>
+            <AppText style={styles.workText}>Total</AppText>
+            <AppText style={styles.workText}>₹ 3540</AppText>
           </View>
 
           <View style={styles.yayView}>
             <Image source={images.tag} style={styles.tagicon} />
-            <Text
+            <AppText
               style={[
                 styles.viewCartText,
                 {
@@ -129,7 +130,7 @@ const BillViewScreen = ({ navigation, route }) => {
               ]}
             >
               Yay! you have saved ₹ 150 on final bill
-            </Text>
+            </AppText>
           </View>
         </View>
 

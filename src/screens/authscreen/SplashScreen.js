@@ -12,9 +12,12 @@ const SplashScreen = ({ navigation }) => {
       try {
         const token = await AsyncStorage.getItem('accessToken');
         const hasLocation = await AsyncStorage.getItem('hasSelectedLocation');
+        const hasOTP = await AsyncStorage.getItem('hasSetOTP');
 
         setTimeout(() => {
           if (!token) {
+            navigation.replace('Login');
+          } else if (!hasOTP) {
             navigation.replace('Login');
           } else if (!hasLocation) {
             navigation.replace('ServiceScreen');
@@ -52,8 +55,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   logo: {
-    width: 500,
-    height: 500,
+    width: 1000,
+    height: 1000,
+    resizeMode: 'contain',
   },
 });
 

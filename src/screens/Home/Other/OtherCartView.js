@@ -30,6 +30,7 @@ import { store } from '../../../redux/store';
 import Toast from 'react-native-simple-toast';
 import CustomLoader from '../../../components/CustomLoader';
 import { clearServiceData } from '../../../redux/slices/serviceSlice';
+import AppText from '../../../components/AppText';
 
 const OtherCartView = ({ route }) => {
   const navigation = useNavigation()
@@ -74,7 +75,7 @@ const OtherCartView = ({ route }) => {
       const list = res?.data || [];
       //  remove unwanted items
       const filteredList = list.filter(item =>
-        !['AMC', 'Copper Piping', 'Commercial AC', 'Other'].includes(item.name)
+        !['Amc', 'Copper Piping', 'Commercial AC', 'Other'].includes(item.name)
       );
       setBookServices(filteredList);
     } catch (error) {
@@ -240,9 +241,9 @@ const OtherCartView = ({ route }) => {
 
           return (
             <View key={serviceIndex}>
-              <Text style={[styles.headText, { marginTop: 10 }]}>
+              <AppText style={[styles.headText, { marginTop: 10 }]}>
                 {service.serviceType}
-              </Text>
+              </AppText>
 
               {visibleACs.length > 0 && (
                 <View style={[
@@ -251,7 +252,7 @@ const OtherCartView = ({ route }) => {
                 ]}>
                   {visibleACs.map((ac, acIndex) => (
                     <View key={acIndex} style={styles.serviceView}>
-                      <Text style={styles.workText}>{ac.name}</Text>
+                      <AppText style={styles.workText}>{ac.name}</AppText>
 
                       <View style={styles.workButtonContainer}>
                         <TouchableOpacity
@@ -266,7 +267,7 @@ const OtherCartView = ({ route }) => {
                           />
                         </TouchableOpacity>
 
-                        <Text style={styles.workCount}>{ac.quantity}</Text>
+                        <AppText style={styles.workCount}>{ac.quantity}</AppText>
 
                         <TouchableOpacity
                           onPress={() =>
@@ -292,23 +293,23 @@ const OtherCartView = ({ route }) => {
         {/* other and edit */}
         <View style={styles.card}>
           <View style={styles.cardRow}>
-            <Text style={styles.title}>Other</Text>
+            <AppText style={styles.title}>Other</AppText>
             {/* <Text style={[styles.title, { color: COLORS.themeColor }]}>
               Edit
             </Text> */}
           </View>
           <View style={styles.boderLine} />
-          <Text style={styles.headtitle}>
+          <AppText style={styles.headtitle}>
             Problem :<Text style={styles.Normaltitle}> {problem}</Text>
-          </Text>
-          <Text style={styles.headtitle}>
+          </AppText>
+          <AppText style={styles.headtitle}>
             Comments :<Text style={styles.Normaltitle}> {reason}</Text>
-          </Text>
+          </AppText>
         </View>
 
         {/*  Added Together */}
         <View style={{ marginBottom: hp('20%') }}>
-          <Text style={styles.title}>Add Together</Text>
+          <AppText style={styles.title}>Add Together</AppText>
           <View style={[styles.card, { maxHeight: hp(20) }]}>
             {!Loading ? (<FlatList
               data={bookServices}
@@ -325,11 +326,11 @@ const OtherCartView = ({ route }) => {
                   }}
                 >
                   <Image source={{ uri: item.icon }} style={styles.Iconservices} />
-                  <Text style={styles.titleService}>{item.name}</Text>
+                  <AppText style={styles.titleService}>{item.name}</AppText>
                   <View style={styles.addBtn}>
-                    <Text style={[styles.workText]}>
+                    <AppText style={[styles.workText]}>
                       Add
-                    </Text>
+                    </AppText>
                   </View>
                 </TouchableOpacity>
               )}

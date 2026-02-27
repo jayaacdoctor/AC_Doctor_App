@@ -23,6 +23,7 @@ import {
 import CustomSlider from '../../components/CustomSlider';
 import { COLORS, Fonts } from '../../utils/colors';
 import ReactNativeBlobUtil from 'react-native-blob-util';
+import AppText from '../../components/AppText';
 
 const ProductDetailScreen = ({ navigation, route }) => {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -97,29 +98,29 @@ const ProductDetailScreen = ({ navigation, route }) => {
           resizeMode={FastImage.resizeMode.contain}
         />
 
-        <Text style={styles.title} numberOfLines={1}>
+        <AppText style={styles.title} numberOfLines={1}>
           {item.title}
-        </Text>
+        </AppText>
 
         {item.limitedDeal && (
           <View style={styles.dealBadge}>
-            <Text style={styles.dealText}>Limited time deal</Text>
+            <AppText style={styles.dealText}>Limited time deal</AppText>
           </View>
         )}
 
-        <Text style={styles.price}>
+        <AppText style={styles.price}>
           ₹{item.price.toLocaleString('en-IN')}.00
-        </Text>
+        </AppText>
 
         <View style={styles.mrpRow}>
-          <Text style={styles.mrp}>M.R.P </Text>
-          <Text style={styles.mrpPrice}>
+          <AppText style={styles.mrp}>M.R.P </AppText>
+          <AppText style={styles.mrpPrice}>
             ₹{item.mrp.toLocaleString('en-IN')}
-          </Text>
+          </AppText>
         </View>
 
         <View style={styles.discountRow}>
-          <Text style={styles.discount}>{item.discount}</Text>
+          <AppText style={styles.discount}>{item.discount}</AppText>
           <TouchableOpacity
             style={styles.heartButton}
             onPress={() => toggleLike(item.id)}
@@ -133,7 +134,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
         </View>
 
         <TouchableOpacity style={styles.addButton}>
-          <Text style={styles.addText}>Add to cart</Text>
+          <AppText style={styles.addText}>Add to cart</AppText>
         </TouchableOpacity>
       </View>
     );
@@ -177,7 +178,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
     const path = `${dirToSave}/${fileName}`;
 
     config({
-      fileCache: true,
+      fileCache: false,
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
@@ -229,7 +230,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
                 style={Commonstyles.locationIcon}
                 resizeMode={FastImage.resizeMode.contain}
               />
-              <Text style={Commonstyles.headText}>{productScreenName}</Text>
+              <AppText style={Commonstyles.headText}>{productScreenName}</AppText>
             </TouchableOpacity>
             <View style={[Commonstyles.reqgrid]}>
               <TouchableOpacity>
@@ -265,9 +266,9 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
           {/* WindFree Inverter  */}
           <View style={[Commonstyles.oneWidthRow, { width: wp(85) }]}>
-            <Text style={Commonstyles.mediumText}>
+            <AppText style={Commonstyles.mediumText}>
               WindFree Inverter Split AC AR18CY5APWK, 5.00kw (1.5T) 5 Star
-            </Text>
+            </AppText>
             <TouchableOpacity onPress={() => setLikeStatus(!likeStatus)}>
               <FastImage
                 source={likeStatus ? images.redHeart : images.heart}
@@ -279,21 +280,21 @@ const ProductDetailScreen = ({ navigation, route }) => {
 
           {/* of-24%f */}
           <View style={[Commonstyles.oneWidthRow]}>
-            <Text style={Commonstyles.bigMediumText}>
+            <AppText style={Commonstyles.bigMediumText}>
               ₹32,290.00{' '}
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.darkgreen }]}
               >
                 -24% off
-              </Text>
-            </Text>
+              </AppText>
+            </AppText>
           </View>
 
           {/* ★★★★ compare */}
           <View style={[Commonstyles.oneWidthRow]}>
-            <Text style={[Commonstyles.mediumText, { color: COLORS.yellow }]}>
-              ★★★★ <Text style={[Commonstyles.accountNumber]}>(4.00)</Text>
-            </Text>
+            <AppText style={[Commonstyles.mediumText, { color: COLORS.yellow }]}>
+              ★★★★ <AppText style={[Commonstyles.accountNumber]}>(4.00)</AppText>
+            </AppText>
             <TouchableOpacity
               style={Commonstyles.locationContainer}
               onPress={() => {
@@ -306,120 +307,120 @@ const ProductDetailScreen = ({ navigation, route }) => {
                 style={[Commonstyles.locationIcon, { marginHorizontal: wp(2) }]}
                 resizeMode={FastImage.resizeMode.contain}
               />
-              <Text style={[Commonstyles.locationText]}>Compare</Text>
+              <AppText style={[Commonstyles.locationText]}>Compare</AppText>
             </TouchableOpacity>
           </View>
 
           {/* Description */}
           <View style={{ marginTop: wp(3) }}>
-            <Text style={[Commonstyles.locationText, { color: COLORS.black }]}>
+            <AppText style={[Commonstyles.locationText, { color: COLORS.black }]}>
               Description
-            </Text>
-            <Text style={[Commonstyles.accountNumber, { marginVertical: wp(3) }]}>
+            </AppText>
+            <AppText style={[Commonstyles.accountNumber, { marginVertical: wp(3) }]}>
               Lorem ipsum dolor sit amet consectetur. Mauris justo bibendum
               consequat mauris. Sed elit a condimentum massa non sem elementum. Et
               sed amet malesuada semper integer mauris.
-            </Text>
+            </AppText>
           </View>
 
           {/* Service Guarantee */}
           <View style={[Commonstyles.allSideRadiusStyle]}>
-            <Text style={Commonstyles.mediumText}>Service Guarantee</Text>
+            <AppText style={Commonstyles.mediumText}>Service Guarantee</AppText>
             {/* Services and View Cart Section */}
             <View style={Commonstyles.oneWidthRow}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Brand
-              </Text>
-              <Text style={Commonstyles.locationText}>Voltas</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>Voltas</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Capacity
-              </Text>
-              <Text style={Commonstyles.locationText}>2 Tons</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>2 Tons</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Cooling Power
-              </Text>
-              <Text style={Commonstyles.locationText}>3200 Watts</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>3200 Watts</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Special Feature
-              </Text>
-              <Text style={Commonstyles.locationText}>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>
                 Antibacterial Coaring, {'\n'}
                 Dehumidifier
-              </Text>
+              </AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Colour
-              </Text>
-              <Text style={Commonstyles.locationText}>White</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>White</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Voltage
-              </Text>
-              <Text style={Commonstyles.locationText}>230 Volts</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>230 Volts</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Product Dimensions
-              </Text>
-              <Text style={Commonstyles.locationText}>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>
                 84D x 84D x 23H{'\n'}
                 Centimeters
-              </Text>
+              </AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Noise Level
-              </Text>
-              <Text style={Commonstyles.locationText}>44 dB</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>44 dB</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Floor Area
-              </Text>
-              <Text style={Commonstyles.locationText}>180 Square Feet</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>180 Square Feet</AppText>
             </View>
             <View style={Commonstyles.bottomLine} />
             <View style={Commonstyles.sergrid}>
-              <Text
+              <AppText
                 style={[Commonstyles.locationText, { color: COLORS.textHeading }]}
               >
                 Power Source
-              </Text>
-              <Text style={Commonstyles.locationText}>Corded Electric</Text>
+              </AppText>
+              <AppText style={Commonstyles.locationText}>Corded Electric</AppText>
             </View>
           </View>
 
@@ -440,11 +441,11 @@ const ProductDetailScreen = ({ navigation, route }) => {
               )
             }
           >
-            <Text
+            <AppText
               style={[Commonstyles.accountBlueText, { fontSize: hp('1.7%') }]}
             >
               Download Brochure
-            </Text>
+            </AppText>
           </TouchableOpacity>
 
 
@@ -461,14 +462,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
                   style={Commonstyles.sericon}
                 />
                 <View>
-                  <Text
+                  <AppText
                     style={[
                       Commonstyles.serstatTitle,
                       { color: COLORS.themeColor },
                     ]}
                   >
                     Free Delivery
-                  </Text>
+                  </AppText>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -477,14 +478,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
               >
                 <Image source={images.replacement} style={Commonstyles.sericon} />
                 <View>
-                  <Text
+                  <AppText
                     style={[
                       Commonstyles.serstatTitle,
                       { color: COLORS.themeColor },
                     ]}
                   >
                     10 days Replacement
-                  </Text>
+                  </AppText>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -496,14 +497,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
                   style={Commonstyles.sericon}
                 />
                 <View>
-                  <Text
+                  <AppText
                     style={[
                       Commonstyles.serstatTitle,
                       { color: COLORS.themeColor },
                     ]}
                   >
                     Service Available
-                  </Text>
+                  </AppText>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity
@@ -512,14 +513,14 @@ const ProductDetailScreen = ({ navigation, route }) => {
               >
                 <Image source={images.waranty} style={Commonstyles.sericon} />
                 <View>
-                  <Text
+                  <AppText
                     style={[
                       Commonstyles.serstatTitle,
                       { color: COLORS.themeColor },
                     ]}
                   >
                     1 Year Warranty
-                  </Text>
+                  </AppText>
                 </View>
               </TouchableOpacity>
             </View>
@@ -533,144 +534,144 @@ const ProductDetailScreen = ({ navigation, route }) => {
                   onPress={() => toggleExpand(index)}
                   style={Commonstyles.faquestionContainer}
                 >
-                  <Text style={Commonstyles.faquestionText}>{item.question}</Text>
-                  <Text style={Commonstyles.faqarrow}>
+                  <AppText style={Commonstyles.faquestionText}>{item.question}</AppText>
+                  <AppText style={Commonstyles.faqarrow}>
                     {expandedIndex === index ? '﹀' : '>'}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
 
                 {expandedIndex === index && (
                   <View style={{ paddingHorizontal: hp(1.5) }}>
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         {item.title}
-                      </Text>
-                      <Text style={Commonstyles.locationText}>{item.text}</Text>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>{item.text}</AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Capacity
-                      </Text>
-                      <Text style={Commonstyles.locationText}>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>
                         {item.capacity}
-                      </Text>
+                      </AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Cooling Power
-                      </Text>
-                      <Text style={Commonstyles.locationText}>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>
                         {item.cooling}
-                      </Text>
+                      </AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Special Feature
-                      </Text>
-                      <Text style={Commonstyles.locationText}>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>
                         {item.feature}
-                      </Text>
+                      </AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Colour
-                      </Text>
-                      <Text style={Commonstyles.locationText}>{item.colour}</Text>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>{item.colour}</AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Voltage
-                      </Text>
-                      <Text style={Commonstyles.locationText}>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>
                         {item.voltage}
-                      </Text>
+                      </AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Product Dimensions
-                      </Text>
-                      <Text style={Commonstyles.locationText}>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>
                         {item.product}
-                      </Text>
+                      </AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Noise Level
-                      </Text>
-                      <Text style={Commonstyles.locationText}>{item.noise}</Text>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>{item.noise}</AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View style={[Commonstyles.sergrid]}>
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Floor Area
-                      </Text>
-                      <Text style={Commonstyles.locationText}>{item.floor}</Text>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>{item.floor}</AppText>
                     </View>
                     <View style={Commonstyles.bottomLine} />
                     <View
                       style={[Commonstyles.sergrid, { paddingBottom: hp(2) }]}
                     >
-                      <Text
+                      <AppText
                         style={[
                           Commonstyles.locationText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Power Source
-                      </Text>
-                      <Text style={Commonstyles.locationText}>{item.power}</Text>
+                      </AppText>
+                      <AppText style={Commonstyles.locationText}>{item.power}</AppText>
                     </View>
                   </View>
                 )}
@@ -679,9 +680,9 @@ const ProductDetailScreen = ({ navigation, route }) => {
           </>
 
           {/* you Might Also Like*/}
-          <Text style={[Commonstyles.mediumText, { marginVertical: hp(1.5) }]}>
+          <AppText style={[Commonstyles.mediumText, { marginVertical: hp(1.5) }]}>
             You Might Also Like
-          </Text>
+          </AppText>
           <View style={styles.container}>
             <FlatList
               data={products}
@@ -703,7 +704,7 @@ const ProductDetailScreen = ({ navigation, route }) => {
             source={images.heart}
             style={[Commonstyles.carticon, { marginHorizontal: wp(2) }]}
           />
-          <Text style={Commonstyles.locationText}>WishList</Text>
+          <AppText style={Commonstyles.locationText}>WishList</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={Commonstyles.serviceCartButton}
@@ -713,9 +714,9 @@ const ProductDetailScreen = ({ navigation, route }) => {
             source={images.cart}
             style={[Commonstyles.carticon, { marginHorizontal: wp(2) }]}
           />
-          <Text style={[Commonstyles.locationText, { color: COLORS.white }]}>
+          <AppText style={[Commonstyles.locationText, { color: COLORS.white }]}>
             Buy Now
-          </Text>
+          </AppText>
         </TouchableOpacity>
       </View>
 

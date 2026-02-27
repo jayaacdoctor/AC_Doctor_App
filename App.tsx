@@ -1,6 +1,6 @@
 import AppNavigator from './src/navigation/AppNavigator';
 import { Provider } from 'react-redux';
-import { Alert, Linking, Platform, View } from 'react-native';
+import { Alert, Linking, Platform, View, Text, TextInput } from 'react-native';
 
 import { persistor, store } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -15,12 +15,12 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import { isUpdateRequired } from './src/utils/versionCompare';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
-
+import NotificationService from './src/NotificationServices/notificationService';
 export default function App() {
   useEffect(() => {
     // 🔹 Set navigation bar color
     SystemNavigationBar.setNavigationColor('black');
-
+    NotificationService.init();
     // 🔹 Optional: light or dark icons
     // SystemNavigationBar.setNavigationColor('light');
     // 'light' = white icons
@@ -83,12 +83,12 @@ export default function App() {
   const init = async () => {
     await initRemoteConfig();
     await checkForceUpdate();
-    await requestNotificationPermission();
-    await getFcmToken();
-    await setupPushListeners();
-    requestPermission();
-    getFcmToken();
-    createChannel();
+    // await requestNotificationPermission();
+    // await getFcmToken();
+    // await setupPushListeners();
+    // requestPermission();
+    // getFcmToken();
+    // createChannel();
   };
 
   const checkForceUpdate = async () => {

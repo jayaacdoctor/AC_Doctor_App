@@ -11,6 +11,7 @@ import {
   Alert,
   Animated,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -21,62 +22,50 @@ import { RectButton } from 'react-native-gesture-handler';
 import { COLORS, Fonts } from '../../utils/colors';
 import images from '../../assets/images';
 import Header from '../../components/Header';
+import AppText from '../../components/AppText';
+import { DeleteNotification, getTNotification } from '../../api/profileApi';
+import { store } from '../../redux/store';
+
 
 const NotificationScreeen = ({ navigation }) => {
   const [searchText, setSearchText] = useState('');
-  const [allNotifications, setAllNotifications] = useState([
-    // Today
-    {
-      id: '1',
-      title: "Today's special offer!",
-      message: 'You can get a special promo today.',
-      time: '10m ago',
-      image: images.demoImgTwo,
-      date: 'Today',
-    },
-    {
-      id: '2',
-      title: 'Mohan Verma is arrived at your location',
-      message: 'Agent has reached your service address.',
-      time: '10m ago',
-      image: images.userProfile,
-      date: 'Today',
-    },
-    // Yesterday
-    {
-      id: '3',
-      title: "Today's special offer!",
-      message: 'You can get a special promo today.',
-      time: '10m ago',
-      image: images.userphoto,
-      date: 'Yesterday',
-    },
-    {
-      id: '4',
-      title: 'Mohan Verma is arrived at your location',
-      message: 'Agent has reached your service address.',
-      time: '10m ago',
-      image: images.demoImgthree,
-      date: 'Yesterday',
-    },
-    {
-      id: '5',
-      title: "Today's special offer!",
-      message: 'You can get a special promo today.',
-      time: '10m ago',
-      image: images.demoImg,
-      date: 'Yesterday',
-    },
-  ]);
+  const [allNotifications, setAllNotifications] = useState([]);
+  const user = store?.getState()?.auth?.user;
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+
 
   const [filteredNotifications, setFilteredNotifications] = useState([]);
 
-  // Group by date
+  useEffect(() => {
+    fetchNotification(1)
+  }, [])
+
+  // --- Convert notifications to sections grouped by date
   useEffect(() => {
     const grouped = allNotifications.reduce((acc, notif) => {
-      const key = notif.date;
+      const created = new Date(notif.createdAt);
+
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      let key;
+
+      if (created.toDateString() === today.toDateString()) {
+        key = 'Today';
+      } else if (created.toDateString() === yesterday.toDateString()) {
+        key = 'Yesterday';
+      } else {
+        key = created.toLocaleDateString(); // Example: 25/02/2026
+      }
+
       if (!acc[key]) acc[key] = [];
       acc[key].push(notif);
+
       return acc;
     }, {});
 
@@ -88,47 +77,83 @@ const NotificationScreeen = ({ navigation }) => {
     setFilteredNotifications(sections);
   }, [allNotifications]);
 
+
   // Search Filter
   useEffect(() => {
-    if (!searchText) {
-      // Reset to all
-      const grouped = allNotifications.reduce((acc, notif) => {
-        const key = notif.date;
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(notif);
-        return acc;
-      }, {});
+    let sourceData = allNotifications;
 
-      const sections = Object.keys(grouped).map(date => ({
-        title: date,
-        data: grouped[date],
-      }));
-      setFilteredNotifications(sections);
-    } else {
-      const filtered = allNotifications.filter(
-        n =>
-          n.title.toLowerCase().includes(searchText.toLowerCase()) ||
-          n.message.toLowerCase().includes(searchText.toLowerCase()),
-      );
+    if (searchText) {
+      sourceData = allNotifications.filter(n => {
+        const textMatch = n?.text
+          ?.toLowerCase()
+          .includes(searchText.toLowerCase());
 
-      const grouped = filtered.reduce((acc, notif) => {
-        const key = notif.date;
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(notif);
-        return acc;
-      }, {});
+        const dateString = new Date(n.createdAt)
+          .toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })
+          .toLowerCase();
 
-      const sections = Object.keys(grouped).map(date => ({
-        title: date,
-        data: grouped[date],
-      }));
-      setFilteredNotifications(sections);
+        const dateMatch = dateString.includes(searchText.toLowerCase());
+
+        return textMatch || dateMatch;
+      });
     }
+
+    const grouped = sourceData.reduce((acc, notif) => {
+      const created = new Date(notif.createdAt);
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+
+      let key;
+
+      if (created.toDateString() === today.toDateString()) {
+        key = 'Today';
+      } else if (created.toDateString() === yesterday.toDateString()) {
+        key = 'Yesterday';
+      } else {
+        key = created.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        });
+      }
+
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(notif);
+
+      return acc;
+    }, {});
+
+    const sections = Object.keys(grouped).map(date => ({
+      title: date,
+      data: grouped[date],
+    }));
+
+    setFilteredNotifications(sections);
   }, [searchText, allNotifications]);
 
+
+
   //   delete single notification
-  const deleteNotification = id => {
-    setAllNotifications(prev => prev.filter(n => n.id !== id));
+  const deleteNotification = async (id) => {
+    try {
+      // Optimistic UI update (remove immediately)
+      setAllNotifications(prev =>
+        prev.filter(n => n._id !== id)
+      );
+
+      // Call API
+      const res = await DeleteNotification(id);
+
+      console.log('Delete Response ---', res);
+
+    } catch (error) {
+      console.log('Delete Error ---', error);
+    }
   };
 
   //   delete all notifications
@@ -164,53 +189,160 @@ const NotificationScreeen = ({ navigation }) => {
     );
   };
 
+  const formatNotificationTime = (date) => {
+    const created = new Date(date);
+    const now = new Date();
+
+    const diffInMs = now - created;
+    const diffInHours = diffInMs / (1000 * 60 * 60);
+
+    // If within 24 hours
+    if (diffInHours < 24) {
+      return 'Today';
+    }
+
+    // If same year → show Feb 24
+    if (created.getFullYear() === now.getFullYear()) {
+      return created.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+      });
+    }
+
+    // If older year → show Feb 24, 2024
+    return created.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+  };
+
+
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMore) {
+      const nextPage = page + 1;
+      setPage(nextPage);
+      fetchNotification(nextPage);
+    }
+  };
+
+
+  const fetchNotification = async (pageNumber = 1) => {
+    try {
+      if (pageNumber === 1) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
+
+      const data = {
+        page: pageNumber,
+        limit: 10,
+      };
+
+      const res = await getTNotification(data);
+      const newData = res?.data || [];
+      console.log('arrya of notific---->', newData);
+
+      if (pageNumber === 1) {
+        setAllNotifications(newData);
+      } else {
+        setAllNotifications(prev => [...prev, ...newData]);
+      }
+
+      // If returned items less than 10, stop pagination
+      if (newData.length < 10) {
+        setHasMore(false);
+      }
+
+    } catch (error) {
+      console.log('Pagination error:', error);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+
   const renderNotification = ({ item }) => {
     return (
       <Swipeable
         renderRightActions={(progress, dragX) =>
-          renderRightActions(progress, dragX, item.id)
+          renderRightActions(progress, dragX, item?._id)
         }
         overshootRight={false}
       >
-        <View style={styles.notifCard}>
-          <Image source={item.image} style={styles.notifImage} />
+        <View
+          style={[
+            styles.notifCard,
+            { backgroundColor: item?.isChecked ? '#fff' : '#F2F8FF' },
+          ]}
+        >
+          <Image
+            source={images.Ac_logo}
+            style={styles.notifImage}
+            resizeMode="contain"
+          />
+
           <View style={styles.notifContent}>
-            <Text style={styles.notifTitle}>{item.title}</Text>
-            <Text style={styles.notifMessage}>{item.message}</Text>
+            <AppText style={styles.notifTitle} numberOfLines={1}>
+              {item?.text}
+            </AppText>
+
+            <AppText style={styles.notifMessage} numberOfLines={2}>
+              {item?.text}
+            </AppText>
           </View>
-          <Text style={styles.notifTime}>{item.time}</Text>
+
+          <AppText style={styles.notifTime}>
+            {formatNotificationTime(item?.createdAt)}
+          </AppText>
         </View>
       </Swipeable>
     );
   };
 
   const renderSectionHeader = ({ section: { title } }) => (
-    <Text style={styles.sectionHeader}>{title}</Text>
+    <AppText style={styles.sectionHeader}>{title}</AppText>
   );
 
   // Empty State
   if (allNotifications.length === 0) {
     return (
-      <View style={styles.emptyContainer}>
-        <View style={styles.bellContainer}>
-          <Image source={images.notify} style={styles.bellImage} />
-          <View style={styles.badge}>
-            <Text style={styles.badgeText}>0</Text>
+      <View style={styles.container}>
+        <Header
+          title="Notifications"
+          onBack={() => navigation.goBack()}
+        />
+
+        <View style={styles.emptyContainer}>
+          <View style={styles.bellContainer}>
+            <Image
+              source={images.notify}
+              style={styles.bellImage}
+            />
+            <View style={styles.badge}>
+              <AppText style={styles.badgeText}>0</AppText>
+            </View>
           </View>
+
+          <AppText style={styles.emptyTitle}>
+            No Notification to show
+          </AppText>
+
+          <AppText style={styles.emptySubtitle}>
+            You currently have no notifications. We will notify you when something new happens!
+          </AppText>
         </View>
-        <Text style={styles.emptyTitle}>No Notification to show</Text>
-        <Text style={styles.emptySubtitle}>
-          You currently have no notifications. We will notify you when something
-          new happens!
-        </Text>
       </View>
     );
   }
 
+
   return (
     <View style={styles.container}>
       <Header title="Notifications" onBack={() => navigation.goBack()} />
-      <View style={{ marginHorizontal: wp(4) }}>
+      <View style={{ flex: 1, marginHorizontal: wp(3) }}>
         {/* Search Bar */}
         <View style={styles.searchContainer}>
           <Image source={images.searchIcon} style={styles.searchIcon} />
@@ -221,24 +353,32 @@ const NotificationScreeen = ({ navigation }) => {
             value={searchText}
             onChangeText={setSearchText}
             onSubmitEditing={() => Keyboard.dismiss()}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
         </View>
 
         {/* Clear All Button */}
         {allNotifications.length > 0 && (
           <TouchableOpacity style={styles.clearAllBtn} onPress={deleteAll}>
-            <Text style={styles.clearAllText}>Clear All</Text>
+            <AppText style={styles.clearAllText}>Clear All</AppText>
           </TouchableOpacity>
         )}
 
         {/* Notifications List */}
         <SectionList
           sections={filteredNotifications}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
           renderItem={renderNotification}
           renderSectionHeader={renderSectionHeader}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.list}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.3}
+          ListFooterComponent={
+            loadingMore ? (
+              <ActivityIndicator size="small" style={{ marginVertical: 20 }} />
+            ) : null}
         />
       </View>
     </View>
@@ -251,70 +391,69 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f9fa',
   },
-
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fff',
-    marginVertical: wp(4),
-    paddingHorizontal: wp(4),
-    borderRadius: wp(10),
-    elevation: 2,
+    marginVertical: hp(2),
+    paddingHorizontal: wp(3),
+    borderRadius: wp(8),
     borderWidth: wp(0.1),
     borderColor: COLORS.textColor,
   },
   searchIcon: {
-    width: wp(5),
-    height: wp(5),
+    width: wp(4.5),
+    height: wp(4.5),
     tintColor: '#aaa',
     marginRight: wp(2),
   },
   searchInput: {
     flex: 1,
-    paddingVertical: hp(1.3),
-    fontSize: hp(1.7),
+    paddingVertical: hp(0.8),
+    fontSize: hp(1.6),
     color: '#333',
     fontFamily: Fonts.medium,
+    minHeight: hp(3.5),           // smaller box
   },
+
   clearAllBtn: {
     alignSelf: 'flex-end',
-    marginBottom: hp(0),
+    marginBottom: hp(1),
   },
   clearAllText: {
     color: COLORS.red,
-    fontSize: hp(1.5),
+    fontSize: hp(1.7),
     fontWeight: '600',
   },
   sectionHeader: {
     fontSize: hp(1.5),
     fontFamily: Fonts.medium,
-    color: COLORS.textColor,
+    color: COLORS.textHeading,
     marginTop: hp(1),
     marginBottom: hp(1),
   },
+
   notifCard: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f2f2',
     padding: wp(2),
-    marginVertical: hp(0.5),
-    marginBottom: hp(0.6),
+    margin: hp(0.5),
+    marginVertical: hp(0.9),
     borderRadius: wp(3),
     elevation: 1,
+    alignItems: 'center',
   },
   notifImage: {
-    width: wp(12),
+    width: wp(12),                 // slightly smaller image
     height: wp(12),
-    borderRadius: wp(1),
+    borderRadius: wp(2),
     marginRight: wp(3),
   },
-  notifContent: {
-    flex: 1,
-  },
   notifTitle: {
-    fontSize: hp(1.5),
+    fontSize: hp(1.8),
     fontWeight: '600',
     color: COLORS.black,
-    marginBottom: hp(0.3),
+    marginBottom: hp(0.2),
   },
   notifMessage: {
     fontSize: hp(1.4),
@@ -324,6 +463,9 @@ const styles = StyleSheet.create({
     fontSize: hp(1.4),
     color: '#999',
     alignSelf: 'flex-start',
+  },
+  notifContent: {
+    flex: 1,
   },
   deleteBtn: {
     backgroundColor: COLORS.red,
@@ -340,7 +482,7 @@ const styles = StyleSheet.create({
     tintColor: '#fff',
   },
   list: {
-    paddingBottom: hp(2),
+    paddingBottom: hp(8),
   },
 
   // Empty State

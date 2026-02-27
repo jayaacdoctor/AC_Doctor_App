@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {
   View,
-  Text,
   StyleSheet,
 } from 'react-native';
 import {
@@ -11,6 +10,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import images from '../assets/images'; // Your check icon
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const BookingSuccessScreen = ({ navigation }) => {
   useEffect(() => {
@@ -34,14 +34,14 @@ const BookingSuccessScreen = ({ navigation }) => {
       </View>
 
       {/* Title */}
-      <Text style={styles.title}>Booking Successful! 🎉</Text>
+      <AppText style={styles.title}>Booking Successful! 🎉</AppText>
 
       {/* Card */}
       <View style={styles.card}>
         {/* <Text style={styles.orderId}>Order ID : 2001</Text> */}
-        <Text style={styles.message}>
+        <AppText style={styles.message}>
           Thank you for choosing us. Your booking has been confirmed, and our professional will get in touch with you very soon.
-        </Text>
+        </AppText>
       </View>
     </View>
   );

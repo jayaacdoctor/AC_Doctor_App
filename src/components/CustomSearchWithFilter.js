@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  Text,
   TextInput,
   FlatList,
   TouchableOpacity,
@@ -16,6 +15,7 @@ import images from '../assets/images';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { COLORS } from '../utils/colors';
 import CustomLoader from './CustomLoader';
+import AppText from './AppText';
 
 const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
   const [searchText, setSearchText] = useState('');
@@ -81,14 +81,14 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
     return (
       <View style={styles.ratingContainer}>
         {[...Array(5)].map((_, i) => (
-          <Text
+          <AppText
             key={i}
             style={
               i < Math.floor(rating) ? styles.starFilled : styles.starEmpty
             }
           >
             {i < Math.floor(rating) ? '★' : '☆'}
-          </Text>
+          </AppText>
         ))}
       </View>
     );
@@ -96,9 +96,9 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
 
   const FilterTag = ({ label, onRemove }) => (
     <View style={styles.filterTag}>
-      <Text style={styles.filterTagText}>{label}</Text>
+      <AppText style={styles.filterTagText}>{label}</AppText>
       <TouchableOpacity onPress={onRemove}>
-        <Text style={styles.removeTag}>x</Text>
+        <AppText style={styles.removeTag}>x</AppText>
       </TouchableOpacity>
     </View>
   );
@@ -115,6 +115,8 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
           onChangeText={setSearchText}
           placeholderTextColor={COLORS.textColor}
           onSubmitEditing={() => Keyboard.dismiss()}
+          allowFontScaling={false}
+          includeFontPadding={false}
         />
         <TouchableOpacity onPress={() => setShowFilters(!showFilters)}>
           <FastImage source={images.filterImg} style={styles.filterIcon} />
@@ -153,7 +155,7 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
                 />
               )}
               <TouchableOpacity onPress={clearFilters}>
-                <Text style={styles.clearAll}>Clear All</Text>
+                <AppText style={styles.clearAll}>Clear All</AppText>
               </TouchableOpacity>
             </ScrollView>
           </View>
@@ -162,10 +164,10 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
       {/* Filter Modal */}
       {showFilters && (
         <View style={styles.filterModal}>
-          <Text style={styles.filterTitle}>Filters</Text>
+          <AppText style={styles.filterTitle}>Filters</AppText>
 
           {/* Rating */}
-          <Text style={styles.filterLabel}>Rating</Text>
+          <AppText style={styles.filterLabel}>Rating</AppText>
           <View style={styles.ratingRow}>
             {[4, 3, 2, 1].map(rating => (
               <TouchableOpacity
@@ -178,13 +180,13 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
                   setSelectedRating(selectedRating === rating ? null : rating)
                 }
               >
-                <Text style={styles.ratingText}>{rating} Star</Text>
+                <AppText style={styles.ratingText}>{rating} Star</AppText>
               </TouchableOpacity>
             ))}
           </View>
 
           {/* Price Range */}
-          <Text style={styles.filterLabel}>Price Range</Text>
+          <AppText style={styles.filterLabel}>Price Range</AppText>
           <View style={styles.priceRow}>
             <TextInput
               style={styles.priceInput}
@@ -193,8 +195,10 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
               value={priceRange[0].toString()}
               onChangeText={text => setPriceRange([+text || 0, priceRange[1]])}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
-            <Text style={styles.toText}>to</Text>
+            <AppText style={styles.toText}>to</AppText>
             <TextInput
               style={styles.priceInput}
               placeholder="Max"
@@ -204,6 +208,8 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
                 setPriceRange([priceRange[0], +text || 100000])
               }
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
           </View>
 
@@ -215,24 +221,24 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
             <View
               style={[styles.checkbox, freeDelivery && styles.checkboxActive]}
             />
-            <Text style={styles.checkboxLabel}>Free Delivery Only</Text>
+            <AppText style={styles.checkboxLabel}>Free Delivery Only</AppText>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.applyBtn}
             onPress={() => setShowFilters(false)}
           >
-            <Text style={styles.applyText}>Apply Filters</Text>
+            <AppText style={styles.applyText}>Apply Filters</AppText>
           </TouchableOpacity>
         </View>
       )}
 
       {/* Last Search */}
       {lastSearch && !searchText && (
-        <Text style={styles.lastSearch}>
+        <AppText style={styles.lastSearch}>
           Last searched: "
-          <Text style={{ fontWeight: 'bold' }}>{lastSearch}</Text>"
-        </Text>
+          <Text allowFontScaling={false} style={{ fontWeight: 'bold' }}>{lastSearch}</Text>"
+        </AppText>
       )}
 
       {/* Product List */}
@@ -256,20 +262,20 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
                 style={styles.productImg}
               />
               <View style={styles.productInfo}>
-                <Text style={styles.productTitle} numberOfLines={2}>
+                <AppText style={styles.productTitle} numberOfLines={2}>
                   {item.title}
-                </Text>
+                </AppText>
                 <View style={styles.ratingRow}>
                   <StarRating rating={item.rating} />
-                  <Text style={[styles.reviewCount, { marginTop: -5 }]}>
+                  <AppText style={[styles.reviewCount, { marginTop: -5 }]}>
                     ({item.reviews})
-                  </Text>
+                  </AppText>
                 </View>
                 <View style={styles.ratingRow}>
-                  <Text style={styles.price}>
+                  <AppText style={styles.price}>
                     ₹{item.price.toLocaleString()}
-                  </Text>
-                  <Text
+                  </AppText>
+                  <AppText
                     style={[
                       styles.reviewCount,
                       {
@@ -279,20 +285,20 @@ const CustomSearchWithFilter = ({ initialData, onProductPress }) => {
                     ]}
                   >
                     ({item.originalPrice})
-                  </Text>
-                  <Text style={[styles.freeDelivery, { marginTop: 0 }]}>
+                  </AppText>
+                  <AppText style={[styles.freeDelivery, { marginTop: 0 }]}>
                     {'  '}
                     {item.discount}
-                  </Text>
+                  </AppText>
                 </View>
                 {item.freeDelivery && (
-                  <Text style={styles.freeDelivery}>Free Delivery</Text>
+                  <AppText style={styles.freeDelivery}>Free Delivery</AppText>
                 )}
               </View>
             </TouchableOpacity>
           )}
           ListEmptyComponent={
-            <Text style={styles.empty}>No products found</Text>
+            <AppText style={styles.empty}>No products found</AppText>
           }
         />
       )}

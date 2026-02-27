@@ -27,6 +27,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { isTablet } from '../../components/TabletResponsiveSize';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppText from '../../components/AppText';
 
 const VerificationScreen = ({ navigation, route }) => {
   const { phoneNumber, callingCode, otp: serverOtp, userId } = route.params;
@@ -67,6 +68,7 @@ const VerificationScreen = ({ navigation, route }) => {
 
           Toast.show(res?.data?.message || 'Verified Successfully');
           await AsyncStorage.setItem('token', res?.data?.data?.refreshToken);
+          await AsyncStorage.setItem('hasSetOTP', 'true');
           navigation.reset({
             index: 0,
             routes: [
@@ -173,18 +175,17 @@ const VerificationScreen = ({ navigation, route }) => {
                 resizeMode={FastImage.resizeMode.contain}
               />
             </TouchableOpacity>
-            <Text style={styles.title}>Verification code</Text>
-            {/* <Text style={styles.title}>{serverOtpState}</Text> */}
+            <AppText style={styles.title}>Verification code</AppText>
             <FastImage
               source={images.otpIcon}
               style={styles.image}
               resizeMode={FastImage.resizeMode.contain}
             />
-            <Text style={styles.otptitle}>Enter OTP to Verify</Text>
-            <Text style={styles.subtitle}>
+            <AppText style={styles.otptitle}>Enter OTP to Verify</AppText>
+            <AppText style={styles.subtitle}>
               We've sent a 4-digit code to {callingCode}{' '}
               {phoneNumber.replace(/(\d{3})(\d{3})(\d{4})/, '$1XXXX$3')}
-            </Text>
+            </AppText>
 
             <OTPTextInput
               inputCount={4}
@@ -205,9 +206,9 @@ const VerificationScreen = ({ navigation, route }) => {
               }}
             >
 
-              <Text style={[styles.resendTitle, { color: COLORS.black }]}>
+              <AppText style={[styles.resendTitle, { color: COLORS.black }]}>
                 {status === 'running' ? formatTime(time) : 'Resend OTP'}
-              </Text>
+              </AppText>
 
               <CustomButton
                 buttonName="Submit"

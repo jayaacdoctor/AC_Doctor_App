@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useEffectEvent } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useEffectEvent, useMemo } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   FlatList,
   Platform,
   useColorScheme,
-  Animated,
+  Animated, Easing,
   StatusBar,
   Alert,
 } from 'react-native';
@@ -27,15 +27,16 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context'; // Use SafeAreaView instead of SafeAreaProvider
 import { getAuthpatner, getServiceList, getBanner, getFeaturedProducts } from '../../api/homeApi';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import GetLoaction from '../../components/GetLoaction';
 import { useDispatch, useSelector } from 'react-redux';
-import { dispatch, store } from '../../redux/store';
 import { setAddress, setCelcius } from '../../redux/slices/authSlice';
 import OnTopScreen from '../../components/OnTopScreen';
 import CustomLoader from '../../components/CustomLoader';
 import { isTablet } from '../../components/TabletResponsiveSize';
 import { setServiceData } from '../../redux/slices/serviceSlice';
+import AppText from '../../components/AppText';
+import Toast from 'react-native-simple-toast';
 
 
 const HomeScreen = () => {
@@ -74,24 +75,42 @@ const HomeScreen = () => {
   };
 
   const { locationData } = route.params || {};
+  // const handleSellOldAC = () => {
+  //   Toast.show(
+  //     'This feature is currently under development. It will be available soon.',
+  //     Toast.SHORT
+  //   );
+  // };
   const handleSellOldAC = () => navigation.navigate('SellOldAcScreen');
   const handleAMC = () => navigation.navigate('AMCFrom');
-  const handleCopperPipe = () => navigation.navigate('CopperPipeScreen');
+  // const handleCopperPipe = () => navigation.navigate('CopperPipeScreen');
+  const handleCopperPipe = () => {
+    Toast.show(
+      'This feature is currently under development. It will be available soon.',
+      Toast.SHORT
+    );
+  };
   const handleCalulator = () => navigation.navigate('TonnageCalculatorScreen');
   const handleErrorcode = () => navigation.navigate('ErrorCodeScreen');
   const handleFreeConsult = () => navigation.navigate('FreeConsultant');
-  const handleProComparison = () =>
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Tab', params: { screen: 'Shop' } }],
-    });
+  // const handleProComparison = () =>
+  //   navigation.reset({
+  //     index: 0,
+  //     routes: [{ name: 'Tab', params: { screen: 'Shop' } }],
+  //   });
+  const handleProComparison = () => {
+    Toast.show(
+      'This feature is currently under development. It will be available soon.',
+      Toast.SHORT
+    );
+  };
 
   // Data arrays (unchanged)
   const requestQuote = [
     {
       label: 'Sell Old AC',
       icon: images.sellAcIcon,
-      // action: handleSellOldAC
+      action: handleSellOldAC
     },
     {
       label: 'AMC',
@@ -106,7 +125,7 @@ const HomeScreen = () => {
     {
       label: 'Copper Pipe',
       icon: images.copperIcon,
-      // action: handleCopperPipe
+      action: handleCopperPipe
     },
   ];
 
@@ -124,7 +143,7 @@ const HomeScreen = () => {
     {
       label: 'Product Comparison',
       icon: images.productIcon,
-      // action: handleProComparison,
+      action: handleProComparison,
     },
   ];
   const [Authpartner, setAuthpartner] = useState([]);
@@ -138,11 +157,12 @@ const HomeScreen = () => {
     return result;
   };
   const activeData = Authpartner.filter(item => item.isActive === 1);
-  const pages = chunkArray(activeData, 6);
+  const pages = chunkArray(activeData, 2);
   const [Loader, setLoader] = useState(true);
   const [addresslocation, setAddressTextLocation] = useState('');
   const [WeatherLoader, setWeatherLoader] = useState(true);
   const [WeatherData, setWeatherData] = useState();
+
 
   const normalizeAddress = (data) => {
     if (!data) return null;
@@ -178,7 +198,6 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-
     // ✅ CASE 1: Address from route params (HIGH PRIORITY)
     if (route?.params?.selectedAddress) {
 
@@ -237,10 +256,6 @@ const HomeScreen = () => {
 
   }, [route?.params]);
 
-
-
-
-
   const getWeather = async (lat, lon) => {
     setWeatherLoader(true);
 
@@ -263,13 +278,16 @@ const HomeScreen = () => {
     }
   };
 
-
+  // all fetch api calling
   useEffect(() => {
     getauthservice();
     getBookService();
     getBannerImg();
     fetchFeaturedProducts();
   }, [])
+
+
+
   const getauthservice = async () => {
     try {
       setLoading(true);
@@ -281,6 +299,34 @@ const HomeScreen = () => {
       setLoading(false);
     }
   };
+  const scrollX = useRef(0);
+  const logos = [...(Authpartner || []), ...(Authpartner || [])];
+
+  useEffect(() => {
+    if (!logos.length) return;
+
+    const itemWidth = 100; // match your image width
+    const originalWidth = itemWidth * (logos.length / 2);
+
+    const interval = setInterval(() => {
+      scrollX.current += 1; // speed control here 👈 increase for faster
+
+      if (scrollX.current >= originalWidth) {
+        scrollX.current = 0;
+        flatListRef.current?.scrollToOffset({
+          offset: 0,
+          animated: false,
+        });
+      } else {
+        flatListRef.current?.scrollToOffset({
+          offset: scrollX.current,
+          animated: false,
+        });
+      }
+    }, 60); // 20 = smooth & safe (not heavy like 16)
+
+    return () => clearInterval(interval);
+  }, [logos]);
 
   const getBookService = async () => {
     try {
@@ -293,8 +339,6 @@ const HomeScreen = () => {
       setLoading(false);
     }
   };
-
-
   const
     fetchFeaturedProducts = async () => {
       try {
@@ -318,7 +362,6 @@ const HomeScreen = () => {
         console.log('fetchFeaturedProducts error', e);
       }
     };
-
 
   // show view all text after 10 item list of product
   const listData =
@@ -413,7 +456,7 @@ const HomeScreen = () => {
       ) : (
         <TouchableOpacity onPress={() => navigation.navigate("ViewCart")} style={styles.cartViewIcon}>
 
-          <Text style={styles.TotalcoutnCart}>{serviceDetails.length}</Text>
+          <AppText style={styles.TotalcoutnCart}>{serviceDetails.length}</AppText>
           <Image source={images.cart} style={{ width: wp(7), height: wp(7) }} resizeMode='contain' />
         </TouchableOpacity>
       )
@@ -423,7 +466,7 @@ const HomeScreen = () => {
       <OnTopScreen>
         {/* Header with Location Icon and Add Location Text */}
         <View style={styles.header}>
-          <Text style={styles.locationtitle}>Location</Text>
+          <AppText style={styles.locationtitle}>Location</AppText>
           <View style={styles.addressRow}>
             {Loader ? (
               <>
@@ -436,12 +479,12 @@ const HomeScreen = () => {
                   style={styles.locationIcon}
                   resizeMode="contain"
                 />
-                <Text
+                <AppText
                   style={[styles.locationText, { width: wp(55), marginLeft: wp(1.5) }]}
                   numberOfLines={1}
                 >
                   {truncateWords(addresslocation?.fullAddress?.fullAddress, 6)}
-                </Text>
+                </AppText>
               </View>
             )}
             <View style={styles.wheatherContainer}>
@@ -453,15 +496,15 @@ const HomeScreen = () => {
               {WeatherLoader ? (
                 <>
                   <CustomLoader size="small" />
-                  <Text
+                  <AppText
                     style={styles.locationText}
-                  >Loading...</Text>
+                  >Loading...</AppText>
                 </>
               ) : (
-                <Text
+                <AppText
                   style={styles.locationText}
                 >{WeatherData ? `${WeatherData?.current_weather?.temperature} ${WeatherData?.current_weather_units?.temperature}` :
-                  'Loading...'}</Text>
+                  'Loading...'}</AppText>
               )}
             </View>
           </View>
@@ -483,7 +526,7 @@ const HomeScreen = () => {
 
         {/* Book a service */}
         <View style={[styles.reqcontainer, { minHeight: isTablet ? hp(33) : hp(28) }]}>
-          <Text style={styles.reqtitle}>Book AC Services</Text>
+          <AppText style={styles.reqtitle}>Book AC Services</AppText>
 
           <View style={{ flex: 1 }}>
             {loading ? (
@@ -504,7 +547,7 @@ const HomeScreen = () => {
                         source={{ uri: item.icon }}
                         style={styles.reqicon}
                       />
-                      <Text style={styles.reqlabel}>{item.name}</Text>
+                      <AppText style={styles.reqlabel} numberOfLines={1}>{item.name}</AppText>
                     </TouchableOpacity>
                   ))}
               </View>
@@ -516,7 +559,7 @@ const HomeScreen = () => {
 
         {/* Request a Quote */}
         <View style={[styles.reqcontainer, { minHeight: isTablet ? hp(21) : hp(17) }]}>
-          <Text style={styles.reqtitle}>Request a Quote</Text>
+          <AppText style={styles.reqtitle}>Request a Quote</AppText>
           <View style={styles.reqgrid}>
             {requestQuote.map((item, index) => (
               <TouchableOpacity
@@ -525,7 +568,7 @@ const HomeScreen = () => {
                 onPress={item.action}
               >
                 <FastImage source={item.icon} style={styles.reqicon} />
-                <Text style={styles.reqlabel}>{item.label}</Text>
+                <AppText style={styles.reqlabel} numberOfLines={1}>{item.label}</AppText>
               </TouchableOpacity>
             ))}
           </View>
@@ -535,7 +578,7 @@ const HomeScreen = () => {
           colors={['#ecd5d0ff', '#ede3dbff', '#b9d4e7ff']}
           style={styles.uticontainer}
         >
-          <Text style={[styles.utititle, { marginTop: hp(1) }]}>Utilities</Text>
+          <AppText style={[styles.utititle, { marginTop: hp(1) }]}>Utilities</AppText>
           <View style={styles.utigrid}>
             {utilities.map((item, index) => (
               <TouchableOpacity
@@ -544,44 +587,50 @@ const HomeScreen = () => {
                 onPress={item.action}
               >
                 <FastImage source={item.icon} style={styles.utiicon} />
-                <Text style={styles.utilabel}>{item.label}</Text>
+                <AppText style={styles.utilabel}>{item.label}</AppText>
               </TouchableOpacity>
             ))}
           </View>
         </LinearGradient>
 
         {/* OEM Partner */}
-        <View style={[styles.reqcontainer, { minHeight: isTablet ? hp(30) : hp(8) }]}>
-          <Text style={styles.reqtitle}>OEM Partner</Text>
+        <View style={[styles.reqcontainer, { minHeight: isTablet ? hp(30) : hp(13) }]}>
+          <AppText style={styles.reqtitle}>OEM Partner</AppText>
+
           {loading ? (
-            <CustomLoader size="large" />
+            <View style={{ marginTop: '5%' }}>
+              <CustomLoader />
+            </View>
           ) : (
             <FlatList
               ref={flatListRef}
-              data={pages?.[0]}
+              data={logos}
               horizontal
+              scrollEnabled={false} // 👈 IMPORTANT
               showsHorizontalScrollIndicator={false}
-              keyExtractor={(_, index) => `page-${index}`}
+              keyExtractor={(_, index) => `logo-${index}`}
               renderItem={({ item }) => (
                 <Image
                   source={{ uri: item?.logo }}
-                  style={styles.authicon}
+                  style={{
+                    width: 120,
+                    height: 60,
+                    marginRight: 10,
+                  }}
                   resizeMode="contain"
                 />
               )}
-              getItemLayout={(data, index) => ({
-                length: 100, // ⚠️ image width
-                offset: 100 * index,
-                index,
-              })}
+
             />
+
           )}
         </View>
+
 
         {/* Feature Product */}
         <View style={[styles.uticontainer, { padding: wp('0%') }]}>
           <View style={styles.topRow}>
-            <Text
+            <AppText
               style={[
                 styles.reqtitle,
                 { marginLeft: hp('1.5%') },
@@ -589,22 +638,23 @@ const HomeScreen = () => {
               ]}
             >
               Feature Product
-            </Text>
+            </AppText>
 
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('FeaturedProductsScreen')}
             >
-              <Text
+              <AppText
                 style={[
                   styles.accountBlueText,
                   { marginRight: hp('1.5%'), fontSize: hp('1.6%'), },
                 ]}
               >
                 View All
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
+
           {listData && listData.length > 0 ? (<FlatList
             data={listData}
             horizontal
@@ -619,7 +669,7 @@ const HomeScreen = () => {
                       navigation.navigate('FeaturedProductsScreen')
                     }
                   >
-                    <Text style={[styles.accountBlueText, { textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationColor: COLORS.themeColor }]}>View All</Text>
+                    <AppText style={[styles.accountBlueText, { textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationColor: COLORS.themeColor }]}>View All</AppText>
                   </TouchableOpacity>
                 );
               }
@@ -627,13 +677,8 @@ const HomeScreen = () => {
                 <View style={[styles.boderinercard, { height: hp('15%') }]}>
                   <View style={styles.topRow}>
                     <View style={styles.discountBadge}>
-                      <Text style={styles.discountText}>{item.discount}</Text>
+                      <AppText style={styles.discountText}>{item.discount}</AppText>
                     </View>
-
-                    {/* <Image
-                      source={images.dislike}
-                      style={styles.likeButton}
-                    /> */}
                   </View>
 
                   <Image source={item?.image} style={[styles.image, { height: '80%' }]} resizeMode='contain' />
@@ -641,7 +686,7 @@ const HomeScreen = () => {
 
                 <View style={styles.dealRow}>
                   <View style={styles.dealTag}>
-                    <Text style={styles.dealText}>{item?.reviews}</Text>
+                    <AppText style={styles.dealText}>{item?.reviews}</AppText>
                   </View>
                   {/* <StarRating
                     maxStars={5}
@@ -650,18 +695,18 @@ const HomeScreen = () => {
                   /> */}
                 </View>
 
-                <Text style={styles.name} numberOfLines={1}>
+                <AppText style={styles.name} numberOfLines={1}>
                   {item.name}
-                </Text>
+                </AppText>
 
 
 
                 <View style={styles.bottomRow}>
-                  <Text style={styles.price}>{item.price} {'  '}</Text>
+                  <AppText style={styles.price}>{item.price} {'  '}</AppText>
 
-                  <Text style={[styles.mrp, { textDecorationLine: 'line-through' }]}>
+                  <AppText style={[styles.mrp, { textDecorationLine: 'line-through' }]}>
                     {item.mrp}
-                  </Text>
+                  </AppText>
 
                 </View>
                 <TouchableOpacity
@@ -672,11 +717,11 @@ const HomeScreen = () => {
                     })
                   }
                 >
-                  <Text
+                  <AppText
                     style={styles.interestText}
                   >
                     View Details
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
 
               </View>)
@@ -686,7 +731,7 @@ const HomeScreen = () => {
             <View
               style={styles.emptyCard}
             >
-              <Text
+              <AppText
                 style={{
                   fontSize: 14,
                   color: '#888',
@@ -695,7 +740,7 @@ const HomeScreen = () => {
               >
                 No featured ACs right now 😕 {'\n'}
                 Cool deals coming soon! ❄️
-              </Text>
+              </AppText>
             </View>)}
 
         </View>
@@ -767,9 +812,9 @@ const HomeScreen = () => {
         </View>
         <Image source={images.homebanner} style={styles.bannerStyle} resizeMode='contain' />
         <View style={styles.sercard}>
-          <Text style={[styles.utititle, dynamicStyles.title]}>
+          <AppText style={[styles.utititle, dynamicStyles.title]}>
             Service Guarantee
-          </Text>
+          </AppText>
           <View
             style={[
               styles.sergrid,
@@ -782,9 +827,9 @@ const HomeScreen = () => {
                 style={[styles.sericon, dynamicStyles.extraIcon]}
               />
               <View>
-                <Text style={[styles.serstatTitle, dynamicStyles.title]}>
+                <AppText style={[styles.serstatTitle, dynamicStyles.title]}>
                   Rework Assurance
-                </Text>
+                </AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.serstatCard} activeOpacity={0.8}>
@@ -793,9 +838,9 @@ const HomeScreen = () => {
                 style={[styles.sericon, dynamicStyles.extraIcon]}
               />
               <View>
-                <Text style={[styles.serstatTitle, dynamicStyles.title]}>
+                <AppText style={[styles.serstatTitle, dynamicStyles.title]}>
                   100% Satisfaction
-                </Text>
+                </AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.serstatCard} activeOpacity={0.8}>
@@ -804,9 +849,9 @@ const HomeScreen = () => {
                 style={[styles.sericon, dynamicStyles.extraIcon]}
               />
               <View>
-                <Text style={[styles.serstatTitle, dynamicStyles.title]}>
+                <AppText style={[styles.serstatTitle, dynamicStyles.title]}>
                   Certified Engineers
-                </Text>
+                </AppText>
               </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.serstatCard} activeOpacity={0.8}>
@@ -815,9 +860,9 @@ const HomeScreen = () => {
                 style={[styles.sericon, dynamicStyles.extraIcon]}
               />
               <View>
-                <Text style={[styles.serstatTitle, dynamicStyles.title]}>
+                <AppText style={[styles.serstatTitle, dynamicStyles.title]}>
                   Copyright 2023
-                </Text>
+                </AppText>
               </View>
             </TouchableOpacity>
           </View>

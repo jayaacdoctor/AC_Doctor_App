@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, Keyboard } from 'react-native';
+import { View, TextInput, StyleSheet, Keyboard } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -24,7 +24,7 @@ const CustomTextInput = ({
 }) => {
   return (
     <View style={[styles.container, { width }]}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && <Text allowFontScaling={false} style={styles.label}>{label}</Text>}
 
       <View
         style={[
@@ -52,6 +52,8 @@ const CustomTextInput = ({
               textAlignVertical: multiline ? 'top' : 'center',
             },
           ]}
+          allowFontScaling={false}
+          includeFontPadding={false}
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}

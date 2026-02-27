@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const PropertySelectionModal = ({ visible, onClose, onSelect }) => {
   const [selectedType, setSelectedType] = useState(null);
@@ -46,7 +47,7 @@ const PropertySelectionModal = ({ visible, onClose, onSelect }) => {
                 resizeMode={FastImage.resizeMode.contain}
                 onError={() => console.log('CommerBuild image failed')}
               />
-              <Text
+              <AppText
                 style={[
                   styles.buttonText,
                   {
@@ -55,7 +56,7 @@ const PropertySelectionModal = ({ visible, onClose, onSelect }) => {
                 ]}
               >
                 Residential
-              </Text>
+              </AppText>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
@@ -70,24 +71,24 @@ const PropertySelectionModal = ({ visible, onClose, onSelect }) => {
                 resizeMode={FastImage.resizeMode.contain}
                 onError={() => console.log('ResidentBuild image failed')}
               />
-              <Text
+              <AppText
                 style={[
                   styles.buttonText,
                   { color: selectedType === 'Commercial' && COLORS.themeColor },
                 ]}
               >
                 Commercial
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
 
-           <TouchableOpacity
-                      style={styles.doneButton}
-                      onPress={handleDone}
-                      disabled={!selectedType}
-                    >
-                      <Text style={styles.doneButtonText}>Done</Text>
-                    </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.doneButton}
+            onPress={handleDone}
+            disabled={!selectedType}
+          >
+            <AppText style={styles.doneButtonText}>Done</AppText>
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     </Modal>

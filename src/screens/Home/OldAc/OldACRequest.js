@@ -17,7 +17,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import { COLORS, Fonts } from '../../../utils/colors';
+import { COLORS, Fonts, STATUS_CONFIG } from '../../../utils/colors';
 import images from '../../../assets/images';
 import BookingSlotModal from '../../../customScreen/BookingSlotModal';
 import HomeScreenStyles from '../HomeScreenStyles';
@@ -30,11 +30,12 @@ import acDetailData from '../../../customScreen/customArray';
 import { useFocusEffect } from '@react-navigation/native';
 import styles from './OldRequestStyles';
 import { store } from '../../../redux/store';
-import { postOldAcRequest } from '../../../api/homeApi';
+import { getUserOldAcRequest, postOldAcRequest, RescheduleEnquiryRequest } from '../../../api/homeApi';
 import Toast from 'react-native-simple-toast';
+import AppText from '../../../components/AppText'
 
-const OldACRequest = ({ navigation }) => {
-  const [reqStatus, setReqStatus] = useState(null); //Schedule, ReScheduled, complete, Accepted, Decline
+const OldACRequest = ({ navigation, route }) => {
+  const [reqStatus, setReqStatus] = useState(null); //Schedule, RESCHEDULED, BOOKING_CREATED, QUOTE_ACCEPTED, Decline
   const [detailStatus, setDetailStatus] = useState(null); // 'Request', 'Quote', 'Payment'
   const [PaymentStatus, setPaymentStatus] = useState('paydetail');
   const [modalSlotVisible, setModalSlotVisible] = useState(false);
@@ -43,6 +44,7 @@ const OldACRequest = ({ navigation }) => {
   const [selectdate, setSelectDate] = useState('Select date');
   const [selectTime, setSelectTime] = useState('First Half');
   const [selectReason, setSelectReason] = useState('');
+  const [rescheduleReason, setRescheduleReason] = useState('');
   const [successPopupVisible, setSuccessPopupVisible] = useState(false);
   const [successResheduleVisible, setSResheduleVisible] = useState(false);
   const [confirmPopupVisible, setConfirmPopupVisible] = useState(false);
@@ -53,52 +55,94 @@ const OldACRequest = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const userData = store?.getState()?.auth?.user;
   const addressId = store?.getState()?.auth?.address;
+  const { CreatedenquiryId } = route.params;
+  const [enquiryData, setEnquiryData] = useState(null);
 
   // api to fetch request details and status
   useFocusEffect(
     useCallback(() => {
       fetchRequestDetails();
-    }, [])
+    }, [CreatedenquiryId])
   );
 
 
   const fetchRequestDetails = async () => {
     try {
-      // api call here to fetch request details and status
-      const statusFromApi = '';
+      const response = await getUserOldAcRequest(CreatedenquiryId);
 
-      handleStatusFlow(statusFromApi);
+      console.log("Enquiry Details:", response);
+
+      if (response?.status) {
+        setEnquiryData(response?.data);
+      }
+      //  set the status here
+      if (response?.status && response?.data) {
+        const data = response.data;
+        setEnquiryData(data);
+
+        const statusFromApi = data?.status || '';
+        handleStatusFlow(statusFromApi);
+
+        // set schedule data
+        if (data?.schedule?.date) {
+          const dateObj = new Date(data.schedule.date);
+          const formattedDate = `${dateObj.getFullYear()}-${dateObj.getMonth() + 1}-${dateObj.getDate()}`;
+
+          setSelectDate(formattedDate);
+          setSelectTime(
+            data.schedule.slot === 'FIRST_HALF'
+              ? 'FIRST_HALF'
+              : 'SECOND_HALF'
+          );
+        }
+      }
+
 
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleStatusFlow = (status) => {
-    console.log('STATUS:', status);
+  const handleCancelEnquiry = async () => {
+    try {
+      setLoading(true);
+      const response = await cancelEnquiryRequest(CreatedenquiryId);
+      if (response?.status) {
+        Toast.show("Enquiry cancelled successfully");
+        setReqStatus('CANCELLED');
+        fetchRequestDetails();
+      }
 
-    setReqStatus(status);
-
-    if (
-      status === '' ||
-      status === 'underReview' ||
-      status === 'Schedule' ||
-      status === 'ReScheduled'
-    ) {
-      setDetailStatus('Request');
-
-    } else if (
-      status === 'complete' ||
-      status === 'Accepted' ||
-      status === 'Decline'
-    ) {
-      setDetailStatus('Quote');
-
-    } else if (status === 'Payment') {
-      setDetailStatus('Payment');
+    } catch (error) {
+      console.log("Cancel Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+
+  const handleStatusFlow = (status) => {
+    setReqStatus(status);
+
+    if (
+      status === 'REQUESTED' ||
+      status === 'SCHEDULED' ||
+      status === 'CANCELLED' ||
+      status === 'RESCHEDULED'
+    ) {
+      setDetailStatus('Request');
+    }
+    else if (
+      status === 'BOOKING_CREATED' ||
+      status === 'QUOTE_ACCEPTED' ||
+      status === 'QUOTE_REJECTED'
+    ) {
+      setDetailStatus('Quote');
+    }
+    else if (status === 'PAYMENT_PENDING') {
+      setDetailStatus('Payment');
+    }
+  };
 
   const toggleExpand = acName => {
     setExpandedAC(expandedAC === acName ? null : acName);
@@ -113,11 +157,14 @@ const OldACRequest = ({ navigation }) => {
       ).padStart(2, '0')}/${year}`;
       const formattedTime =
         time === 'morning' || time === 'firstHalf' ? 'First Half' : Timeslot;
+      const formattedReason = reason
       setSelectDate(formattedDate);
       setSelectTime(formattedTime);
-      setReqStatus('ReScheduled');
+      setRescheduleReason(formattedReason)
+      handleReschedule()
     }
   };
+
 
   // on Tab press
   const getTabStyle = status => {
@@ -173,45 +220,40 @@ const OldACRequest = ({ navigation }) => {
     }, [detailStatus])
   );
 
-  // post request details to api
-  const onBuyBtn = async () => {
+  const handleReschedule = async () => {
     try {
       setLoading(true);
+
       const payload = {
-        user_id: userData?._id,
-        name: userData?.name,
-        addressId: addressId?._id,
-        slot: selectTime === 'First Half' ? 'FIRST_HALF' : 'SECOND_HALF',
-        date: selectedDateAPIFormat, // 2026-02-11 format
-        type: "QUOTE_REQUEST",
-        subType: "OLD_AC",
-        oldAcDetails: [
-          {
-            brand: brand,
-            model: model,
-            acType: acType,
-            tonnage: tonnage,
-            age: age,
-            condition: condition,
-            technology: technology,
-            photos: selectedImages || []
-          }
-        ]
+        enquiryId: CreatedenquiryId,
+        newDate: selectdate,
+        newSlot: selectTime,
+        reason: rescheduleReason || "Not available",
       };
 
-      const res = await postOldAcRequest(payload);
-      if (res?.success) {
-        setShowSuccess(true);
+      console.log("Reschedule Payload:", payload);
+
+      const response = await RescheduleEnquiryRequest(payload);
+      console.log("Reschedule Payload:", response);
+
+      if (response?.status) {
+        Toast.show(response.message);
+        setReqStatus("RESCHEDULED");
+
       }
 
     } catch (error) {
-      Toast.show(error?.message || 'Something went wrong');
+      console.log("Reschedule Error:", error);
     } finally {
       setLoading(false);
     }
   };
 
 
+  const getStatusStyle = status => {
+    return STATUS_CONFIG[status] || { bg: '#f0f0f0', text: '#666' };
+  };
+  const { bg, text } = getStatusStyle(enquiryData.status);
   return (
     <View style={styles.container}>
       <Header
@@ -230,33 +272,33 @@ const OldACRequest = ({ navigation }) => {
         {/* Tabs */}
         <View style={styles.tabContainer}>
           <View style={styles.tab}>
-            <Text style={[styles.tabNumber, getTabStyle('Request')]}>1</Text>
-            <Text style={styles.tabText}>Request</Text>
+            <AppText style={[styles.tabNumber, getTabStyle('Request')]}>1</AppText>
+            <AppText style={styles.tabText}>Request</AppText>
           </View>
-          <Text style={[styles.tabText, { color: '#cececeff' }]}>────</Text>
+          <AppText style={[styles.tabText, { color: '#cececeff' }]}>────</AppText>
           <View style={styles.tab}>
-            <Text style={[styles.tabNumber, getTabStyle('Quote')]}>2</Text>
-            <Text style={styles.tabText}>Quote</Text>
+            <AppText style={[styles.tabNumber, getTabStyle('Quote')]}>2</AppText>
+            <AppText style={styles.tabText}>Quote</AppText>
           </View>
-          <Text style={[styles.tabText, { color: '#cececeff' }]}>────</Text>
+          <AppText style={[styles.tabText, { color: '#cececeff' }]}>────</AppText>
           <View style={styles.tab}>
-            <Text style={[styles.tabNumber, getTabStyle('Payment')]}>3</Text>
-            <Text style={styles.tabText}>Payment details</Text>
+            <AppText style={[styles.tabNumber, getTabStyle('Payment')]}>3</AppText>
+            <AppText style={styles.tabText}>Payment details</AppText>
           </View>
         </View>
 
         {/* Inspection Details  Schedule Section */}
         {detailStatus === 'Quote' && (
-          <Text style={[styles.label]}>
+          <AppText style={[styles.label]}>
             Request ID{' '}
-            <Text style={[styles.label, { color: COLORS.black }]}>#12334</Text>
-          </Text>
+            <AppText style={[styles.label, { color: COLORS.black }]}>#{enquiryData?.enquiryId}</AppText>
+          </AppText>
         )}
         {detailStatus === 'Request' && (
           <TouchableOpacity onPress={() => setReqStatus('Schedule')}>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               Inspection Details
-            </Text>
+            </AppText>
           </TouchableOpacity>
         )}
         {detailStatus === 'Request' && (
@@ -266,115 +308,99 @@ const OldACRequest = ({ navigation }) => {
                 <View style={styles.statusBarRow}>
                   <View style={styles.statusInfo}>
                     <Image source={images.copperIcon} style={styles.icon} />
-                    <Text style={styles.statusText}>Old AC</Text>
+                    <AppText style={styles.statusText}>Old AC</AppText>
                   </View>
                   <View
                     style={[
                       styles.statusBadge,
                       {
-                        backgroundColor:
-                          reqStatus === 'Schedule'
-                            ? '#FFE7CF'
-                            : reqStatus === 'ReScheduled'
-                              ? COLORS.lightSky
-                              : reqStatus === 'complete'
-                                ? '#ECFFE9'
-                                : '#fff4c5ff',
+                        backgroundColor: bg
                       },
                     ]}
                   >
-                    <Text
+                    <AppText
                       style={[
                         styles.statusBadgeText,
                         {
-                          color:
-                            reqStatus === 'Schedule'
-                              ? '#D26900'
-                              : reqStatus === 'ReScheduled'
-                                ? COLORS.themeColor
-                                : reqStatus === 'complete'
-                                  ? '#128807'
-                                  : '#ee9937ff',
+                          color: text
                         },
                       ]}
                     >
-                      {reqStatus === 'Schedule'
-                        ? 'Scheduled'
-                        : reqStatus === 'ReScheduled'
-                          ? 'Re Scheduled'
-                          : reqStatus === 'complete'
-                            ? 'Completed'
-                            : 'Under Review'}
-                    </Text>
+                      {enquiryData?.status}
+                    </AppText>
                   </View>
                 </View>
                 <View style={styles.statusInfo}>
-                  <Text style={styles.label}>Request ID</Text>
-                  <Text style={[styles.value, { marginLeft: hp(1) }]}>
-                    #12345
-                  </Text>
+                  <AppText style={styles.label}>Request ID</AppText>
+                  <AppText style={[styles.value, { marginLeft: hp(1) }]}>
+                    #{enquiryData?.enquiryId}
+                  </AppText>
                 </View>
               </View>
 
               <View style={styles.copperRow}>
                 <View style={styles.detailRow}>
-                  <Text style={styles.label}>
-                    {reqStatus === 'Schedule'
+                  <AppText style={styles.label}>
+                    {reqStatus === 'SCHEDULED'
                       ? 'Inspection Date & Time'
                       : 'Submitted On'}
-                  </Text>
-                  <Text style={styles.value}>
-                    {reqStatus === 'Schedule'
-                      ? '5/03/2025-First half'
-                      : '5/03/2025'}
-                  </Text>
+                  </AppText>
+                  <AppText style={styles.value}>
+                    {reqStatus === 'SCHEDULED'
+                      ? `${selectdate} - ${selectTime}`
+                      : enquiryData?.createdAt
+                        ? new global.Date(enquiryData.createdAt).toLocaleDateString()
+                        : '-'}
+                  </AppText>
                 </View>
                 <View style={[styles.detailRow, { paddingRight: hp(0) }]}>
-                  <Text style={styles.label}>Requested Service Details</Text>
-                  <Text style={styles.value}>LG, Dakin</Text>
+                  <AppText style={styles.label}>Requested Service Details</AppText>
+                  {enquiryData?.oldAcDetails?.map((ac) => (
+                    <View key={ac._id}><AppText style={styles.value}>{ac.brand}</AppText>
+                    </View>))}
                 </View>
               </View>
               {reqStatus !== 'Schedule' && (
                 <View style={styles.copperRow}>
                   <View style={styles.detailRow}>
-                    <Text style={styles.label}>Number of AC</Text>
-                    <Text style={styles.value}>2</Text>
+                    <AppText style={styles.label}>Number of AC</AppText>
+                    <AppText style={styles.value}>{enquiryData?.noOfAc}</AppText>
                   </View>
                   <View style={[styles.detailRow, { paddingRight: hp(7.5) }]}>
-                    <Text style={styles.label}>Agent Assigned</Text>
-                    <Text style={styles.value}>
-                      {reqStatus === 'complete' ? 'Mohan Verma' : '-'}
-                    </Text>
+                    <AppText style={styles.label}>Agent Assigned</AppText>
+                    <AppText style={styles.value}>
+                      {reqStatus === 'BOOKING_CREATED' ? 'Mohan Verma' : '-'}
+                    </AppText>
                   </View>
                 </View>
               )}
-              {reqStatus === 'complete' && (
+              {reqStatus === 'BOOKING_CREATED' && (
                 <View style={styles.copperRow}>
                   <View style={styles.detailRow}>
-                    <Text style={styles.label}>Final Offer</Text>
-                    <Text style={styles.value}>₹ 650000/-</Text>
+                    <AppText style={styles.label}>Final Offer</AppText>
+                    <AppText style={styles.value}>₹ 650000/-</AppText>
                   </View>
                   <View style={[styles.detailRow, { paddingRight: hp(1) }]}>
-                    <Text style={styles.label}>Status</Text>
-                    <Text style={styles.value}>Pending</Text>
+                    <AppText style={styles.label}>Status</AppText>
+                    <AppText style={styles.value}>Pending</AppText>
                   </View>
                 </View>
               )}
               {/* Additional Note */}
-              {reqStatus === 'complete' && (
+              {reqStatus === 'BOOKING_CREATED' && (
                 <>
-                  <Text style={styles.noteText}>
+                  <AppText style={styles.noteText}>
                     Note : Lorem ipsum dolor sit amet consectetur. Neque orci
                     lorem sed in. Lectus aliquet mattis condimentum eu tempus ac
                     lorem.
-                  </Text>
+                  </AppText>
                 </>
               )}
 
               {/* Assigned Agent */}
-              {reqStatus === 'Schedule' && (
+              {reqStatus === 'SCHEDULED' && (
                 <>
-                  <Text style={styles.sectionTitle}>Assigned Agent</Text>
+                  <AppText style={styles.sectionTitle}>Assigned Agent</AppText>
                   <View style={styles.agentContainer}>
                     <View style={styles.agentInfo}>
                       <Image
@@ -392,14 +418,14 @@ const OldACRequest = ({ navigation }) => {
                             source={images.profile}
                             style={[styles.icon, { resizeMode: 'contain' }]}
                           />
-                          <Text style={styles.agentName}>Mohan Verma</Text>
+                          <AppText style={styles.agentName}>Mohan Verma</AppText>
                         </View>
-                        <Text style={styles.agentTitle}>AC Doctor agent</Text>
+                        <AppText style={styles.agentTitle}>AC Doctor agent</AppText>
                       </View>
                     </View>
                     <View style={styles.actionButtons}>
                       <TouchableOpacity style={styles.viewProfileButton}>
-                        <Text style={styles.viewProfileText}>View Profile</Text>
+                        <AppText style={styles.viewProfileText}>View Profile</AppText>
                       </TouchableOpacity>
                       <TouchableOpacity style={styles.chatButton}>
                         <Image
@@ -417,24 +443,24 @@ const OldACRequest = ({ navigation }) => {
 
         {detailStatus === 'Payment' && (
           <>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               {' '}
               Request ID #1234
-            </Text>
+            </AppText>
             <View style={[styles.section]}>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Dakin</Text>
-                <Text style={[styles.value, { fontFamily: Fonts.semiBold }]}>
+                <AppText style={styles.label}>Dakin</AppText>
+                <AppText style={[styles.value, { fontFamily: Fonts.semiBold }]}>
                   ₹ 25000/-
-                </Text>
+                </AppText>
               </View>
-              <Text style={[styles.label, { paddingTop: hp(1) }]}>
+              <AppText style={[styles.label, { paddingTop: hp(1) }]}>
                 Dakin 9Q12YTYG
-              </Text>
+              </AppText>
 
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Split 1.5Ton</Text>
-                <Text
+                <AppText style={styles.label}>Split 1.5Ton</AppText>
+                <AppText
                   style={[
                     styles.label,
                     {
@@ -445,7 +471,7 @@ const OldACRequest = ({ navigation }) => {
                   ]}
                 >
                   Download Offer Agreement
-                </Text>
+                </AppText>
               </View>
             </View>
           </>
@@ -454,10 +480,10 @@ const OldACRequest = ({ navigation }) => {
         {/*  Payment mode selection */}
         {detailStatus === 'Payment' && (
           <>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               {' '}
               Payment mode selection
-            </Text>
+            </AppText>
             <View style={[styles.section]}>
               <TouchableOpacity
                 style={styles.statusInfo}
@@ -470,7 +496,7 @@ const OldACRequest = ({ navigation }) => {
                   }
                   style={styles.IconImage}
                 />
-                <Text style={styles.label}>{'  '}Bank Transfer</Text>
+                <AppText style={styles.label}>{'  '}Bank Transfer</AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.statusInfo}
@@ -483,7 +509,7 @@ const OldACRequest = ({ navigation }) => {
                   }
                   style={styles.IconImage}
                 />
-                <Text style={styles.label}>{'  '}UPI</Text>
+                <AppText style={styles.label}>{'  '}UPI</AppText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.statusInfo}
@@ -496,17 +522,17 @@ const OldACRequest = ({ navigation }) => {
                   }
                   style={styles.IconImage}
                 />
-                <Text style={styles.label}>{'  '}Cash on Pickup</Text>
+                <AppText style={styles.label}>{'  '}Cash on Pickup</AppText>
               </TouchableOpacity>
 
-              <Text
+              <AppText
                 style={[
                   styles.label,
                   { marginVertical: wp(1.5), color: COLORS.black },
                 ]}
               >
                 Enter your UPI ID
-              </Text>
+              </AppText>
               <View
                 style={{
                   borderRadius: hp(5),
@@ -525,6 +551,8 @@ const OldACRequest = ({ navigation }) => {
                   onChange={txt => setupiId(txt)}
                   style={styles.label}
                   onSubmitEditing={() => Keyboard.dismiss()}
+                  allowFontScaling={false}
+                  includeFontPadding={false}
                 />
               </View>
             </View>
@@ -534,15 +562,15 @@ const OldACRequest = ({ navigation }) => {
         {/* Status Section */}
         {(detailStatus === 'Quote' ||
           (detailStatus !== 'Payment' &&
-            ['Accepted', 'Decline'].includes(reqStatus))) && (
+            ['QUOTE_ACCEPTED', 'QUOTE_REJECTED'].includes(reqStatus))) && (
             <View style={[styles.section]}>
-              {(reqStatus === 'Accepted' ||
+              {(reqStatus === 'QUOTE_ACCEPTED' ||
                 detailStatus !== 'Payment' ||
-                reqStatus === 'Decline') && (
+                reqStatus === 'QUOTE_REJECTED') && (
                   <View style={styles.copperRow}>
-                    <Text style={styles.label}>Status</Text>
-                    {reqStatus === 'Accepted' && (
-                      <Text
+                    <AppText style={styles.label}>Status</AppText>
+                    {reqStatus === 'QUOTE_ACCEPTED' && (
+                      <AppText
                         style={[
                           styles.value,
                           {
@@ -554,10 +582,10 @@ const OldACRequest = ({ navigation }) => {
                       >
                         {' '}
                         ✅ Accepted
-                      </Text>
+                      </AppText>
                     )}
-                    {reqStatus === 'Decline' && (
-                      <Text
+                    {reqStatus === 'QUOTE_REJECTED' && (
+                      <AppText
                         style={[
                           styles.value,
                           {
@@ -569,44 +597,44 @@ const OldACRequest = ({ navigation }) => {
                       >
                         {' '}
                         ❌ Declined
-                      </Text>
+                      </AppText>
                     )}
                   </View>
                 )}
 
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Offer Amount</Text>
-                <Text
+                <AppText style={styles.label}>Offer Amount</AppText>
+                <AppText
                   style={[
                     styles.value,
                     { color: COLORS.themeColor, fontFamily: Fonts.semiBold },
                   ]}
                 >
                   ₹ 25000/-
-                </Text>
+                </AppText>
               </View>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Condition</Text>
-                <Text style={styles.value}>Good</Text>
+                <AppText style={styles.label}>Condition</AppText>
+                <AppText style={styles.value}>Good</AppText>
+              </View>
+              {enquiryData?.oldAcDetails?.map((ac) => (<View style={styles.copperRow} key={ac._id}>
+                <AppText style={styles.label}>Type of AC</AppText>
+                <AppText style={styles.value}>{ac.brand}</AppText>
+              </View>))}
+              <View style={styles.copperRow}>
+                <AppText style={styles.label}>Age</AppText>
+                <AppText style={styles.value}>3 Years</AppText>
               </View>
               <View style={styles.copperRow}>
-                <Text style={styles.label}>Type of AC</Text>
-                <Text style={styles.value}>Split AC-2{'\n'}Window AC-1</Text>
+                <AppText style={styles.label}>Inspection Remarks</AppText>
+                <AppText style={styles.value}>Minor scratches, function</AppText>
               </View>
-              <View style={styles.copperRow}>
-                <Text style={styles.label}>Age</Text>
-                <Text style={styles.value}>3 Years</Text>
-              </View>
-              <View style={styles.copperRow}>
-                <Text style={styles.label}>Inspection Remarks</Text>
-                <Text style={styles.value}>Minor scratches, function</Text>
-              </View>
-              {reqStatus === 'Decline' && (
+              {reqStatus === 'QUOTE_REJECTED' && (
                 <View style={styles.copperRow}>
-                  <Text style={styles.label}>Reason for Decline</Text>
-                  <Text style={[styles.value, { color: COLORS.red }]}>
+                  <AppText style={styles.label}>Reason for Decline</AppText>
+                  <AppText style={[styles.value, { color: COLORS.red }]}>
                     {selectReason}
-                  </Text>
+                  </AppText>
                 </View>
               )}
               {/* <View style={[styles.copperRow, { justifyContent: 'center' }]}>
@@ -626,8 +654,8 @@ const OldACRequest = ({ navigation }) => {
 
               {/* btn. */}
               {detailStatus === 'Quote' &&
-                reqStatus !== 'Accepted' &&
-                reqStatus !== 'Decline' && (
+                reqStatus !== 'QUOTE_ACCEPTED' &&
+                reqStatus !== 'QUOTE_REJECTED' && (
                   <View style={styles.copperRow}>
                     <TouchableOpacity
                       style={[
@@ -636,20 +664,20 @@ const OldACRequest = ({ navigation }) => {
                       ]}
                       onPress={() => setDeclineVisible(true)}
                     >
-                      <Text
+                      <AppText
                         style={[
                           styles.doneButtonText,
                           { color: COLORS.textHeading },
                         ]}
                       >
                         Decline
-                      </Text>
+                      </AppText>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[styles.doneButton, styles.secondButton]}
                       onPress={() => setAcceptVisible(true)}
                     >
-                      <Text style={styles.doneButtonText}>Accept</Text>
+                      <AppText style={styles.doneButtonText}>Accept</AppText>
                     </TouchableOpacity>
                   </View>
                 )}
@@ -665,9 +693,9 @@ const OldACRequest = ({ navigation }) => {
                   { width: isTablet ? wp(90) : wp(90), alignSelf: 'center' },
                 ]}
               >
-                <Text style={[styles.label, { color: COLORS.black }]}>
+                <AppText style={[styles.label, { color: COLORS.black }]}>
                   Your AC details
-                </Text>
+                </AppText>
                 {/* {detailStatus === 'Request' && (
                   <TouchableOpacity
                     style={[styles.copperRow, { borderBottomColor: '#F5F7FA' }]}
@@ -692,105 +720,92 @@ const OldACRequest = ({ navigation }) => {
             )}
 
             {/* AC Names List */}
-            {Object.keys(acDetailData).map(acName => (
-              <>
+            {enquiryData?.oldAcDetails?.map((ac) => (
+              <View key={ac._id}>
                 <TouchableOpacity
-                  key={'AC Names list'}
-                  onPress={() => toggleExpand(acName)}
+                  onPress={() => toggleExpand(ac._id)}
                   style={styles.acHeader}
                 >
-                  <Text style={[styles.acTitle, { marginLeft: wp(1) }]}>
-                    {acName}
-                  </Text>
-                  <Text style={styles.arrow}>
-                    {expandedAC === acName ? '▲' : '▼'}
-                  </Text>
+                  <AppText style={styles.acTitle}>
+                    {ac.brand}
+                  </AppText>
+                  <AppText style={styles.arrow}>
+                    {expandedAC === ac._id ? '▲' : '▼'}
+                  </AppText>
                 </TouchableOpacity>
 
-                {expandedAC === acName ? (
-                  <View key={acName} style={styles.acItem}>
-                    {Object.entries(acDetailData[acName]).map(([key, detail]) => (
+                {expandedAC === ac._id && (
+                  <View style={styles.acItem}>
+                    <View style={styles.copperRow}>
+                      <AppText style={styles.label}>AC Type</AppText>
+                      <AppText style={styles.value}>{ac.acType}</AppText>
+                    </View>
+
+                    <View style={styles.copperRow}>
+                      <AppText style={styles.label}>Tonnage</AppText>
+                      <AppText style={styles.value}>{ac.tonnage}</AppText>
+                    </View>
+
+                    <View style={styles.copperRow}>
+                      <AppText style={styles.label}>Condition</AppText>
+                      <AppText style={styles.value}>{ac.condition}</AppText>
+                    </View>
+
+                    <View style={styles.copperRow}>
+                      <AppText style={styles.label}>Technology</AppText>
+                      <AppText style={styles.value}>{ac.technology}</AppText>
+                    </View>
+                    <View style={styles.copperRow}>
+                      <AppText style={styles.label}>Preferred Inspection Date</AppText>
+                      <AppText style={styles.value}>{selectdate}</AppText>
+                    </View>
+                    <View style={styles.copperRow}>
+                      <AppText style={styles.label}>Preferred Inspection Time</AppText>
+                      <AppText style={styles.value}>{selectTime}</AppText>
+                    </View>
+                    {ac?.photos?.length > 0 && (
                       <>
-                        <View key={key} style={styles.copperRow}>
-                          <Text style={styles.label}>
-                            {detail.title
-                              ? detail.title.charAt(0).toUpperCase() +
-                              detail.title.slice(1)
-                              : key}
-                          </Text>
-                          <Text
-                            style={[
-                              styles.value,
-                              { fontFamily: Fonts.semiBold },
-                            ]}
-                          >
-                            {detail.value}
-                          </Text>
-                        </View>
-                        {/* Photos/Drawings Section */}
-                        {key === 'image' && (
-                          <Text
-                            style={[
-                              styles.sectionTitle,
-                              { marginVertical: hp(1.5) },
-                            ]}
-                          >
-                            Photos
-                          </Text>
-                        )}
-                        <View style={styles.photoGrid}>
-                          {key === 'image' && (
-                            <>
-                              <Image
-                                source={detail.value}
-                                style={styles.photo}
+                        <AppText style={styles.label}>Photos</AppText>
+
+                        <View style={styles.photosContainer}>
+                          {ac.photos.map((item, index) => (
+                            <View key={index} style={styles.imageWrapper}>
+                              <FastImage
+                                source={{ uri: item }}
+                                style={styles.image}
+                                resizeMode={FastImage.resizeMode.cover}
                               />
-                              <Image
-                                source={detail.value}
-                                style={styles.photo}
-                              />
-                              <ImageBackground
-                                source={detail.value}
-                                style={styles.photo}
-                              >
-                                <View style={styles.playButton}>
-                                  <Image
-                                    source={images.Play}
-                                    style={styles.playIconImage}
-                                  />
-                                </View>
-                              </ImageBackground>
-                            </>
-                          )}
+                            </View>
+                          ))}
                         </View>
                       </>
-                    ))}
+                    )}
+
                   </View>
-                ) : (
-                  <View></View>
                 )}
-              </>
+              </View>
             ))}
+
           </View>
         )}
 
         {/* Select Date & Time */}
         {detailStatus === 'Payment' && (
           <>
-            <Text style={[styles.label, { color: COLORS.black }]}>
+            <AppText style={[styles.label, { color: COLORS.black }]}>
               Schedule Pickup
-            </Text>
+            </AppText>
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Preferred Inspection Date & Time</Text>
+              <AppText style={styles.label}>Preferred Inspection Date & Time</AppText>
               <TouchableOpacity
                 style={styles.pickerWrapper}
                 onPress={() => setModalSlotVisible(true)}
               >
-                <Text
+                <AppText
                   style={[{ marginHorizontal: wp(4), fontFamily: Fonts.regular, color: selectdate === 'Select date' ? COLORS.textColor : COLORS.black }]}
                 >
                   {selectdate}
-                </Text>
+                </AppText>
                 <FastImage
                   source={images.Calendar}
                   style={styles.customIcon}
@@ -804,12 +819,12 @@ const OldACRequest = ({ navigation }) => {
         {detailStatus === 'Payment' && (
           <View style={[styles.section, { marginBottom: hp(3) }]}>
             <View style={styles.copperRow}>
-              <Text style={styles.label}>Pickup Date</Text>
-              <Text style={styles.value}>20/03/2025</Text>
+              <AppText style={styles.label}>Pickup Date</AppText>
+              <AppText style={styles.value}>20/03/2025</AppText>
             </View>
             <View style={styles.copperRow}>
-              <Text style={styles.label}>Pickup Time</Text>
-              <Text style={styles.value}>First Half</Text>
+              <AppText style={styles.label}>Pickup Time</AppText>
+              <AppText style={styles.value}>First Half</AppText>
             </View>
           </View>
         )}
@@ -839,7 +854,7 @@ const OldACRequest = ({ navigation }) => {
                   source={images.helpdesk}
                   style={HomeScreenStyles.smallimage}
                 />
-                <Text style={HomeScreenStyles.needHelp}>Need Help?</Text>
+                <AppText style={HomeScreenStyles.needHelp}>Need Help?</AppText>
               </View>
               <Image
                 source={images.chatIcon}
@@ -856,53 +871,52 @@ const OldACRequest = ({ navigation }) => {
 
           {/* 🔹 CASE 1: Show Cancel + Reschedule */}
           {(reqStatus === '' ||
-            reqStatus === 'underReview' ||
-            reqStatus === 'Schedule') && (
+            reqStatus === 'REQUESTED' ||
+            reqStatus === 'SCHEDULED') && (
               <>
                 <TouchableOpacity
                   style={[styles.doneButton, { backgroundColor: COLORS.white }]}
                   onPress={() => {
-                    // Cancel Reschedule → reset to original status
-                    setReqStatus('Schedule');
+                    handleCancelEnquiry()
                   }}
                 >
-                  <Text
+                  <AppText
                     style={[styles.doneButtonText, { color: COLORS.textHeading }]}
                   >
-                    Cancel Reschedule
-                  </Text>
+                    Cancel Request
+                  </AppText>
                 </TouchableOpacity>
 
                 <TouchableOpacity
                   style={[styles.doneButton, styles.secondButton]}
                   onPress={() => {
                     setSResheduleVisible(true);
-                    setReqStatus('ReScheduled'); // mark as rescheduled
+                    setReqStatus('RESCHEDULED'); // mark as RESCHEDULED
                   }}
                 >
-                  <Text style={styles.doneButtonText}>Reschedule</Text>
+                  <AppText style={styles.doneButtonText}>Reschedule</AppText>
                 </TouchableOpacity>
               </>
             )}
 
-          {/* 🔹 CASE 2 & 3: After Reschedule OR Complete */}
-          {(reqStatus === 'ReScheduled' ||
-            reqStatus === 'complete') && (
+          {/* 🔹 CASE 2 & 3: After Reschedule OR BOOKING_CREATED */}
+          {/* {(reqStatus === 'RESCHEDULED' ||
+            reqStatus === 'BOOKING_CREATED') && (
               <TouchableOpacity
                 style={[styles.doneButton, styles.secondButton]}
                 onPress={() => {
-                  if (reqStatus === 'ReScheduled') {
-                    // First Next → mark complete
-                    setReqStatus('complete');
-                  } else if (reqStatus === 'complete') {
+                  if (reqStatus === 'RESCHEDULED') {
+                    // First Next → mark BOOKING_CREATED
+                    setReqStatus('BOOKING_CREATED');
+                  } else if (reqStatus === 'BOOKING_CREATED') {
                     // Second Next → go to Quote tab
                     setDetailStatus('Quote');
                   }
                 }}
               >
-                <Text style={styles.doneButtonText}>Next</Text>
+                <AppText style={styles.doneButtonText}>Next</AppText>
               </TouchableOpacity>
-            )}
+            )} */}
 
         </View>
       )}
@@ -919,7 +933,7 @@ const OldACRequest = ({ navigation }) => {
           />
         </View>
       )}
-      {reqStatus === 'Accepted' &&
+      {reqStatus === 'QUOTE_ACCEPTED' &&
         (detailStatus === 'Quote' || detailStatus === 'Payment') && (
           <View style={HomeScreenStyles.servicesSection}>
             <CustomButton
@@ -936,19 +950,19 @@ const OldACRequest = ({ navigation }) => {
           </View>
         )}
 
-      {reqStatus === 'ReScheduled' && (
+      {/* {reqStatus === 'RESCHEDULED' && (
         <View style={HomeScreenStyles.servicesSection}>
           <CustomButton
             buttonName="Next"
             margingTOP={hp('0%')}
             btnTextColor={COLORS.white}
             btnColor={COLORS.themeColor}
-            onPress={() => setReqStatus('complete')}
+            onPress={() => setReqStatus('BOOKING_CREATED')}
           />
         </View>
-      )}
+      )} */}
 
-      {reqStatus === 'complete' && detailStatus === 'Request' && (
+      {reqStatus === 'BOOKING_CREATED' && detailStatus === 'Request' && (
         <View style={HomeScreenStyles.servicesSection}>
           <CustomButton
             buttonName="Next"
@@ -1001,7 +1015,7 @@ const OldACRequest = ({ navigation }) => {
         visible={confirmPopupVisible}
         onClose={() => {
           setConfirmPopupVisible(false);
-          setReqStatus('Schedule');
+          handleCancelEnquiry()
         }}
         HeadTextColor="black"
         HeadText="Cancelled!"
@@ -1030,12 +1044,12 @@ const OldACRequest = ({ navigation }) => {
         }}
       />
 
-      {/* offer Accepted */}
+      {/* offer Accepted*/}
       <SuccessPopupModal
         visible={confirmAcceptVisible}
         onClose={() => {
           setConfirmAcceptVisible(false);
-          setReqStatus('Accepted');
+          setReqStatus('QUOTE_ACCEPTED');
         }}
         HeadText="Offer Accepted!"
         message1="Your request has been submitted."
@@ -1057,7 +1071,7 @@ const OldACRequest = ({ navigation }) => {
         firstButtonText="Confirm Decline"
         onFirstButtonPress={reason => {
           setDeclineVisible(false);
-          setReqStatus('Decline');
+          setReqStatus('QUOTE_REJECTED');
         }}
         secondButtonText="No"
         onSecondButtonPress={() => {
@@ -1079,7 +1093,5 @@ const OldACRequest = ({ navigation }) => {
     </View>
   );
 };
-
-
 
 export default OldACRequest;

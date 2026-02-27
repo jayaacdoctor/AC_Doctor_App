@@ -31,6 +31,7 @@ import { store } from '../../redux/store';
 import { postAMCRequest } from '../../api/homeApi';
 import Toast from 'react-native-simple-toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import AppText from '../../components/AppText';
 
 const AMCFrom = ({ navigation }) => {
   const [editStatus, setEditStatus] = useState(false);
@@ -135,7 +136,7 @@ const AMCFrom = ({ navigation }) => {
           <View style={screenStyles.worksliderview}>
             <Image source={images.bannerAmc} style={screenStyles.workimage} />
           </View>
-          <Text style={[screenStyles.workheadText]}>Customer Details</Text>
+          <AppText style={[screenStyles.workheadText]}>Customer Details</AppText>
           {/* Name */}
           <CunstomInput
             label="Name"
@@ -144,19 +145,19 @@ const AMCFrom = ({ navigation }) => {
             onChangeText={val => handleInputChange('name', val)}
             borderRadius={hp('1%')}
             MarginTop={hp('1%')}
-            containerStyle={{ width: isTablet ? wp(90) : wp(90) }}
+            containerStyle={{ width: isTablet ? wp(90) : wp(86) }}
             onSubmitEditing={() => Keyboard.dismiss()}
           />
           {/* Phone */}
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Phone No.</Text>
+            <AppText style={styles.label}>Phone No.</AppText>
 
             {!editStatus && (
               <Pressable
                 style={[styles.styleofText, styles.rowView]}
                 onPress={() => setEditStatus(true)}
               >
-                <Text
+                <AppText
                   style={[
                     styles.phonefont,
                     {
@@ -165,7 +166,7 @@ const AMCFrom = ({ navigation }) => {
                   ]}
                 >
                   {formData.phoneNumber}
-                </Text>
+                </AppText>
                 <Image source={images.edit} style={styles.editImg} />
               </Pressable>
             )}
@@ -211,9 +212,9 @@ const AMCFrom = ({ navigation }) => {
             />
           </View>
           {/* AC Type */}
-          <Text style={[screenStyles.workheadText, { margin: hp(1) }]}>
+          <AppText style={[screenStyles.workheadText, { margin: hp(1) }]}>
             Related to AC
-          </Text>
+          </AppText>
           <ACTypeSelector
             onChange={v => handleInputChange('addAc', v)}
             headingText={'Add AC'}
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   phonefont: {
-    fontSize: hp('1.6%'),
+    fontSize: hp('1.8%'),
     color: COLORS.inputColour,
   },
 

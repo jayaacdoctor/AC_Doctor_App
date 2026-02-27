@@ -14,6 +14,7 @@ import Header from '../../components/Header';
 import { COLORS, Fonts } from '../../utils/colors';
 import CustomButton from '../../components/CustomButton';
 import CustomDateTimePicker from '../../components/CustomDateTimePicker';
+import AppText from '../../components/AppText';
 
 const ReqBookingAMC = ({ navigation }) => {
   const [selectedSlot, setSelectedSlot] = useState('first');
@@ -29,13 +30,13 @@ const ReqBookingAMC = ({ navigation }) => {
         <View style={styles.card}>
           <View style={styles.rowBetween}>
             <View style={{ width: '50%' }}>
-              <Text style={styles.label}>Name</Text>
-              <Text style={styles.value}>Irshad Khan</Text>
+              <AppText style={styles.label}>Name</AppText>
+              <AppText style={styles.value}>Irshad Khan</AppText>
             </View>
 
             <View style={{ width: '50%', alignItems: 'flex-end' }}>
-              <Text style={styles.label}>Phone Number</Text>
-              <Text style={styles.value}>9876543210</Text>
+              <AppText style={styles.label}>Phone Number</AppText>
+              <AppText style={styles.value}>9876543210</AppText>
             </View>
           </View>
 
@@ -43,15 +44,15 @@ const ReqBookingAMC = ({ navigation }) => {
 
           <View style={styles.rowBetween}>
             <View style={{ width: '70%' }}>
-              <Text style={styles.areaTitle}>Vijay Nagar</Text>
-              <Text style={styles.address}>
+              <AppText style={styles.areaTitle}>Vijay Nagar</AppText>
+              <AppText style={styles.address}>
                 149-B, Vijay Nagar, Near by C21 mall,{'\n'}
                 Indore, Madhya Pradesh 452016
-              </Text>
+              </AppText>
             </View>
 
             <TouchableOpacity style={styles.changeBtn}>
-              <Text style={styles.changeText}>Change</Text>
+              <AppText style={styles.changeText}>Change</AppText>
             </TouchableOpacity>
           </View>
         </View>

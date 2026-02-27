@@ -7,6 +7,7 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import AppText from '../components/AppText';
 
 const OrderSummaryModal = ({
     visible,
@@ -32,9 +33,9 @@ const OrderSummaryModal = ({
                     {/* LOCATION */}
                     <View style={styles.row}>
                         <FastImage source={images.locationRed} style={styles.icon} />
-                        <Text style={styles.text} numberOfLines={2}
+                        <AppText style={styles.text} numberOfLines={2}
                             ellipsizeMode="tail"
-                        >{locationText?.trim()}</Text>
+                        >{locationText?.trim()}</AppText>
                     </View>
 
                     {/* PHONE */}
@@ -44,17 +45,17 @@ const OrderSummaryModal = ({
                             style={styles.icon}
                             resizeMode="contain"
                         />
-                        <Text style={styles.text}>
+                        <AppText style={styles.text}>
                             {phoneText?.trim()}
-                        </Text>
+                        </AppText>
                     </View>
 
                     {/* SLOT */}
                     <View style={[styles.row, { marginBottom: hp('2%') }]}>
                         <FastImage source={images.timeRed} style={styles.icon} />
-                        <Text style={styles.text}>
+                        <AppText style={styles.text}>
                             {slotText?.trim()}
-                        </Text>
+                        </AppText>
                     </View>
 
                     <CustomButton
@@ -74,10 +75,10 @@ const OrderSummaryModal = ({
                             marginBottom: 5, alignSelf: 'center'
                         }}
                     >
-                        <Text style={[styles.text, { color: 'black' }]}>
-                            By proceeding, you agree to our <Text style={styles.textHeighlight}>Terms & Conditions and Privacy Policy
-                                Policy</Text>
-                        </Text>
+                        <AppText style={[styles.text, { color: 'black' }]}>
+                            By proceeding, you agree to our <AppText style={styles.textHeighlight}>Terms & Conditions and Privacy Policy
+                                Policy</AppText>
+                        </AppText>
                     </TouchableOpacity>
 
                 </View>

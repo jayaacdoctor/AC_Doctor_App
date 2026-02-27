@@ -6,6 +6,7 @@ import axios from 'axios';
 import CustomButton from '../../components/CustomButton'; // Assume yeh hai
 import { COLORS } from '../../utils/colors';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import AppText from '../../components/AppText';
 
 const MapScreen = ({ navigation }) => {
   const [position, setPosition] = useState({
@@ -31,9 +32,9 @@ const MapScreen = ({ navigation }) => {
   // Reverse geocode: Lat/Long se address get
   const getAddressFromCoords = async (lat, lng) => {
     try {
-    //   const response = await axios.get(
-    //     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_GOOGLE_API_KEY` // Replace with your key
-    //   );
+      //   const response = await axios.get(
+      //     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=YOUR_GOOGLE_API_KEY` // Replace with your key
+      //   );
       // if (response.data.results.length > 0) {
       //   setAddress(response.data.results[0].formatted_address);
       // }
@@ -82,7 +83,7 @@ const MapScreen = ({ navigation }) => {
         />
       </MapView>
       <View style={styles.bottomContainer}>
-        <Text style={styles.addressText}>{loading ? 'Fetching...' : address}</Text>
+        <AppText style={styles.addressText}>{loading ? 'Fetching...' : address}</AppText>
         <CustomButton
           buttonName="Confirm Location"
           btnColor={COLORS.themeColor}

@@ -12,6 +12,8 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Fonts } from '../../utils/colors'; // Adjust path as needed
+import AppText from '../components/AppText'
+
 
 const ServiceModal = ({ visible, onClose, onSelectService, selectedService }) => {
   const services = [
@@ -29,7 +31,7 @@ const ServiceModal = ({ visible, onClose, onSelectService, selectedService }) =>
     >
       <View style={styles.modalOverlay}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Select Service</Text>
+          <AppText style={styles.modalTitle}>Select Service</AppText>
           <FlatList
             data={services}
             keyExtractor={(item) => item.value}
@@ -44,12 +46,12 @@ const ServiceModal = ({ visible, onClose, onSelectService, selectedService }) =>
                   onClose();
                 }}
               >
-                <Text style={styles.modalItemText}>{item.label}</Text>
+                <AppText style={styles.modalItemText}>{item.label}</AppText>
               </TouchableOpacity>
             )}
           />
           <TouchableOpacity style={styles.modalCloseButton} onPress={onClose}>
-            <Text style={styles.modalCloseText}>Close</Text>
+            <AppText style={styles.modalCloseText}>Close</AppText>
           </TouchableOpacity>
         </View>
       </View>

@@ -16,6 +16,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { isTablet } from '../components/TabletResponsiveSize';
+import AppText from '../components/AppText';
 
 const ACTypeSelector = ({
   onChange,
@@ -106,9 +107,9 @@ const ACTypeSelector = ({
   const renderChips = () => {
     return Object.entries(selectedItems).map(([itemName, count]) => (
       <View key={itemName} style={styles.chipContainer}>
-        <Text style={styles.chipText}>{`${itemName} - ${count}`}</Text>
+        <AppText style={styles.chipText}>{`${itemName} - ${count}`}</AppText>
         <TouchableOpacity onPress={() => handleRemoveItem(itemName)}>
-          <Text style={styles.removeText}>×</Text>
+          <AppText style={styles.removeText}>×</AppText>
         </TouchableOpacity>
       </View>
     ));
@@ -123,12 +124,12 @@ const ACTypeSelector = ({
   return (
     <>
       <View style={styles.inputGroup}>
-        <Text style={[styles.label, HeadingStyle]}>{headingText}</Text>
+        <AppText style={[styles.label, HeadingStyle]}>{headingText}</AppText>
         <TouchableOpacity
           style={[styles.pickerWrapper, { borderRadius: ShapeRADIUS }]}
           onPress={() => setModalVisible(true)}
         >
-          <Text style={styles.placeholder}>Select AC type</Text>
+          <AppText style={styles.placeholder}>Select AC type</AppText>
           <FastImage
             source={images.arrowdown}
             style={styles.customIcon}
@@ -180,25 +181,25 @@ const ACTypeSelector = ({
                         style={styles.customIAccon}
                         resizeMode={FastImage.resizeMode.contain}
                       />
-                      <Text style={styles.itemText}>{item.name}</Text>
+                      <AppText style={styles.itemText}>{item.name}</AppText>
                     </View>
                     {count === 0 ? (
                       <TouchableOpacity
                         style={styles.addButton}
                         onPress={() => handleAddItem(item.name)}
                       >
-                        <Text style={styles.addButtonText}> + Add</Text>
+                        <AppText style={styles.addButtonText}> + Add</AppText>
                       </TouchableOpacity>
                     ) : (
                       <View style={styles.minusButton}>
                         <TouchableOpacity
                           onPress={() => handleMinusItem(item.name)}
                         >
-                          <Text style={styles.minusButtonText}>-</Text>
+                          <AppText style={styles.minusButtonText}>-</AppText>
                         </TouchableOpacity>
-                        <Text style={styles.countText}>{count}</Text>
+                        <AppText style={styles.countText}>{count}</AppText>
                         <TouchableOpacity onPress={() => handleAddItem(item.name)}>
-                          <Text style={styles.addButtonText}>+</Text>
+                          <AppText style={styles.addButtonText}>+</AppText>
                         </TouchableOpacity>
                       </View>
                     )}
@@ -210,7 +211,7 @@ const ACTypeSelector = ({
               style={styles.doneButton}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.doneButtonText}>Done</Text>
+              <AppText style={styles.doneButtonText}>Done</AppText>
             </TouchableOpacity>
           </View>
         </View>
@@ -225,7 +226,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   label: {
-    fontSize: 14.5,
+    fontSize: hp('1.6%'),
     color: COLORS.black,
     marginVertical: 10,
     fontFamily: Fonts.semiBold,
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     flex: 1,
-    fontSize: 14,
+    fontSize: wp(4),
     color: '#666',
   },
   customIcon: {

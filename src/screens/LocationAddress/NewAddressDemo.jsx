@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import useLocation from '../../utils/useLocation';
 import CustomLoader from '../../components/CustomLoader';
+import AppText from '../../components/AppText';
 
 const NewAddressDemo = () => {
   const [city, setCity] = useState('');
@@ -73,7 +74,9 @@ const NewAddressDemo = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Add Address</Text>
+      <AppText allowFontScaling={false} style={styles.title}>
+        Add Address
+      </AppText>
 
       <TextInput
         placeholder="City"
@@ -81,6 +84,8 @@ const NewAddressDemo = () => {
         onChangeText={setCity}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -89,6 +94,8 @@ const NewAddressDemo = () => {
         onChangeText={setAddress}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -97,6 +104,8 @@ const NewAddressDemo = () => {
         onChangeText={setLandmark}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -106,6 +115,8 @@ const NewAddressDemo = () => {
         keyboardType="number-pad"
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -114,6 +125,8 @@ const NewAddressDemo = () => {
         onChangeText={setStateName}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       {locationLoading ? (
@@ -127,6 +140,8 @@ const NewAddressDemo = () => {
             keyboardType="decimal-pad"
             style={styles.input}
             onSubmitEditing={() => Keyboard.dismiss()}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
 
           <TextInput
@@ -136,17 +151,19 @@ const NewAddressDemo = () => {
             keyboardType="decimal-pad"
             style={styles.input}
             onSubmitEditing={() => Keyboard.dismiss()}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
         </>
       )}
 
       {locationError && (
-        <Text style={styles.errorText}>
+        <AppText style={styles.errorText}>
           Location Error: {locationError}{' '}
-          <Text onPress={retry} style={styles.retryText}>
+          <AppText onPress={retry} style={styles.retryText}>
             Retry
-          </Text>
-        </Text>
+          </AppText>
+        </AppText>
       )}
 
       <View style={styles.buttonContainer}>

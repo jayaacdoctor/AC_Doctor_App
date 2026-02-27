@@ -76,3 +76,31 @@ export const getUserDeatil = async (userId) => {
     throw error;
   }
 };
+
+// api/profileApi.js
+export const getTNotification = async (payload) => {
+  try {
+    const res = await api.get(endPoint.NOTIFICATION, {
+      params: payload,
+    });
+    return res?.data;
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+};
+// api/profileApi.js
+export const DeleteNotification = async (userId) => {
+  try {
+    const res = await api.get(`${endPoint.DELETE_NOTIFICATION}${userId}`);
+    return res?.data;
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+};
+
+
+
+
+

@@ -17,6 +17,7 @@ import images from '../../assets/images';
 import { COLORS, Fonts } from '../../utils/colors';
 import WorkInfo from '../../customScreen/WorkInfo';
 import { isTablet } from '../../components/TabletResponsiveSize';
+import AppText from '../../components/AppText';
 
 const AMCScreen = ({ navigation }) => {
   const items = [
@@ -38,8 +39,8 @@ const AMCScreen = ({ navigation }) => {
         <Image source={images.OfficeAMC} style={styles.icon} />
       </View>
 
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.value}>{item.value}</Text>
+      <AppText style={styles.title}>{item.title}</AppText>
+      <AppText style={styles.value}>{item.value}</AppText>
     </TouchableOpacity>
   );
 

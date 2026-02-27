@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
   const [selectedType, setSelectedType] = useState(null);
@@ -28,7 +29,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
     >
       <TouchableOpacity style={styles.modalContainer} onPress={onClose}>
         <View style={styles.modalContent}>
-          <Text style={styles.title}>Select Outdoor Condenser Location</Text>
+          <AppText style={styles.title}>Select Outdoor Condenser Location</AppText>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[
@@ -42,7 +43,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
                 source={images.wallCenter}
                 resizeMode={FastImage.resizeMode.contain}
               />
-              <Text
+              <AppText
                 style={[
                   styles.buttonText,
                   {
@@ -52,7 +53,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
                 ]}
               >
                 Wall mounted low
-              </Text>
+              </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -67,7 +68,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
                 source={images.wallMid}
                 resizeMode={FastImage.resizeMode.contain}
               />
-              <Text
+              <AppText
                 style={[
                   styles.buttonText,
                   {
@@ -77,7 +78,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
                 ]}
               >
                 Wall mounted high
-              </Text>
+              </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -92,7 +93,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
                 source={images.wallDown}
                 resizeMode={FastImage.resizeMode.contain}
               />
-              <Text
+              <AppText
                 style={[
                   styles.buttonText,
                   {
@@ -103,7 +104,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
                 ]}
               >
                 Wall mounted Floor
-              </Text>
+              </AppText>
             </TouchableOpacity>
           </View>
           <TouchableOpacity
@@ -111,7 +112,7 @@ const OutdoorSelectionModal = ({ visible, onClose, onSelect }) => {
             onPress={handleDone}
             disabled={!selectedType}
           >
-            <Text style={styles.doneButtonText}>Done</Text>
+            <AppText style={styles.doneButtonText}>Done</AppText>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

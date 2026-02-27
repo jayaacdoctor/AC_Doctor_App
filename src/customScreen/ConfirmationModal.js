@@ -6,6 +6,7 @@ import {
 } from 'react-native-responsive-screen';
 import { COLORS } from '../utils/colors';
 import { useNavigation } from '@react-navigation/native';
+import AppText from '../components/AppText';
 
 const ConfirmationModal = ({
   visible,
@@ -28,41 +29,41 @@ const ConfirmationModal = ({
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <TouchableOpacity onPress={onClose} style={styles.crossBtn}>
-            <Text style={styles.crossText}>X</Text>
+            <AppText style={styles.crossText}>X</AppText>
           </TouchableOpacity>
-          <Text style={styles.title}>Confirm Booking</Text>
-          <Text style={styles.sectionLabel}>Selected Address</Text>
+          <AppText style={styles.title}>Confirm Booking</AppText>
+          <AppText style={styles.sectionLabel}>Selected Address</AppText>
           {selectedAddress && (
             <View style={styles.addressBox}>
-              <Text style={styles.addressText}>{selectedAddress.name}</Text>
-              <Text style={styles.addressText}>{selectedAddress.address}</Text>
-              <Text style={styles.addressText}>{selectedAddress.phone}</Text>
+              <AppText style={styles.addressText}>{selectedAddress.name}</AppText>
+              <AppText style={styles.addressText}>{selectedAddress.address}</AppText>
+              <AppText style={styles.addressText}>{selectedAddress.phone}</AppText>
             </View>
           )}
-          <Text style={styles.sectionLabel}>Selected Slot</Text>
+          <AppText style={styles.sectionLabel}>Selected Slot</AppText>
 
           {selectedSlot && (
             <View style={styles.slotBox}>
-              <Text style={styles.slotText}>
+              <AppText style={styles.slotText}>
                 Date: {selectedSlot.date}
                 {'/'}
                 {selectedSlot.monthNumber}
                 {'/'}
                 {selectedSlot.year}
-              </Text>
-              <Text style={styles.slotText}>Time: {selectedSlot.Timeslot}</Text>
+              </AppText>
+              <AppText style={styles.slotText}>Time: {selectedSlot.Timeslot}</AppText>
             </View>
           )}
           <TouchableOpacity
             style={styles.confirmButton}
             onPress={handleProceed}
           >
-            <Text style={styles.confirmButtonText}>Process to pay</Text>
+            <AppText style={styles.confirmButtonText}>Process to pay</AppText>
           </TouchableOpacity>
 
-          <Text style={styles.policyLabel}>
+          <AppText style={styles.policyLabel}>
             By proceeding, you agree to our T&C, Privacy & Cancellation Policy
-          </Text>
+          </AppText>
         </View>
       </View>
     </Modal>

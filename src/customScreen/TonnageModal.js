@@ -15,6 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const TonnageModal = ({ visible, onClose, onSelect }) => {
   const [selectedType, setSelectedType] = useState(null);
@@ -42,14 +43,14 @@ const TonnageModal = ({ visible, onClose, onSelect }) => {
       ]}
       onPress={() => setSelectedType(item.name)}
     >
-      <Text
+      <AppText
         style={[
           styles.buttonText,
           { color: selectedType === item.name ? '#4a90e2' : '#333' },
         ]}
       >
         {item.name}
-      </Text>
+      </AppText>
     </TouchableOpacity>
   );
 
@@ -118,10 +119,11 @@ const styles = StyleSheet.create({
   },
   headText: {
     textAlign: 'center',
-    fontSize: hp(1.6),
+    fontSize: hp(1.8),
     fontFamily: Fonts.semiBold,
     color: COLORS.black,
     marginBottom: hp(1),
+    textDecorationLine: 'underline'
   },
   button: {
     backgroundColor: '#FFF',
@@ -131,16 +133,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#DDD',
-    width: wp(20),
+    // width: wp(20),
   },
   selectedButton: {
     borderColor: COLORS.themeColor,
     borderWidth: 1,
   },
   buttonText: {
-    fontSize: hp(1.6),
+    fontSize: hp(1.7),
     color: '#333',
     fontFamily: Fonts.medium,
+    paddingHorizontal: wp(2)
   },
   doneButton: {
     backgroundColor: COLORS.themeColor,

@@ -38,6 +38,7 @@ import { useDispatch } from 'react-redux';
 import { store } from '../../redux/store';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppText from '../../components/AppText';
 
 const ProfileDetail = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const ProfileDetail = ({ navigation }) => {
       const res = await getUserProfile(userId?._id);
       if (res?.status || res?.success) {
         const data = res.data;
+        console.log('Profile data----', data)
         setCallingCode(data?.countryCode);
         setuserName(data?.name);
         setphoneNumber(data?.phoneNumber);
@@ -122,7 +124,7 @@ const ProfileDetail = ({ navigation }) => {
         userId: String(userId?._id),
         userName: String(userName),
         email: email || null,
-        gender: null,
+        gender: gender || null,
         profilePhotoUrl: cleanImageUrl || "" || null,
       };
       const res = await updateUserProfile(body);
@@ -163,7 +165,7 @@ const ProfileDetail = ({ navigation }) => {
       <Header title="Profile Detail" onBack={() => navigation.goBack()} />
 
       {loading ? (
-        <Text style={{ textAlign: 'center', marginTop: 20 }}>Loading...</Text>
+        <AppText style={{ textAlign: 'center', marginTop: 20 }}>Loading...</AppText>
       ) : (
         <>
           <ScrollView
@@ -206,7 +208,7 @@ const ProfileDetail = ({ navigation }) => {
 
             {/* Mobile Number */}
             <View style={Homestyles.profileDetailInfoContainer}>
-              <Text style={Homestyles.profileDetailName}>Mobile Number</Text>
+              <AppText style={Homestyles.profileDetailName}>Mobile Number</AppText>
               <CustomPhoneInput
                 countryCode={countryCode}
                 callingCode={callingCode}
@@ -214,7 +216,6 @@ const ProfileDetail = ({ navigation }) => {
                 setCallingCode={setCallingCode}
                 phoneNumber={phoneNumber}
                 setPhoneNumber={val => {
-                  // onChange(val);
                   setphoneNumber(val);
                 }}
               />

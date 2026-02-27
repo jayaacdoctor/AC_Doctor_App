@@ -7,6 +7,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import { COLORS, Fonts } from '../utils/colors';
 import images from '../assets/images';
+import AppText from './AppText';
 
 const PickerLabelUi = ({
   label = '',
@@ -24,22 +25,25 @@ const PickerLabelUi = ({
   return (
     <View style={[styles.container, style, { marginTop, marginBottom }]}>
       {label ? (
-        <Text style={styles.label}>
+        <AppText style={styles.label}>
           {label}
-          {required && <Text style={{ color: 'red' }}>*</Text>}
-        </Text>
+          {required && <AppText style={{ color: 'red' }}>*</AppText>}
+        </AppText>
       ) : null}
 
       <TouchableOpacity
         style={[styles.pickerWrapper, { borderRadius: BorderRadius }]}
         onPress={onPress}
       >
-        <Text
-          style={[styles.pickerText, { color: value ? COLORS.black : '#999' }]}
+        <AppText
+          style={[
+            styles.pickerText,
+            { color: value ? COLORS.black : '#676767' },
+          ]}
           numberOfLines={1}
         >
           {value || placeholder}
-        </Text>
+        </AppText>
 
         {droparraw && (
           <FastImage

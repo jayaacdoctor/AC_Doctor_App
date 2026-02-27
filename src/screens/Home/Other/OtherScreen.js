@@ -24,6 +24,7 @@ import ACTypeSelector from '../../../customScreen/ACTypeSelector';
 import Toast from 'react-native-simple-toast';
 import { useDispatch } from 'react-redux';
 import { setOtherCartMeta } from '../../../redux/slices/cartSlice';
+import AppText from '../../../components/AppText';
 
 
 const OtherScreen = ({ navigation }) => {
@@ -90,33 +91,33 @@ const OtherScreen = ({ navigation }) => {
 
         {/* other card */}
         <View style={styles.card}>
-          <Text
+          <AppText
             style={[
               HomeScreenStyles.workheadText,
               { paddingHorizontal: wp('3%'), marginTop: hp('2%') },
             ]}
           >
             Other Services
-          </Text>
+          </AppText>
           <View style={styles.boderLine} />
           <View style={[styles.flexView, { marginTop: hp('1%') }]}>
             <FastImage source={images.roundRightarrow} style={styles.icon} />
-            <Text style={styles.title}>
+            <AppText style={styles.title}>
               Through cleaning and maintenance to keep your AC running smoothly.
-            </Text>
+            </AppText>
           </View>
           <View style={styles.flexView}>
             <FastImage source={images.roundRightarrow} style={styles.icon} />
-            <Text style={styles.title}>
+            <AppText style={styles.title}>
               Expert AC troubleshooting and repair services for all brands and
               models.
-            </Text>
+            </AppText>
           </View>
           <View style={styles.flexView}>
             <FastImage source={images.roundRightarrow} style={styles.icon} />
-            <Text style={styles.title}>
+            <AppText style={styles.title}>
               Energy-efficient AC solutions to help you save on cooling costs.
-            </Text>
+            </AppText>
           </View>
         </View>
 
@@ -173,28 +174,28 @@ const OtherScreen = ({ navigation }) => {
             { marginBottom: hp('10%'), marginTop: hp('1.5%') },
           ]}
         >
-          <Text
+          <AppText
             style={[
               HomeScreenStyles.workheadText,
               { paddingHorizontal: wp('3%'), marginTop: hp('2%') },
             ]}
           >
             Terms and Conditions
-          </Text>
+          </AppText>
           <View style={styles.boderLine} />
           <View style={[styles.flexView, { marginTop: hp('1%') }]}>
             <FastImage source={images.roundRightarrow} style={styles.icon} />
-            <Text style={styles.title}>
+            <AppText style={styles.title}>
               Service warranty is vaild for 30 days from the date of service.
-            </Text>
+            </AppText>
           </View>
 
           <View style={styles.flexView}>
             <FastImage source={images.roundRightarrow} style={styles.icon} />
-            <Text style={styles.title}>
+            <AppText style={styles.title}>
               Additional parts or materials required for repairs will be charged
               separately.
-            </Text>
+            </AppText>
           </View>
         </View>
       </ScrollView>

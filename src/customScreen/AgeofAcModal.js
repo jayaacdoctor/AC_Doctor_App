@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Modal,
   FlatList,
-  Image,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const AgeofAcModal = ({ visible, onClose, onSelect }) => {
   const [selectedType, setSelectedType] = useState(null);
@@ -38,15 +38,17 @@ const AgeofAcModal = ({ visible, onClose, onSelect }) => {
         selectedType === item.name && styles.selectedButton,
       ]}
       onPress={() => setSelectedType(item.name)}
+      activeOpacity={0.7}
     >
-      <Text
+      <AppText
+        allowFontScaling={false}
         style={[
           styles.buttonText,
-          { color: selectedType === item.name ? '#4a90e2' : '#333' },
+          { color: selectedType === item.name ? COLORS.themeColor : '#333' },
         ]}
       >
         {item.name}
-      </Text>
+      </AppText>
     </TouchableOpacity>
   );
 
@@ -67,25 +69,27 @@ const AgeofAcModal = ({ visible, onClose, onSelect }) => {
           style={styles.modalContent}
           onStartShouldSetResponder={() => true}
         >
-          <Text style={styles.headText}>Select Age of AC</Text>
+          <AppText style={styles.headText}>Select Age of AC</AppText>
 
           <View style={styles.acTypeContainer}>
             <FlatList
               data={defaultAcTypes}
               renderItem={renderAcTypeItem}
-              keyExtractor={item => item.name}
+              keyExtractor={(item) => item.name}
               numColumns={3}
               columnWrapperStyle={styles.row}
               contentContainerStyle={styles.acList}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
             />
           </View>
 
           <TouchableOpacity
-            style={styles.doneButton}
+            style={[styles.doneButton, !selectedType && { opacity: 0.6 }]}
             onPress={handleDone}
             disabled={!selectedType}
           >
-            <Text style={styles.doneButtonText}>Done</Text>
+            <AppText style={styles.doneButtonText}>Done</AppText>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -97,59 +101,73 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   modalContent: {
-    backgroundColor: '#fff',
-    padding: wp(5),
+    backgroundColor: '#fbfbfb',
+    paddingHorizontal: wp(8),
+    paddingTop: hp(2),
+    paddingBottom: Platform.OS === 'android' ? hp(4) : hp(5),
     borderTopLeftRadius: wp(6),
     borderTopRightRadius: wp(6),
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    alignSelf: 'center',
     width: wp('100%'),
-    paddingBottom: hp(Platform.OS === 'android' ? 4 : 5),
+    alignSelf: 'center',
   },
   headText: {
     textAlign: 'center',
-    fontSize: hp(1.6),
+    fontSize: hp(2),
     fontFamily: Fonts.semiBold,
     color: COLORS.black,
+    marginBottom: hp(4),
+    textDecorationLine: 'underline',
+  },
+  acTypeContainer: {
+    alignItems: 'flex-start',   // start from left
+  },
+
+  row: {
+    justifyContent: 'flex-start',  // remove space-around
+    alignItems: 'center',
+    width: '80%',               // important
     marginBottom: hp(1),
+  },
+
+  acList: {
+    paddingBottom: hp(2),
   },
   button: {
     backgroundColor: '#FFF',
-    borderRadius: 10,
-    paddingVertical: hp(0.8),
-    margin: 8,
+    borderRadius: wp(2.5),
+    paddingVertical: hp(1),
+    paddingHorizontal: hp(1),
+    marginRight: wp(4),
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#DDD',
-    width: wp(20),
+    width: "auto"
   },
   selectedButton: {
     borderColor: COLORS.themeColor,
-    borderWidth: 1,
+    borderWidth: 1.5,
   },
   buttonText: {
-    fontSize: hp(1.6),
-    color: '#333',
+    fontSize: hp(1.7),
     fontFamily: Fonts.medium,
+    textAlign: 'center',
   },
   doneButton: {
     backgroundColor: COLORS.themeColor,
-    borderRadius: 25,
-    paddingVertical: 10,
-    paddingHorizontal: 30,
-    marginTop: 15,
+    borderRadius: wp(6),
+    paddingVertical: hp(1.2),
+    paddingHorizontal: wp(10),
+    minWidth: wp(85),
+    alignSelf: 'center',
+    marginTop: hp(2),
   },
   doneButtonText: {
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: hp(2),
+    fontWeight: '600',
     textAlign: 'center',
   },
 });

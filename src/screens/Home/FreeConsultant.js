@@ -37,6 +37,7 @@ import { isTablet } from '../../components/TabletResponsiveSize';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { getPresignedUrl, uploadImageToS3 } from '../../api/profileApi';
 import CustomModal from '../../components/CustomModal';
+import AppText from '../../components/AppText';
 
 const FreeConsultant = ({ navigation }) => {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -62,7 +63,7 @@ const FreeConsultant = ({ navigation }) => {
     try {
       setLoading(true);
       const res = await getBrandlist();
-      console.log('respondr og brand--', res);
+      // console.log('respondr og brand--', res);
       const formatted = res?.data?.map(item => ({
         label: item.name,
         value: item._id,
@@ -120,8 +121,8 @@ const FreeConsultant = ({ navigation }) => {
     if (!formData.numberOfAC || Number(formData.numberOfAC) <= 0)
       return Toast.show('Enter Number of Ac');
 
-    if (!formData.alternateNumber || Number(formData.alternateNumber) <= 0)
-      return Toast.show('Enter valid Alternate Number');
+    // if (!formData.alternateNumber || Number(formData.alternateNumber) <= 0)
+    //   return Toast.show('Enter valid Alternate Number');
 
     if (!formData.service) return Toast.show('Select your service');
 
@@ -207,9 +208,9 @@ const FreeConsultant = ({ navigation }) => {
               <Image source={images.bannerOne} style={screenStyles.workimage} />
             </View>
 
-            <Text style={[screenStyles.workheadText, { marginBottom: hp(1) }]}>
+            <AppText style={[screenStyles.workheadText, { marginBottom: hp(1) }]}>
               Get Free AC Consultation
-            </Text>
+            </AppText>
 
             {/* Property Type */}
             <CustomPicker
@@ -243,7 +244,7 @@ const FreeConsultant = ({ navigation }) => {
               placeholder="Enter number"
               keyboardType="phone-pad"
               value={formData.numberOfAC}
-              maxLength={2}
+              // maxLength={2}
               onChangeText={value => handleInputChange('numberOfAC', value)}
               borderRadius={hp('14%')}
               MarginBottom={hp('0.5%')}
@@ -254,7 +255,7 @@ const FreeConsultant = ({ navigation }) => {
 
             {/* Alternate Number */}
             <CunstomInput
-              label="Alternate Mobile Number"
+              label="Alternate Mobile Number (Optional)"
               placeholder="Enter number"
               keyboardType="phone-pad"
               value={formData.alternateNumber}
@@ -287,7 +288,7 @@ const FreeConsultant = ({ navigation }) => {
 
             {/* Upload Photos */}
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Upload Photos</Text>
+              <AppText style={styles.label}>Upload Photos</AppText>
               <TouchableOpacity
                 onPress={() => setShowModal(true)}
                 style={styles.uploadContainer}
@@ -305,7 +306,7 @@ const FreeConsultant = ({ navigation }) => {
                       style={styles.customIcon}
                       resizeMode={FastImage.resizeMode.contain}
                     />
-                    <Text style={styles.uploadText}>Add Photos/Video</Text>
+                    <AppText style={styles.uploadText}>Add Photos/Video</AppText>
                   </>
                 )}
               </TouchableOpacity>
@@ -313,16 +314,16 @@ const FreeConsultant = ({ navigation }) => {
 
             {/* Select Date & Time */}
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Select Date & Time</Text>
+              <AppText style={styles.label}>Select Date & Time</AppText>
               <TouchableOpacity
                 style={styles.pickerWrapper}
                 onPress={() => setModalSlotVisible(true)}
               >
-                <Text
+                <AppText
                   style={[{ flex: 1, marginLeft: wp(4) }, styles.uploadText]}
                 >
                   {selectdate}
-                </Text>
+                </AppText>
                 <FastImage
                   source={images.Calendar}
                   style={styles.customIcon}
@@ -352,9 +353,9 @@ const FreeConsultant = ({ navigation }) => {
               />
             </View>
 
-            <Text style={[screenStyles.workheadText, { margin: hp('1%') }]}>
+            <AppText style={[screenStyles.workheadText, { margin: hp('1%') }]}>
               FAQs
-            </Text>
+            </AppText>
 
             {/* FAQ Items */}
             {faqData.map((item, index) => (
@@ -363,15 +364,15 @@ const FreeConsultant = ({ navigation }) => {
                   onPress={() => toggleExpand(index)}
                   style={screenStyles.faquestionContainer}
                 >
-                  <Text style={screenStyles.faquestionText}>
+                  <AppText style={screenStyles.faquestionText}>
                     {item.question}
-                  </Text>
-                  <Text style={screenStyles.faqarrow}>
+                  </AppText>
+                  <AppText style={screenStyles.faqarrow}>
                     {expandedIndex === index ? '︿' : '﹀'}
-                  </Text>
+                  </AppText>
                 </TouchableOpacity>
                 {expandedIndex === index && (
-                  <Text style={screenStyles.faqanswerText}>{item.answer}</Text>
+                  <AppText style={screenStyles.faqanswerText}>{item.answer}</AppText>
                 )}
               </View>
             ))}

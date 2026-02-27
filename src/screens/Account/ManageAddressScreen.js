@@ -23,6 +23,7 @@ import { setAddress } from '../../redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
 import CustomLoader from '../../components/CustomLoader';
 import { ScrollView } from 'react-native-gesture-handler';
+import AppText from '../../components/AppText';
 
 const ManageAddressScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -140,21 +141,21 @@ const ManageAddressScreen = ({ navigation }) => {
         {/* Address Details */}
         <View style={styles.details}>
           <View style={styles.headerRow}>
-            <Text style={styles.name}>{userDetail.name}</Text>
-            <Text style={[styles.type, { backgroundColor: item.landmark !== '' ? COLORS.lightSky : '' }]}>{item.landmark}</Text>
+            <AppText style={styles.name}>{userDetail.name}</AppText>
+            <AppText style={[styles.type, { backgroundColor: item.landmark !== '' ? COLORS.lightSky : '' }]}>{item.landmark}</AppText>
             {item._id === selectedId && (
               <View style={styles.defaultBadge}>
-                <Text style={styles.defaultText}>Default</Text>
+                <AppText style={styles.defaultAppText}>Default</AppText>
               </View>
             )}
           </View>
 
-          <Text style={styles.address}>
+          <AppText style={styles.address}>
             {item.street}, {item.city} {item.state},{item.zipcode}
-          </Text>
-          <Text style={styles.phone}>
+          </AppText>
+          <AppText style={styles.phone}>
             {userDetail.countryCode} {userDetail.phoneNumber}
-          </Text>
+          </AppText>
 
           {/* Edit & Delete Icons */}
           <View style={styles.actions}>
@@ -184,7 +185,7 @@ const ManageAddressScreen = ({ navigation }) => {
       <Header title="Manage Address" onBack={() => navigation.goBack()} />
 
       <ScrollView style={{ paddingHorizontal: wp(4) }}>
-        <Text style={styles.title}>Saved Address</Text>
+        <AppText style={styles.title}>Saved Address</AppText>
 
         {loading ? (
           <CustomLoader size="large" />
@@ -205,7 +206,7 @@ const ManageAddressScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('AddAddress')}
         >
           <Image source={images.Plusicon} style={styles.plusIcon} />
-          <Text style={styles.addText}>Add New Address</Text>
+          <AppText style={styles.addText}>Add New Address</AppText>
         </TouchableOpacity>
         {/* Add New Address Button */}
 

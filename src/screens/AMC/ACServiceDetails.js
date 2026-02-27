@@ -15,6 +15,7 @@ import {
 } from 'react-native-responsive-screen';
 import CustomButton from '../../components/CustomButton';
 import images from '../../assets/images';
+import AppText from '../../components/AppText';
 // import images from '../../assets/images';
 
 const ACServiceDetails = ({ route, navigation }) => {
@@ -23,23 +24,23 @@ const ACServiceDetails = ({ route, navigation }) => {
   return (
     <View style={styles.mainContainer}>
       <Header title={data.name} onBack={() => navigation.goBack()} />
-      <ScrollView  showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.mainBox}>
-          <Text style={styles.textSty}>{data.model} 3 star</Text>
-           <View style={styles.rowview}>
+          <AppText style={styles.textSty}>{data.model} 3 star</AppText>
+          <View style={styles.rowview}>
             <Image
               source={images.Calendar}
-              style={[styles.imagesty,{tintColor:COLORS.blue}]}/>
-          <Text style={styles.textSty}>
-            Last service: {data.lastService} months ago
-          </Text>
+              style={[styles.imagesty, { tintColor: COLORS.blue }]} />
+            <AppText style={styles.textSty}>
+              Last service: {data.lastService} months ago
+            </AppText>
           </View>
           <View style={styles.rowview}>
             <Image
               source={images.Alertoctagon}
-              style={[styles.imagesty]}/>
-          <Text style={styles.textSty}>Overdue by: {data.overdue} months</Text>
-        </View>
+              style={[styles.imagesty]} />
+            <AppText style={styles.textSty}>Overdue by: {data.overdue} months</AppText>
+          </View>
         </View>
 
       </ScrollView>
@@ -50,7 +51,7 @@ const ACServiceDetails = ({ route, navigation }) => {
           // margingTOP={hp(5)}
           onPress={() => navigation.navigate('PaymentScreen')}
         />
-        </View>
+      </View>
     </View>
   );
 };

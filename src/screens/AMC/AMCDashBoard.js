@@ -15,15 +15,16 @@ import {
 import Header from '../../components/Header';
 import images from '../../assets/images';
 import { COLORS, Fonts } from '../../utils/colors';
+import AppText from '../../components/AppText';
 
 const AMCDashBoard = ({ navigation }) => {
   const acTypes = [
-    { name: 'Split AC', icon: images.SplitAMC,},
-    { name: 'Window AC', icon: images.windowAc,},
-    { name: 'Cassette AC', icon: images.casseteAc,},
-    { name: 'VRV/VRF AC', icon: images.VRVac,},
-    { name: 'Ducted AC', icon: images.ductedAc,},
-    { name: 'Tower AC', icon: images.towerAc,},
+    { name: 'Split AC', icon: images.SplitAMC, },
+    { name: 'Window AC', icon: images.windowAc, },
+    { name: 'Cassette AC', icon: images.casseteAc, },
+    { name: 'VRV/VRF AC', icon: images.VRVac, },
+    { name: 'Ducted AC', icon: images.ductedAc, },
+    { name: 'Tower AC', icon: images.towerAc, },
   ];
 
   const services = [
@@ -51,9 +52,10 @@ const AMCDashBoard = ({ navigation }) => {
       icon: images.shopAMC,
       onPress: () => navigation.navigate('ListOfBill'),
     },
-    { title: 'Payment', icon: images.PaymentIcon, onPress: () => navigation
+    {
+      title: 'Payment', icon: images.PaymentIcon, onPress: () => navigation
         .navigate('PaymentlistScreen')
-     },
+    },
   ];
 
   const stats = [
@@ -70,7 +72,7 @@ const AMCDashBoard = ({ navigation }) => {
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false} nestedScrollEnabled={true}>
         {/* Total AC Container */}
         <View style={styles.acBox}>
-          <Text style={styles.heading}>AC Under AMC</Text>
+          <AppText style={styles.heading}>AC Under AMC</AppText>
 
           <View style={styles.acRow}>
             <FlatList
@@ -78,11 +80,11 @@ const AMCDashBoard = ({ navigation }) => {
               numColumns={3}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.acItem}  onPress={() => navigation.navigate('ACUnderServiceList', { acType: item.name })}>
+                <TouchableOpacity style={styles.acItem} onPress={() => navigation.navigate('ACUnderServiceList', { acType: item.name })}>
                   <View style={styles.acIconCircle}>
                     <Image source={item.icon} style={styles.acIcon} />
                   </View>
-                  <Text style={styles.acName}>{item.name}</Text>
+                  <AppText style={styles.acName}>{item.name}</AppText>
                 </TouchableOpacity>
               )}
             />
@@ -90,7 +92,7 @@ const AMCDashBoard = ({ navigation }) => {
         </View>
 
         {/* Services Section */}
-        <Text style={styles.serviceHeading}>Services</Text>
+        <AppText style={styles.serviceHeading}>Services</AppText>
 
         <View style={styles.serviceBox}>
           {services.map((item, index) => (
@@ -102,24 +104,24 @@ const AMCDashBoard = ({ navigation }) => {
               <View style={styles.serviceIconCircle}>
                 <Image source={item.icon} style={styles.serviceIcon} />
                 {item.title === 'new Booking' && (
-                  <Text style={styles.bookText}>15</Text>
+                  <AppText style={styles.bookText}>15</AppText>
                 )}
               </View>
-              <Text style={styles.serviceText}>{item.title}</Text>
+              <AppText style={styles.serviceText}>{item.title}</AppText>
             </TouchableOpacity>
           ))}
         </View>
 
         {/* Stats Section */}
         <View style={{ marginBottom: hp('15%') }}>
-        {stats.map((item, index) => (
-          <View key={index} style={styles.statCard}>
-            <View style={styles.statCircle}>
-              <Text style={styles.statNumber}>{item.value}</Text>
+          {stats.map((item, index) => (
+            <View key={index} style={styles.statCard}>
+              <View style={styles.statCircle}>
+                <AppText style={styles.statNumber}>{item.value}</AppText>
+              </View>
+              <AppText style={styles.statLabel}>{item.label}</AppText>
             </View>
-            <Text style={styles.statLabel}>{item.label}</Text>
-          </View>
-        ))}
+          ))}
         </View>
       </ScrollView>
     </View>

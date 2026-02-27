@@ -8,6 +8,7 @@ import AcList from '../../customScreen/AcList';
 import { useDispatch, useSelector } from 'react-redux';
 import { addOrMergeItems } from '../../redux/slices/cartSlice';
 import { useNavigation } from '@react-navigation/native';
+import AppText from '../../components/AppText';
 
 const GasChargeScreen = ({ route }) => {
   const navigation = useNavigation()
@@ -25,9 +26,6 @@ const GasChargeScreen = ({ route }) => {
     { id: 7, name: 'Chiller AC', icon: images.chilarIcon, count: 0 },
   ]);
 
-  useEffect(() => {
-    // console.log('Route Params:', route.params);
-  }, [route.params]);
 
   const handleAddToCart = () => {
     const items = buildPayloadFromACData();
@@ -40,7 +38,6 @@ const GasChargeScreen = ({ route }) => {
         items,
       }),
     );
-    console.log('souce from --', source)
     if (source === 'OTHER_CART') {
       navigation.replace('OtherCartView');
     } else {
@@ -77,7 +74,7 @@ const GasChargeScreen = ({ route }) => {
           <Image source={images.bannerOne} style={styles.workimage} />
         </View>
 
-        <Text style={styles.workheadText}>Select Type of AC</Text>
+        <AppText style={styles.workheadText}>Select Type of AC</AppText>
 
         <AcList ref={acRef} data={acData} onChange={setAcData} />
 
@@ -96,14 +93,14 @@ const GasChargeScreen = ({ route }) => {
           key={'viewCart'}
         >
           <View>
-            <Text style={styles.servicesCount}>{totalSelected} Services</Text>
-            <Text style={styles.servicesCount}>Selected</Text>
+            <AppText style={styles.servicesCount}>{totalSelected} Services</AppText>
+            <AppText style={styles.servicesCount}>Selected</AppText>
           </View>
           <TouchableOpacity
             style={styles.viewCartButton}
             onPress={() => handleAddToCart()}
           >
-            <Text style={styles.viewCartText}>View Cart</Text>
+            <AppText style={styles.viewCartText}>View Cart</AppText>
             <Image source={images.cart} style={styles.carticon} />
           </TouchableOpacity>
         </View>

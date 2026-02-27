@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { COLORS } from '../utils/colors';
+import AppText from '../components/AppText'
 
 const CustomDateTimePicker = ({
   activeColor = '#2E86DE',
@@ -77,28 +78,28 @@ const CustomDateTimePicker = ({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.cardTitle}>Select Date & Time</Text>
+      <AppText allowFontScaling={false} style={styles.cardTitle}>Select Date & Time</AppText>
       {/* Month Navigation */}
       <View style={styles.monthRow}>
         <TouchableOpacity
           style={styles.arrowBtn}
           onPress={() => changeMonth(-1)}
         >
-          <Text style={styles.arrow}>‹</Text>
+          <AppText allowFontScaling={false} style={styles.arrow}>‹</AppText>
         </TouchableOpacity>
 
-        <Text style={styles.monthText}>
+        <AppText allowFontScaling={false} style={styles.monthText}>
           {new Date(currentYear, currentMonth).toLocaleString('en-US', {
             month: 'long',
             year: 'numeric',
           })}
-        </Text>
+        </AppText>
 
         <TouchableOpacity
           style={styles.arrowBtn}
           onPress={() => changeMonth(1)}
         >
-          <Text style={styles.arrow}>›</Text>
+          <AppText allowFontScaling={false} style={styles.arrow}>›</AppText>
         </TouchableOpacity>
       </View>
 
@@ -119,7 +120,7 @@ const CustomDateTimePicker = ({
                 disabled={!day.date}
                 style={styles.dayBox}
               >
-                <Text
+                <AppText allowFontScaling={false}
                   style={[
                     styles.dayLabel,
                     { color: day.date ? inactiveColor : '#CCC' },
@@ -127,7 +128,7 @@ const CustomDateTimePicker = ({
                   ]}
                 >
                   {day.label}
-                </Text>
+                </AppText>
 
                 <View
                   style={[
@@ -135,11 +136,11 @@ const CustomDateTimePicker = ({
                     isSelected && { backgroundColor: activeColor },
                   ]}
                 >
-                  <Text
+                  <AppText allowFontScaling={false}
                     style={[styles.dayNumber, isSelected && { color: '#fff' }]}
                   >
                     {day.date || ''}
-                  </Text>
+                  </AppText>
                 </View>
               </TouchableOpacity>
             );
@@ -148,7 +149,7 @@ const CustomDateTimePicker = ({
       </ScrollView>
 
       {/* ----------- BOOKING SLOT SECTION ----------- */}
-      <Text style={styles.cardTitle}>Booking Slot</Text>
+      <AppText allowFontScaling={false} style={styles.cardTitle}>Booking Slot</AppText>
 
       <View style={styles.slotRow}>
         {/* FIRST HALF */}
@@ -160,14 +161,15 @@ const CustomDateTimePicker = ({
           ]}
         >
           <View style={styles.slotHeader}>
-            <Text
+            <AppText
+              allowFontScaling={false}
               style={[
                 styles.slotTitle,
                 selectedSlot === 'first' && styles.slotTitleActive,
               ]}
             >
               First Half
-            </Text>
+            </AppText>
 
             <View
               style={[
@@ -184,14 +186,14 @@ const CustomDateTimePicker = ({
             </View>
           </View>
 
-          <Text
+          <AppText allowFontScaling={false}
             style={[
               styles.slotTime,
               selectedSlot === 'first' && styles.slotTimeActive,
             ]}
           >
             10:00 AM To 02:00 PM
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         {/* SECOND HALF */}
@@ -203,7 +205,7 @@ const CustomDateTimePicker = ({
           ]}
         >
           <View style={styles.slotHeader}>
-            <Text style={styles.slotTitle}>Second Half</Text>
+            <AppText allowFontScaling={false} style={styles.slotTitle}>Second Half</AppText>
 
             <View
               style={[
@@ -220,7 +222,7 @@ const CustomDateTimePicker = ({
             </View>
           </View>
 
-          <Text style={styles.slotTime}>02:00 PM To 08:00 PM</Text>
+          <AppText allowFontScaling={false} style={styles.slotTime}>02:00 PM To 08:00 PM</AppText>
         </TouchableOpacity>
       </View>
     </View>

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import images from '../assets/images';
 import { COLORS } from '../utils/colors';
+import AppText from './AppText';
 
 
 const InterestSuccessModal = ({ visible, onClose }) => {
@@ -28,20 +29,20 @@ const InterestSuccessModal = ({ visible, onClose }) => {
                     </View>
 
                     {/* Title */}
-                    <Text style={styles.title}>Done!</Text>
+                    <AppText style={styles.title}>Done!</AppText>
 
                     {/* Subtitle */}
-                    <Text style={styles.subtitle}>
+                    <AppText style={styles.subtitle}>
                         Your interest has been recorded {'\n'}
                         Our team will contact you shortly to guide you with the next steps.
-                    </Text>
+                    </AppText>
 
                     {/* Divider */}
                     <View style={styles.divider} />
 
                     {/* Done Button */}
                     <TouchableOpacity style={styles.doneBtn} onPress={onClose}>
-                        <Text style={styles.doneText}>Done</Text>
+                        <AppText style={styles.doneText}>Done</AppText>
                     </TouchableOpacity>
 
                 </View>

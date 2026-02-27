@@ -52,6 +52,7 @@ export const postConsultancy = async payload => {
     throw error;
   }
 };
+
 export const getConsultancy = async (userId) => {
   try {
     const res = await api.get(`${endPoint.GET_ALLCONSULT}${userId}`);
@@ -156,10 +157,61 @@ export const postInterestRequest = async (payload) => {
   }
 };
 
-// post Intereest
+// post Old AC Request
 export const postOldAcRequest = async (payload) => {
   try {
     const res = await api.post(endPoint.OLD_AC_REQUEST, payload);
+    return res.data;
+  } catch (error) {
+    Toast.show(
+      error?.response?.data?.message ||
+      error,
+    );
+  }
+};
+// Cancel AC Request
+export const cancelEnquiryRequest = async (enquiryId) => {
+  try {
+    const res = await api.post(endPoint.CANCEL_RESHEDUL, { enquiryId });
+    return res.data;
+  } catch (error) {
+    Toast.show(
+      error?.response?.data?.message ||
+      error,
+    );
+  }
+};
+
+// Cancel AC Request
+export const RescheduleEnquiryRequest = async (payload) => {
+  try {
+    const res = await api.post(endPoint.RE_SCHEDUL_REQUEST, payload);
+    return res.data;
+  } catch (error) {
+    Toast.show(
+      error?.response?.data?.message ||
+      error,
+    );
+  }
+};
+
+// get Old AC Request according to Id
+export const getUserOldAcRequest = async (id) => {
+  try {
+    const res = await api.get(`${endPoint.OLD_AC_ID_REQUEST}${id}`);
+    return res.data;
+  } catch (error) {
+    Toast.show(
+      error?.response?.data?.message ||
+      error,
+    );
+  }
+};
+
+// get Old AC Request according to Id
+export const getAllOldAcRequest = async () => {
+  try {
+    const res = await api.get(endPoint.ALL_OLD_REQUEST);
     return res.data;
   } catch (error) {
     Toast.show(

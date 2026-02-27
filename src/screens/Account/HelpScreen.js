@@ -15,6 +15,7 @@ import images from '../../assets/images'; // Your check icon
 import { COLORS, Fonts } from '../../utils/colors';
 import Header from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
+import AppText from '../../components/AppText';
 
 const HelpScreen = () => {
     const navigation = useNavigation();
@@ -59,15 +60,15 @@ const HelpScreen = () => {
                     style={styles.checkIcon}
                 // resizeMode={'contain'}
                 />
-                <Text style={styles.helpText}>Hello {'\n'}How can we help you?</Text>
+                <AppText style={styles.helpText}>Hello {'\n'}How can we help you?</AppText>
             </View>
             <TouchableOpacity style={styles.card} onPress={() => handleCall()}>
                 <Image source={images.contact} style={styles.contactIcon} resizeMode={'contain'} />
-                <Text style={styles.orderId}>+91 8959898989</Text>
+                <AppText style={styles.orderId}>+91 8959898989</AppText>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.card, { marginTop: hp(3) }]} onPress={handleEmail}>
                 <Image source={images.emailIcon} style={styles.contactIcon} resizeMode={'contain'} />
-                <Text style={styles.orderId}>info@acdoctor.in</Text>
+                <AppText style={styles.orderId}>info@acdoctor.in</AppText>
             </TouchableOpacity>
 
 

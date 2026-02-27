@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
@@ -11,8 +10,9 @@ import {
 import FastImage from 'react-native-fast-image';
 import images from '../assets/images';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import AppText from './AppText';
 
-const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Search products...",}) => {
+const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Search products...", }) => {
   // Filters
   const [searchText, setSearchText] = useState('');
   const [selectedRating, setSelectedRating] = useState(null);
@@ -46,7 +46,7 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
     if (freeDelivery) {
       filtered = filtered.filter(item => item.freeDelivery);
     }
-   setLastSearch(searchText);
+    setLastSearch(searchText);
     return filtered;
   }, [initialData, searchText, selectedRating, priceRange, freeDelivery]);
 
@@ -65,9 +65,9 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
 
   const FilterTag = ({ label, onRemove }) => (
     <View style={styles.filterTag}>
-      <Text style={styles.filterTagText}>{label}</Text>
+      <AppText style={styles.filterTagText}>{label}</AppText>
       <TouchableOpacity onPress={onRemove}>
-        <Text style={styles.removeTag}>×</Text>
+        <AppText style={styles.removeTag}>×</AppText>
       </TouchableOpacity>
     </View>
   );
@@ -83,6 +83,8 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
           value={searchText}
           onChangeText={setSearchText}
           onSubmitEditing={() => Keyboard.dismiss()}
+          allowFontScaling={false}
+          includeFontPadding={false}
         />
         <TouchableOpacity onPress={() => setShowFilters(!showFilters)}>
           <FastImage source={images.filterImg} style={styles.filterIcon} />
@@ -109,7 +111,7 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
               />
             )}
             <TouchableOpacity onPress={clearFilters}>
-              <Text style={styles.clearAll}>Clear All</Text>
+              <AppText style={styles.clearAll}>Clear All</AppText>
             </TouchableOpacity>
           </ScrollView>
         </View>
@@ -117,18 +119,18 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
 
       {/* Last Search */}
       {lastSearch && !searchText && (
-        <Text style={styles.lastSearch}>
-          Last searched: "<Text style={{ fontWeight: 'bold' }}>{lastSearch}</Text>"
-        </Text>
+        <AppText style={styles.lastSearch}>
+          Last searched: "<AppText style={{ fontWeight: 'bold' }}>{lastSearch}</AppText>"
+        </AppText>
       )}
 
       {/* Filter Modal */}
       {showFilters && (
         <View style={styles.filterModal}>
-          <Text style={styles.filterTitle}>Filters</Text>
+          <AppText style={styles.filterTitle}>Filters</AppText>
 
           {/* Rating */}
-          <Text style={styles.filterLabel}>Rating</Text>
+          <AppText style={styles.filterLabel}>Rating</AppText>
           <View style={styles.ratingRow}>
             {[4, 3, 2, 1].map(rating => (
               <TouchableOpacity
@@ -139,13 +141,13 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
                 ]}
                 onPress={() => setSelectedRating(selectedRating === rating ? null : rating)}
               >
-                <Text style={styles.ratingText}>{rating} Star</Text>
+                <AppText style={styles.ratingText}>{rating} Star</AppText>
               </TouchableOpacity>
             ))}
           </View>
 
           {/* Price Range */}
-          <Text style={styles.filterLabel}>Price Range</Text>
+          <AppText style={styles.filterLabel}>Price Range</AppText>
           <View style={styles.priceRow}>
             <TextInput
               style={styles.priceInput}
@@ -154,8 +156,10 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
               value={priceRange[0].toString()}
               onChangeText={text => setPriceRange([+text || 0, priceRange[1]])}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
-            <Text style={styles.toText}>to</Text>
+            <AppText style={styles.toText}>to</AppText>
             <TextInput
               style={styles.priceInput}
               placeholder="Max"
@@ -163,6 +167,8 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
               value={priceRange[1].toString()}
               onChangeText={text => setPriceRange([priceRange[0], +text || 100000])}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
           </View>
 
@@ -172,14 +178,14 @@ const SearchWithFilterIcon = ({ initialData, onFilterChange, placeholder = "Sear
             onPress={() => setFreeDelivery(!freeDelivery)}
           >
             <View style={[styles.checkbox, freeDelivery && styles.checkboxActive]} />
-            <Text style={styles.checkboxLabel}>Free Delivery Only</Text>
+            <AppText style={styles.checkboxLabel}>Free Delivery Only</AppText>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.applyBtn}
             onPress={() => setShowFilters(false)}
           >
-            <Text style={styles.applyText}>Apply Filters</Text>
+            <AppText style={styles.applyText}>Apply Filters</AppText>
           </TouchableOpacity>
         </View>
       )}

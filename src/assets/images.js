@@ -201,6 +201,7 @@ const images = {
   emailIcon: require('../assets/icons/emailIcon.png'),
   helpnotify: require('../assets/icons/helpnotify.png'),
   contact: require('../assets/icons/contact.png'),
+  Ac_logo: require('../assets/icons/Ac_logo.png'),
 
 
   // Add more images as needed

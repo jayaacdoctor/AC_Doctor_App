@@ -46,7 +46,7 @@ setup_permissions([
 
 target 'ACDoctor' do
   config = use_native_modules!
-  use_frameworks! :linkage => :static
+  use_frameworks! :linkage => :static # For Firebase SDK
   $RNFirebaseAsStaticFramework = true # For Firebase SDK
   pod 'GoogleMaps' # dependencies
 

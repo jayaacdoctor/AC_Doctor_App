@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     },
     doneButtonText: {
         color: '#fff',
-        fontSize: hp(1.6),
+        fontSize: hp(1.8),
         fontWeight: '500',
     },
     IconImage: {
@@ -298,6 +298,24 @@ const styles = StyleSheet.create({
         height: hp('5%'),
         width: wp('90%'),
         alignSelf: 'center',
+    },
+    photosContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 10,
+        marginTop: 8,
+    },
+
+    imageWrapper: {
+        width: '30%',  // 3 images per row
+        aspectRatio: 1,
+        borderRadius: 12,
+        overflow: 'hidden',
+    },
+
+    image: {
+        width: '100%',
+        height: '100%',
     },
 
 });

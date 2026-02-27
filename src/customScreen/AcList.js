@@ -10,13 +10,20 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
-  Image,
+  Image, PixelRatio, Dimensions
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { COLORS, Fonts } from '../utils/colors';
 import { hp, rf } from '../components/Resposive';
 import { isTablet } from '../components/TabletResponsiveSize';
 import images from '../assets/images';
+
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+const scale = size => (SCREEN_WIDTH / 375) * size; // 375 is base iPhone width
+const normalize = size => Math.round(PixelRatio.roundToNearestPixel(scale(size)));
+
 
 const AcList = forwardRef(({ data, onChange }, ref) => {
   const [acList, setAcList] = useState(data);
@@ -61,7 +68,7 @@ const AcList = forwardRef(({ data, onChange }, ref) => {
     <View style={styles.card}>
       <View style={styles.leftRow}>
         <FastImage source={item.icon} style={styles.icon} />
-        <Text style={styles.name}>{item.name}</Text>
+        <Text allowFontScaling={false} style={styles.name}>{item.name}</Text>
       </View>
 
       {item.count === 0 ? (
@@ -69,22 +76,18 @@ const AcList = forwardRef(({ data, onChange }, ref) => {
           style={styles.addBtn}
           onPress={() => updateCount(item.id, 'inc')}
         >
-          <Text style={styles.addText}>+ Add</Text>
+          <Text allowFontScaling={false} style={styles.addText}>+ Add</Text>
         </TouchableOpacity>
       ) : (
         <View style={styles.mainCounterView}>
           <TouchableOpacity onPress={() => updateCount(item.id, 'dec')}>
-            {/* <Text style={styles.counterBtn}>-</Text>
-             */}
             <Image source={images.minusicon} style={{ width: 15, height: 15, marginRight: 4 }} resizeMode='contain' />
           </TouchableOpacity>
 
-          <Text style={styles.count}>{item.count}</Text>
+          <Text allowFontScaling={false} style={styles.count}>{item.count}</Text>
 
           <TouchableOpacity onPress={() => updateCount(item.id, 'inc')}>
             <Image source={images.plusicon} style={{ width: 13, height: 13, marginLeft: 4 }} resizeMode='contain' />
-
-            {/* <Text style={styles.counterBtn}>+</Text> */}
           </TouchableOpacity>
         </View>
       )}
@@ -106,26 +109,28 @@ export default AcList;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
-    marginHorizontal: 16,
-    marginVertical: 5,
-    borderRadius: 14,
-    padding: 16,
+    marginHorizontal: normalize(16),
+    marginVertical: normalize(4),
+    borderRadius: normalize(14),
+    paddingHorizontal: normalize(16),
+    paddingVertical: normalize(12),
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
     width: '100%',
+    minHeight: normalize(10)
   },
   leftRow: { flexDirection: 'row', alignItems: 'center' },
-  icon: { width: 42, height: 42, marginRight: 12 },
-  name: { fontSize: isTablet ? rf(9) : rf(13), fontFamily: Fonts.semiBold, color: COLORS.black },
+  icon: { width: normalize(42), height: normalize(42), marginRight: normalize(12) },
+  name: { fontSize: isTablet ? rf(9) : rf(13), fontFamily: Fonts.semiBold, color: COLORS.black, flexShrink: 1, },
   addBtn: {
     borderWidth: 0.5,
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
+    borderRadius: normalize(20),
+    paddingHorizontal: normalize(16),
+    paddingVertical: normalize(6),
   },
-  addText: { fontWeight: '400', color: 'black' },
+  addText: { fontWeight: '400', color: 'black', fontSize: normalize(14) },
   counter: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -134,39 +139,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   counterBtn: { fontSize: 20, fontWeight: 'bold', paddingHorizontal: 8 },
-  count: {
-    fontSize: 16,
-    color: COLORS.themeColor,
-    fontWeight: '600',
-    marginHorizontal: 8,
-  },
-  counterBorder: {
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 30,
-    padding: 2,
-    height: 32.5,
-  },
   mainCounterView: {
-    // width: '25%',
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-    // borderWidth: 1,
-    // borderColor: 'gray',
-    // borderRadius: 20,
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: normalize(20),
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    // marginHorizontal: 5,
-    // width: isTablet ? wp(25) : wp(20),
-    // height: isTablet ? wp(6) : wp(7),
-    paddingVertical: 5,
-    paddingHorizontal: 10,
-    // alignSelf: 'center',
+    paddingVertical: normalize(4),
+    paddingHorizontal: normalize(10),
     borderColor: '#ddd',
+    minWidth: normalize(80),
+  },
+  count: {
+    fontSize: normalize(16),
+    color: COLORS.themeColor,
+    fontWeight: '600',
+    marginHorizontal: normalize(8),
   },
 });

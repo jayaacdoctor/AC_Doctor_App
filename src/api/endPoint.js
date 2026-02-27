@@ -1,12 +1,14 @@
 const endPoint = {
-  LOGIN: '/user/login',
-  VERIFY_OTP: '/user/verify-otp',
-  RESET_OTP: '/user/resend-otp',
-  USER_PROFILE: '/user/get-profile/',
+  LOGIN: 'user/login',
+  VERIFY_OTP: 'user/verify-otp',
+  RESET_OTP: 'user/resend-otp',
+  USER_PROFILE: 'user/get-profile/',
   PRE_ASSIGNURL: 'user/profile-update/image-url',
-  UPDATE_PROFILE: '/user/profile-update',
+  UPDATE_PROFILE: 'user/profile-update',
   UPDATE_USERDETAIL: 'user/get-profile/',
-  LOG_OUT: '/user/logout/',
+  NOTIFICATION: 'user/notification-list',
+  DELETE_NOTIFICATION: 'user/notification/delete/',
+  LOG_OUT: 'user/logout/',
 
   // Address service
   ADD_EDIT_ADDRESS: 'user/address-add-edit',
@@ -45,5 +47,9 @@ const endPoint = {
 
   // Old AMC SERVICE
   OLD_AC_REQUEST: 'user/enquiry/create', //POST
+  OLD_AC_ID_REQUEST: 'user/equiry/data/', //POST
+  CANCEL_RESHEDUL: 'user/enquiry/cancel', //POST
+  RE_SCHEDUL_REQUEST: 'user/enquiry/reschedule', //POST
+  ALL_OLD_REQUEST: 'user/myenquiry/list', //get
 };
 export default endPoint;

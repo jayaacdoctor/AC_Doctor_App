@@ -14,6 +14,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import CustomLoader from './CustomLoader';
+import AppText from './AppText';
 
 const { width } = Dimensions.get('window');
 
@@ -79,14 +80,14 @@ const ImagePickerModal = ({ visible, onClose, onImageSelect }) => {
     >
       <View style={styles.overlay}>
         <View style={styles.modal}>
-          <Text style={styles.title}>Choose Photo</Text>
+          <AppText style={styles.title}>Choose Photo</AppText>
 
           <TouchableOpacity
             style={[styles.btn, loading === 'camera' && styles.disabled]}
             onPress={() => openCamera()}
             disabled={!!loading}
           >
-            <Text style={styles.btnText}>Camera</Text>
+            <AppText style={styles.btnText}>Camera</AppText>
             {loading === 'camera' && <CustomLoader size="large" />}
           </TouchableOpacity>
 
@@ -95,16 +96,16 @@ const ImagePickerModal = ({ visible, onClose, onImageSelect }) => {
             onPress={openGallery}
             disabled={!!loading}
           >
-            <Text style={styles.btnText}>Gallery</Text>
+            <AppText style={styles.btnText}>Gallery</AppText>
             {loading === 'gallery' && <CustomLoader size="large" />}
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.cancel} onPress={onClose}>
-            <Text style={styles.cancelText}>Cancel</Text>
+            <AppText style={styles.cancelText}>Cancel</AppText>
           </TouchableOpacity>
         </View>
       </View>
-    </Modal>
+    </Modal >
   );
 };
 

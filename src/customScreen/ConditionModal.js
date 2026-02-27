@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Modal,
@@ -13,6 +12,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const ConditionModal = ({
   visible,
@@ -38,14 +38,14 @@ const ConditionModal = ({
       ]}
       onPress={() => setSelectedType(item.name)}
     >
-      <Text
+      <AppText
         style={[
           styles.buttonText,
           { color: selectedType === item.name ? COLORS.themeColor : '#333' },
         ]}
       >
         {item.name}
-      </Text>
+      </AppText>
     </TouchableOpacity>
   );
 
@@ -57,7 +57,7 @@ const ConditionModal = ({
         activeOpacity={1}
       >
         <View style={styles.modalContent}>
-          <Text style={styles.headText}>{title}</Text>
+          <AppText style={styles.headText}>{title}</AppText>
 
           <FlatList
             data={data}
@@ -71,7 +71,7 @@ const ConditionModal = ({
             onPress={handleDone}
             disabled={!selectedType}
           >
-            <Text style={styles.doneButtonText}>Done</Text>
+            <AppText style={styles.doneButtonText}>Done</AppText>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -99,13 +99,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: wp('100%'),
     paddingBottom: hp(Platform.OS === 'android' ? 4 : 5),
+    minHeight: hp(25)
   },
   headText: {
     textAlign: 'center',
-    fontSize: hp(1.6),
+    fontSize: hp(1.8),
     fontFamily: Fonts.semiBold,
     color: COLORS.black,
     marginBottom: hp(1),
+    textDecorationLine: 'underline'
   },
   button: {
     backgroundColor: '#FFF',
@@ -115,16 +117,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#DDD',
-    width: wp(25),
+    // width: wp(28),
   },
   selectedButton: {
     borderColor: COLORS.themeColor,
     borderWidth: 1,
   },
   buttonText: {
-    fontSize: hp(1.5),
+    fontSize: hp(1.8),
     color: '#333',
     fontFamily: Fonts.medium,
+    paddingHorizontal: wp(2)
   },
   doneButton: {
     backgroundColor: COLORS.themeColor,

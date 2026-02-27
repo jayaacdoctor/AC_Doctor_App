@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Modal,
@@ -16,6 +15,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { COLORS, Fonts } from '../utils/colors';
+import AppText from '../components/AppText';
 
 const ACTonnageModal = ({ visible, onClose, onSelect }) => {
   const [selectedType, setSelectedType] = useState(null);
@@ -70,14 +70,14 @@ const ACTonnageModal = ({ visible, onClose, onSelect }) => {
         resizeMode={FastImage.resizeMode.contain}
         onError={() => console.log('ResidentBuild image failed')}
       />
-      <Text
+      <AppText
         style={[
           styles.buttonText,
           { color: selectedType === item.name ? '#4a90e2' : '#333' },
         ]}
       >
         {item.name}
-      </Text>
+      </AppText>
     </TouchableOpacity>
   );
 
@@ -98,7 +98,7 @@ const ACTonnageModal = ({ visible, onClose, onSelect }) => {
           style={styles.modalContent}
           onStartShouldSetResponder={() => true}
         >
-          <Text style={styles.headingText}>Select AC Type</Text>
+          <AppText style={styles.headingText}>Select AC Type</AppText>
 
           <View style={styles.acTypeContainer}>
             <FlatList
@@ -116,7 +116,7 @@ const ACTonnageModal = ({ visible, onClose, onSelect }) => {
             onPress={handleDone}
             disabled={!selectedType}
           >
-            <Text style={styles.doneButtonText}>Done</Text>
+            <AppText style={styles.doneButtonText}>Done</AppText>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

@@ -7,6 +7,7 @@ import {
 import { COLORS } from '../utils/colors';
 import CustomLoader from './CustomLoader';
 import { isTablet } from './TabletResponsiveSize';
+import AppText from './AppText'
 
 const CustomButton = ({
   buttonName,
@@ -16,7 +17,8 @@ const CustomButton = ({
   onPress,
   disabled = false,
   Loader,
-  marginBottom
+  width = wp('90%'),
+  marginBottom,
 }) => {
   return (
     <TouchableOpacity
@@ -26,6 +28,7 @@ const CustomButton = ({
           backgroundColor: btnColor,
           opacity: disabled ? 0.6 : 1,
           marginTop: margingTOP,
+          width: width,
           marginBottom: marginBottom,
           borderColor: btnColor === COLORS.white ? COLORS.black : 'transparent',
           borderWidth: btnColor === COLORS.white ? 1 : 0,
@@ -36,9 +39,9 @@ const CustomButton = ({
       disabled={disabled}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={[styles.buttonText, { color: btnTextColor }]}>
+        <AppText allowFontScaling={false} style={[styles.buttonText, { color: btnTextColor }]}>
           {buttonName}
-        </Text>
+        </AppText>
         {Loader ? <CustomLoader size='small' style={{ marginLeft: 5 }} /> : null}
       </View>
     </TouchableOpacity>
@@ -49,7 +52,6 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: isTablet ? hp('1.6%') : hp('1.3%'),
     borderRadius: 25,
-    width: wp('90%'),
     alignItems: 'center',
     alignSelf: 'center',
     marginTop: hp('5%'),

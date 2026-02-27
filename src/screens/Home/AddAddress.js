@@ -28,6 +28,7 @@ import StateCityPicker from '../../components/StateCityPicker';
 import CustomLoader from '../../components/CustomLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateUserProfile } from '../../api/profileApi';
+import AppText from '../../components/AppText';
 
 
 const AddAddress = ({ navigation, route }) => {
@@ -125,7 +126,7 @@ const AddAddress = ({ navigation, route }) => {
     try {
 
       const res = await updateUserProfile(payload);
-      console.log(res, "jatin")
+      console.log(res?.status, "Profile api -----")
       if (res?.status === true) {
         await refreshUserDetails()
         await handleSubmita()
@@ -200,6 +201,7 @@ const AddAddress = ({ navigation, route }) => {
         landmark: addressType,
       };
       const res = await addOrEditAddress(body);
+      console.log(' add address Response--->', res);
       if (res?.status) {
         Toast.show(res?.message);
 
@@ -268,30 +270,8 @@ const AddAddress = ({ navigation, route }) => {
     <View style={styles.container}>
       <Header title="Add Address" onBack={() => navigation.goBack()} />
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* <Text style={styles.headerText}>
-          Type your location to get tailored service options!
-        </Text> */}
 
-        {/* <View style={styles.searchInput}>
-          <Image
-            source={images.searchIcon}
-            style={[
-              styles.checkBoxIcon,
-              { height: hp(3), marginLeft: wp(Platform.OS === 'ios' ? 0 : 3) },
-            ]}
-          />
-          <TextInput
-            style={styles.searchInputText}
-            placeholder="Enter your city, area, or landmark"
-            value={searchBar}
-            keyboardType="default"
-            placeholderTextColor={COLORS.textColor}
-            onChangeText={setSearchBar}
-            onSubmitEditing={() => Keyboard.dismiss()}
-          />
-        </View> */}
-
-        <Text style={styles.label}>Enter Your Name</Text>
+        <AppText style={styles.label}>Enter Your Name</AppText>
         <TextInput
           placeholder="Name"
           value={name}
@@ -300,8 +280,10 @@ const AddAddress = ({ navigation, route }) => {
           onChangeText={(i) => setName(i)}
           style={styles.input}
           onSubmitEditing={() => Keyboard.dismiss()}
+          allowFontScaling={false}
+          includeFontPadding={false}
         />
-        <Text style={styles.label}>Street Address</Text>
+        <AppText style={styles.label}>Street Address</AppText>
         <TextInput
           placeholder="Address"
           value={address}
@@ -310,6 +292,8 @@ const AddAddress = ({ navigation, route }) => {
           onChangeText={setAddress}
           style={styles.input}
           onSubmitEditing={() => Keyboard.dismiss()}
+          allowFontScaling={false}
+          includeFontPadding={false}
         />
         <StateCityPicker
           selectedState={stateName}
@@ -317,7 +301,7 @@ const AddAddress = ({ navigation, route }) => {
           onStateSelect={setStateName}
           onCitySelect={setCity}
         />
-        <Text style={styles.label}>Pincode</Text>
+        <AppText style={styles.label}>Pincode</AppText>
         <TextInput
           placeholder="Pincode"
           placeholderTextColor={COLORS.textColor}
@@ -327,8 +311,10 @@ const AddAddress = ({ navigation, route }) => {
           keyboardType="number-pad"
           style={styles.input}
           onSubmitEditing={() => Keyboard.dismiss()}
+          allowFontScaling={false}
+          includeFontPadding={false}
         />
-        <Text style={styles.label}>Save address as</Text>
+        <AppText style={styles.label}>Save address as</AppText>
         <View style={styles.buttonGroup}>
           <TouchableOpacity
             style={[
@@ -338,14 +324,14 @@ const AddAddress = ({ navigation, route }) => {
             onPress={() => setAddressType('Home')}
             activeOpacity={1}
           >
-            <Text
+            <AppText
               style={[
                 styles.typeButtonText,
                 addressType === 'Home' && styles.selectedTypeButtonText,
               ]}
             >
               Home
-            </Text>
+            </AppText>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -354,14 +340,14 @@ const AddAddress = ({ navigation, route }) => {
             ]}
             onPress={() => setAddressType('Office')}
           >
-            <Text
+            <AppText
               style={[
                 styles.typeButtonText,
                 addressType === 'Office' && styles.selectedTypeButtonText,
               ]}
             >
               Office
-            </Text>
+            </AppText>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={1}
@@ -371,14 +357,14 @@ const AddAddress = ({ navigation, route }) => {
             ]}
             onPress={() => setAddressType('Other')}
           >
-            <Text
+            <AppText
               style={[
                 styles.typeButtonText,
                 addressType === 'Other' && styles.selectedTypeButtonText,
               ]}
             >
               Other
-            </Text>
+            </AppText>
           </TouchableOpacity>
         </View>
         <TouchableOpacity
@@ -390,7 +376,7 @@ const AddAddress = ({ navigation, route }) => {
             source={isDefault ? images.check : images.uncheck}
             style={styles.checkBoxIcon}
           />
-          <Text style={styles.checkboxLabel}>Make this default address</Text>
+          <AppText style={styles.checkboxLabel}>Make this default address</AppText>
         </TouchableOpacity>
 
         {loading ? (

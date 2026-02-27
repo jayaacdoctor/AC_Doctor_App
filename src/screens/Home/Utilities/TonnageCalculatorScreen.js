@@ -20,6 +20,7 @@ import Header from '../../../components/Header';
 import HomeScreenStyles from '../HomeScreenStyles';
 import CustomButton from '../../../components/CustomButton';
 import CustomPicker from '../../../components/CustomPicker';
+import AppText from '../../../components/AppText';
 
 const TonnageCalculatorScreen = ({ navigation }) => {
   const [isPlace, setIsPlace] = useState('Select Place first');
@@ -72,14 +73,13 @@ const TonnageCalculatorScreen = ({ navigation }) => {
       <Header title="Tonnage Calculator" onBack={() => navigation.goBack()} />
 
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         style={HomeScreenStyles.workscrollstyle}
         showsVerticalScrollIndicator={false}
       >
         <View style={HomeScreenStyles.worksliderview}>
           <Image source={images.calculatorImg} style={HomeScreenStyles.workimage} />
         </View>
-
-
 
         {/* Problem of ac */}
         <View
@@ -112,6 +112,8 @@ const TonnageCalculatorScreen = ({ navigation }) => {
               keyboardType='number-pad'
               style={styles.normalInput}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
             <TextInput
               placeholder="20 (ft)"
@@ -121,16 +123,18 @@ const TonnageCalculatorScreen = ({ navigation }) => {
               keyboardType='number-pad'
               style={styles.normalInput}
               onSubmitEditing={() => Keyboard.dismiss()}
+              allowFontScaling={false}
+              includeFontPadding={false}
             />
           </View>
 
           {showTon && (
             <View style={{ marginTop: hp('2%') }}>
-              <Text style={styles.reasonInput}>
+              <AppText style={styles.reasonInput}>
                 {' '}
                 Total AC tonnage needed:{' '}
-                <Text style={{ fontFamily: Fonts.bold }}>{totalTon}</Text> ton
-              </Text>
+                <AppText style={{ fontFamily: Fonts.bold }}>{totalTon}</AppText> ton
+              </AppText>
             </View>
           )}
 
@@ -139,6 +143,7 @@ const TonnageCalculatorScreen = ({ navigation }) => {
             margingTOP={hp('1%')}
             btnTextColor={COLORS.white}
             btnColor={COLORS.themeColor}
+            width={wp('85%')}
             onPress={() => handleSubmit()}
           />
         </View>
@@ -149,22 +154,22 @@ const TonnageCalculatorScreen = ({ navigation }) => {
 
         {/* Details card */}
         <View style={styles.card}>
-          <Text
+          <AppText
             style={[
               HomeScreenStyles.workheadText,
               { paddingHorizontal: wp('3%'), marginTop: hp('2%') },
             ]}
           >
             Details
-          </Text>
+          </AppText>
           <View style={styles.boderLine} />
           <View style={[styles.flexView]}>
             <FastImage source={images.roundRightarrow} style={styles.icon} />
-            <Text style={styles.title}>
+            <AppText style={styles.title}>
               Tonnage calculator helps you determine the appropriate cooling
               capacity required for your space based on its size and other
               factors.
-            </Text>
+            </AppText>
           </View>
         </View>
       </ScrollView>

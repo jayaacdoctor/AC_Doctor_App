@@ -6,11 +6,11 @@ import { Alert } from 'react-native';
 
 // 🔥 Create axios instance
 const api = axios.create({
-  baseURL: 'https://api.acdoctor.in/api/v1/',
-  // baseURL: 'http://10.0.2.2:8080/api/v1',
-  // baseURL: "http://137.59.53.70:8080/api/v1",
+  // baseURL: 'https://api.acdoctor.in/api/v1/',
+  baseURL: "http://137.59.53.70:8080/api/v1",
   // baseURL: 'https://devyn-unawaked-kaylin.ngrok-free.dev/api/v1',
   // baseURL: 'https://hematoid-autohypnotic-rey.ngrok-free.dev/api/v1/',
+  // baseURL: 'https://drusilla-watchful-overlavishly.ngrok-free.dev/api/v1/',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,11 +23,6 @@ api.interceptors.request.use(
     const reduxToken = store?.getState()?.auth?.accessToken;
     const storageToken = await AsyncStorage.getItem('accessToken');
     const token = reduxToken || storageToken;
-
-    console.log('------ REQUEST DEBUG ------');
-    console.log('URL:', config.url);
-    console.log('Redux Token:', reduxToken);
-    console.log('Storage Token:', storageToken);
     console.log('Final Token Used:', token);
 
     if (token) {

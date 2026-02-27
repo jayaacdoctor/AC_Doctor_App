@@ -27,6 +27,7 @@ import { logout } from '../../redux/slices/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomLoader from '../../components/CustomLoader';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import AppText from '../../components/AppText';
 
 const AccountScreenComponent = () => {
   const scheme = useColorScheme();
@@ -55,6 +56,8 @@ const AccountScreenComponent = () => {
   const userId = store?.getState()?.auth?.user;
   const addressText = store?.getState()?.auth?.address;
   const weatherData = store?.getState()?.auth?.celcius;
+  const [booking, setBooking] = useState([]);
+  console.log('user id ---', userId?._id);
 
 
   useFocusEffect(
@@ -80,6 +83,13 @@ const AccountScreenComponent = () => {
             : null,
         });
       }
+      const data = await AsyncStorage.getItem('TotalBooking');
+
+      if (data !== null) {
+        const parsedData = JSON.parse(data);
+        console.log('Booking Data --->', parsedData);
+        setBooking(parsedData); // or set state
+      }
     } catch (error) {
       console.log('Error fetching profile:', error);
     } finally {
@@ -88,6 +98,15 @@ const AccountScreenComponent = () => {
   };
 
   const handleMenuPress = async screen => {
+    const underDevelopmentScreens = ['AMC', 'PayNow', 'RateUs'];
+    if (underDevelopmentScreens.includes(screen)) {
+      Toast.showWithGravity(
+        'This feature is currently under development. It will be available soon.',
+        Toast.CENTER,
+        Toast.TOP,
+      );
+      return;
+    }
     if (screen === 'Logout') {
       Alert.alert('Logout', 'Are you sure?', [
         { text: 'Cancel' },
@@ -109,6 +128,7 @@ const AccountScreenComponent = () => {
                   });
                   await AsyncStorage.removeItem('token');
                   await AsyncStorage.removeItem('hasSelectedLocation');
+                  await AsyncStorage.removeItem('hasSetOTP');
                 } catch (e) {
                   console.log('Error removing token', e);
                 }
@@ -147,19 +167,19 @@ const AccountScreenComponent = () => {
       />
       {/* Header with Location Icon and Add Location Text */}
       <View style={Homestyles.header}>
-        <Text style={Homestyles.locationtitle}>Location</Text>
+        <AppText style={Homestyles.locationtitle}>Location</AppText>
         <View style={Homestyles.addressRow}>
-          <TouchableOpacity style={Homestyles.locationContainer}>
+          <TouchableOpacity style={Homestyles.locationContainer} activeOpacity={1}>
             <Image
               source={images.homeLocation}
               style={Homestyles.locationIcon}
               resizeMode='contain'
             />
-            <Text style={Homestyles.locationText}>
+            <AppText style={Homestyles.locationText}>
               {addressText?.fullAddress?.fullAddress
                 ? truncateText(addressText.fullAddress?.fullAddress, 25)
                 : 'Select Location'}
-            </Text>
+            </AppText>
 
 
           </TouchableOpacity>
@@ -169,18 +189,18 @@ const AccountScreenComponent = () => {
               style={Homestyles.locationIcon}
               resizeMode='contain'
             />
-            <Text
+            <AppText
               style={Homestyles.locationText}
             >{weatherData ?
               `${weatherData?.current_weather?.temperature} ${weatherData?.current_weather_units?.temperature}`
               : 'Loading…'
-              }</Text>
+              }</AppText>
           </View>
         </View>
       </View>
 
       {/* profile Detail */}
-      <TouchableOpacity
+      <TouchableOpacity activeOpacity={1}
         style={Homestyles.accountMaincontainer}
         onPress={() => navigation.navigate('ProfileDetail')}
       >
@@ -203,24 +223,24 @@ const AccountScreenComponent = () => {
 
             </View>
             <View style={Homestyles.accountcontainer}>
-              <Text style={Homestyles.accounttitle}>
+              <AppText style={Homestyles.accounttitle}>
                 {storeData?.name || 'No user Name'}
-              </Text>
+              </AppText>
               <View style={Homestyles.accountline}>
                 <Image
                   source={images.Call}
                   style={Homestyles.callIcon}
                   resizeMode="contain"
                 />
-                <Text style={Homestyles.accountNumber}>
+                <AppText style={Homestyles.accountNumber}>
                   {storeData?.countryCode || 'Not Available'} {storeData?.phoneNumber || ''}
-                </Text>
+                </AppText>
               </View>
-              <Text
+              <AppText
                 style={[Homestyles.accountNumber, { color: COLORS.themeColor }]}
               >
                 {'Complete your profile >'}
-              </Text>
+              </AppText>
             </View>
           </>
         )}
@@ -234,8 +254,8 @@ const AccountScreenComponent = () => {
         ]}
       >
         <View style={{ alignItems: 'center' }}>
-          <Text style={Homestyles.accountBlueText}>0</Text>
-          <Text style={Homestyles.accountNumber}>Services Booked</Text>
+          <AppText style={Homestyles.accountBlueText}>{!booking.length ? 0 : booking}</AppText>
+          <AppText style={Homestyles.accountNumber}>Services Booked</AppText>
         </View>
         <View
           style={{
@@ -244,10 +264,10 @@ const AccountScreenComponent = () => {
             borderLeftColor: COLORS.themeColor,
           }}
         >
-          <Text style={Homestyles.accountBlueText}> ₹ 0</Text>
-          <Text style={[Homestyles.accountNumber, { marginLeft: wp(6) }]}>
+          <AppText style={Homestyles.accountBlueText}> ₹ 0</AppText>
+          <AppText style={[Homestyles.accountNumber, { marginLeft: wp(6) }]}>
             Earned through refer
-          </Text>
+          </AppText>
         </View>
       </View>
 
@@ -257,14 +277,14 @@ const AccountScreenComponent = () => {
           data={menuData}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity
+            <TouchableOpacity activeOpacity={1}
               style={Homestyles.acccontainer}
               onPress={() => handleMenuPress(item.screen)}
             >
               <View>
                 <Image source={item.icon} style={Homestyles.accicon} />
               </View>
-              <Text style={Homestyles.acctitle}>{item.title}</Text>
+              <AppText style={Homestyles.acctitle}>{item.title}</AppText>
               <Image source={images.rightArrow} style={Homestyles.accarrow} />
             </TouchableOpacity>
           )}

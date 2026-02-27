@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import useLocation from '../../utils/useLocation';
 import CustomLoader from '../../components/CustomLoader';
+import AppText from '../../components/AppText';
 
 const AddAdress = () => {
   const [city, setCity] = useState('');
@@ -81,6 +82,8 @@ const AddAdress = () => {
         onChangeText={setCity}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -89,6 +92,8 @@ const AddAdress = () => {
         onChangeText={setAddress}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -97,6 +102,8 @@ const AddAdress = () => {
         onChangeText={setLandmark}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -106,6 +113,8 @@ const AddAdress = () => {
         keyboardType="number-pad"
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       <TextInput
@@ -114,6 +123,8 @@ const AddAdress = () => {
         onChangeText={setStateName}
         style={styles.input}
         onSubmitEditing={() => Keyboard.dismiss()}
+        allowFontScaling={false}
+        includeFontPadding={false}
       />
 
       {locationLoading ? (
@@ -127,6 +138,8 @@ const AddAdress = () => {
             keyboardType="decimal-pad"
             style={styles.input}
             onSubmitEditing={() => Keyboard.dismiss()}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
 
           <TextInput
@@ -136,17 +149,19 @@ const AddAdress = () => {
             keyboardType="decimal-pad"
             style={styles.input}
             onSubmitEditing={() => Keyboard.dismiss()}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
         </>
       )}
 
       {locationError && (
-        <Text style={styles.errorText}>
+        <AppText style={styles.errorText}>
           Location Error: {locationError}{' '}
-          <Text onPress={retry} style={styles.retryText}>
+          <AppText onPress={retry} style={styles.retryText}>
             Retry
-          </Text>
-        </Text>
+          </AppText>
+        </AppText>
       )}
 
       <View style={styles.buttonContainer}>

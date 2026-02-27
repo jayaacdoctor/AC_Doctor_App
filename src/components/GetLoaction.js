@@ -65,7 +65,7 @@ const useCurrentLocation = () => {
 
     const get = type =>
       components.find(c => c.types.includes(type))?.long_name || '';
-    console.log(result, 'lolololo');
+    // console.log(result, 'lolololo');
     return {
       fullAddress: result.formatted_address,
       house: get('street_number'),

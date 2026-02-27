@@ -14,6 +14,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import { isTablet } from '../components/TabletResponsiveSize';
+import AppText from '../components/AppText';
 
 const SuccessPopupModal = ({
   visible,
@@ -48,11 +49,11 @@ const SuccessPopupModal = ({
           </View>
 
           {/* Success Message */}
-          <Text style={[styles.title, { color: HeadTextColor }]}>
+          <AppText style={[styles.title, { color: HeadTextColor }]}>
             {HeadText}
-          </Text>
-          <Text style={styles.message}>{message1}</Text>
-          <Text style={styles.message}>{message2}</Text>
+          </AppText>
+          <AppText style={styles.message}>{message1}</AppText>
+          <AppText style={styles.message}>{message2}</AppText>
 
           {/* Buttons */}
           <View style={styles.buttonContainer}>
@@ -65,9 +66,9 @@ const SuccessPopupModal = ({
               ]}
               onPress={onClose}
             >
-              <Text style={styles.primaryText}>
+              <AppText style={styles.primaryText} numberOfLines={1}>
                 {firstButtonText}
-              </Text>
+              </AppText>
             </TouchableOpacity>
 
             {/* Second Button */}
@@ -76,9 +77,9 @@ const SuccessPopupModal = ({
                 style={[styles.doneButton, styles.secondaryHalfButton]}
                 onPress={onSecondButtonPress}
               >
-                <Text style={styles.secondaryText}>
+                <AppText style={styles.secondaryText} numberOfLines={0}>
                   {secondButtonText}
-                </Text>
+                </AppText>
               </TouchableOpacity>
             )}
           </View>
@@ -98,32 +99,31 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    width: '85%',
+    width: isTablet ? wp(50) : wp(85),
+    maxWidth: 500,
     backgroundColor: '#fff',
-    borderRadius: 15,
-    padding: 25,
+    borderRadius: 20,
+    paddingVertical: hp(3),
+    paddingHorizontal: wp(6),
     alignItems: 'center',
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
   },
   iconContainer: {
     marginBottom: 15,
   },
   checkmarkIcon: {
-    width: wp('40%'),
-    height: hp(9),
+    width: isTablet ? wp(12) : wp(22),
+    height: isTablet ? wp(12) : wp(22),
   },
   title: {
-    fontSize: hp(3),
+    fontSize: isTablet ? hp(2.5) : hp(2.8),
+    textAlign: 'center',
     fontFamily: Fonts.extraBold,
     color: COLORS.black,
     marginBottom: 10,
   },
+
   message: {
-    fontSize: hp(1.5),
+    fontSize: isTablet ? hp(1.6) : hp(1.6),
     fontFamily: Fonts.medium,
     color: COLORS.black,
     textAlign: 'center',
@@ -131,14 +131,17 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
-    marginTop: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: hp(2.5),
   },
   doneButton: {
-    paddingVertical: isTablet ? wp(1.5) : 8.5,
+    // paddingVertical: isTablet ? wp(1.5) : 8.5,
+    paddingVertical: hp(0.8),            // responsive vertical padding
+    paddingHorizontal: wp(3),
     alignItems: 'center',
-    borderRadius: hp(10),
+    borderRadius: wp(10),
   },
   secondButton: {
     backgroundColor: COLORS.themeColor,
@@ -146,42 +149,33 @@ const styles = StyleSheet.create({
     borderWidth: wp(0.2),
     borderRadius: hp(10),
   },
-  doneButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-    textAlign: 'center',
-  },
 
   singleButton: {
-    width: '70%',
+    maxWidth: wp('70%'),
     alignSelf: 'center',
     backgroundColor: COLORS.themeColor,
   },
-
   primaryHalfButton: {
-    width: '52%',
+    width: wp('38%'),
+    marginRight: wp(2),
     backgroundColor: COLORS.themeColor,
   },
-
   secondaryHalfButton: {
-    width: '52%',
+    width: wp('38%'),
+    // marginLeft: wp(2),
     backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: COLORS.themeColor,
-    marginLeft: 10,
   },
-
   primaryText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: hp(1.8),
     fontWeight: '500',
     textAlign: 'center',
   },
-
   secondaryText: {
     color: COLORS.themeColor,
-    fontSize: 16,
+    fontSize: hp(1.8),
     fontWeight: '500',
     textAlign: 'center',
   },

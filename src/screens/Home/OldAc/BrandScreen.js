@@ -20,16 +20,15 @@ import {
 import { COLORS } from '../../../utils/colors';
 import { getBrandlist } from '../../../api/homeApi';
 import CustomLoader from '../../../components/CustomLoader';
-import { dispatch } from '../../../redux/store';
-import { setBrand } from '../../../redux/slices/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AppText from '../../../components/AppText';
 
 const BrandScreen = ({ route }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigation = useNavigation();
   const cameFrom = route?.params?.from;
   const [brandsArry, setBrandsArry] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getBrandList();
@@ -39,6 +38,7 @@ const BrandScreen = ({ route }) => {
     try {
       setLoading(true);
       const res = await getBrandlist();
+      console.log('Brand List Response:', res);
       setBrandsArry(res?.data || []);
     } catch (error) {
       console.log(error);
@@ -76,7 +76,7 @@ const BrandScreen = ({ route }) => {
         source={item?.image ? { url: item?.image } : images.lgLogo}
         style={styles.logo}
       />
-      <Text style={styles.brandName}>{item.name}</Text>
+      <AppText style={styles.brandName}>{item.name}</AppText>
     </TouchableOpacity>
   );
 
@@ -96,16 +96,18 @@ const BrandScreen = ({ route }) => {
             value={searchQuery}
             onChangeText={setSearchQuery}
             onSubmitEditing={() => Keyboard.dismiss()}
+            allowFontScaling={false}
+            includeFontPadding={false}
           />
         </View>
         <View style={styles.borderContainer}>
-          <Text style={styles.headerText}>Which is your favorite BRAND ?</Text>
+          <AppText style={styles.headerText}>Which is your favorite BRAND ?</AppText>
           {loading ? (
             <CustomLoader size="large" />
           ) : (
             <FlatList
               data={filteredBrands}
-              keyExtractor={item => item.id}
+              keyExtractor={(item) => item._id}
               numColumns={3}
               renderItem={({ item }) => (
                 <BrandItem item={item} onSelect={handleSelectBrand} />

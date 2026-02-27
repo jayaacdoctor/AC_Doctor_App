@@ -14,6 +14,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import { isTablet } from '../components/TabletResponsiveSize';
+import AppText from '../components/AppText';
 
 const ContentSection = ({
   activeSection,
@@ -44,10 +45,10 @@ const ContentSection = ({
                     alignSelf: 'center',
                   }}
                 />
-                <Text style={styles.texthead}>{item.title}</Text>
+                <AppText style={styles.texthead}>{item.title}</AppText>
               </View>
               <>
-                <Text
+                <AppText
                   style={[
                     styles.textdes,
                     {
@@ -58,7 +59,7 @@ const ContentSection = ({
                   ]}
                 >
                   {item.desc}
-                </Text>
+                </AppText>
               </>
             </View>
           ))}
@@ -77,21 +78,21 @@ const ContentSection = ({
             >
               {/* Title */}
               {section.title && (
-                <Text
+                <AppText
                   style={[
                     styles.texthead,
                     { marginVertical: widthPercentageToDP('1%') },
                   ]}
                 >
                   {section.title}
-                </Text>
+                </AppText>
               )}
 
               {/* Items */}
               {section.items.map((item, itemIndex) => (
-                <Text key={itemIndex} style={[styles.textdes]}>
+                <AppText key={itemIndex} style={[styles.textdes]}>
                   • {item}
-                </Text>
+                </AppText>
               ))}
             </View>
           ))}
@@ -100,19 +101,19 @@ const ContentSection = ({
     } else if (activeSection === 'Terms & Conditions') {
       return (
         <View style={[styles.detailCont, { backgroundColor: COLORS.white }]}>
-          <Text
+          <AppText
             style={[
               styles.texthead,
               { marginVertical: widthPercentageToDP('1.5%') },
             ]}
           >
             Terms & Conditions
-          </Text>
+          </AppText>
           {termsConditions.map((item, index) => (
-            <Text key={index} style={[styles.textdes]}>
+            <AppText key={index} style={[styles.textdes]}>
               {' '}
               • {item.text}
-            </Text>
+            </AppText>
           ))}
         </View>
       );
@@ -135,7 +136,7 @@ const ContentSection = ({
           ]}
           onPress={() => setActiveSection('Key Benefits')}
         >
-          <Text style={[styles.tabText, { color: activeSection === 'Key Benefits' ? COLORS.black : COLORS.textHeading }]}>Key Benefits</Text>
+          <AppText style={[styles.tabText, { color: activeSection === 'Key Benefits' ? COLORS.black : COLORS.textHeading }]}>Key Benefits</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -149,7 +150,7 @@ const ContentSection = ({
           ]}
           onPress={() => setActiveSection('Description')}
         >
-          <Text style={[styles.tabText, { color: activeSection === 'Description' ? COLORS.black : COLORS.textHeading }]}>Description</Text>
+          <AppText style={[styles.tabText, { color: activeSection === 'Description' ? COLORS.black : COLORS.textHeading }]}>Description</AppText>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -163,7 +164,7 @@ const ContentSection = ({
           ]}
           onPress={() => setActiveSection('Terms & Conditions')}
         >
-          <Text style={[styles.tabText, { color: activeSection === 'Terms & Conditions' ? COLORS.black : COLORS.textHeading }]}>Terms & Conditions</Text>
+          <AppText style={[styles.tabText, { color: activeSection === 'Terms & Conditions' ? COLORS.black : COLORS.textHeading }]}>Terms & Conditions</AppText>
         </TouchableOpacity>
       </View>
       <ScrollView>{renderContent()}</ScrollView>

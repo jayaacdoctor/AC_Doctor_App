@@ -26,6 +26,7 @@ import { handleApiError } from "../../../utils/apiErrorHandler";
 import DetailsCard from "../../../customScreen/DetailsCard";
 import CustomLoader from '../../../components/CustomLoader';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import AppText from '../../../components/AppText';
 
 
 const ErrorCodeScreen = ({ navigation }) => {
@@ -106,17 +107,11 @@ const ErrorCodeScreen = ({ navigation }) => {
     <View style={HomeScreenStyles.workcontainer}>
       <Header title="Error Code" onBack={() => navigation.goBack()} />
       <ScrollView
-        // showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         style={[HomeScreenStyles.workscrollstyle, { marginBottom: hp(4) }]}
         showsVerticalScrollIndicator={false}
       >
-        <KeyboardAwareScrollView
-
-
-        // keyboardShouldPersistTaps="handled"
-
-        >
+        <KeyboardAwareScrollView>
 
           <View style={HomeScreenStyles.worksliderview}>
             <Image source={images.ErrorImg} style={HomeScreenStyles.workimage} />
@@ -150,7 +145,7 @@ const ErrorCodeScreen = ({ navigation }) => {
               width: '100%',
               paddingHorizontal: wp('5%'),
             }}>
-              <Text style={styles.label}>Enter your code</Text>
+              <AppText style={styles.label}>Enter your code</AppText>
               <TextInput
                 placeholder="Error Code"
                 placeholderTextColor="#aaa"
@@ -159,7 +154,8 @@ const ErrorCodeScreen = ({ navigation }) => {
                 style={[styles.normalInput]}
                 onSubmitEditing={() => Keyboard.dismiss()}
                 underlineColorAndroid="transparent"
-
+                allowFontScaling={false}
+                includeFontPadding={false}
               />
             </View>
 
@@ -170,6 +166,7 @@ const ErrorCodeScreen = ({ navigation }) => {
               btnColor={COLORS.themeColor}
               onPress={handleSubmit}
               margingTOP={hp('3%')}
+              width={wp('85%')}
             />
           </View>
 

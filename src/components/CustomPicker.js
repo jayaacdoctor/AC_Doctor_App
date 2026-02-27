@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { Fonts } from '../utils/colors';
+import AppText from './AppText';
 
 const CustomPicker = ({
   label,
@@ -27,7 +28,7 @@ const CustomPicker = ({
 
   return (
     <View style={[styles.inputGroup, { mainViewwidth, zIndex: 100 }]}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && <AppText style={styles.label}>{label}</AppText>}
 
       <TouchableOpacity
         activeOpacity={0.8}
@@ -51,10 +52,15 @@ const CustomPicker = ({
           value={value}
           placeholder={placeholder}
           useNativeAndroidPickerStyle={false}
+          textInputProps={{
+            allowFontScaling: false,
+            includeFontPadding: false,
+          }}
+
           pickerProps={{
             itemStyle: {
               color: 'black',
-              fontSize: wp('2.5%'),
+              fontSize: wp('4%'),
               fontFamily: Fonts.medium
             },
           }}
@@ -63,13 +69,13 @@ const CustomPicker = ({
               width: width * 0.93,
               height,
               fontSize: hp('1.8%'),
-              color: value ? '#333' : '#5d5d5d', // 👈 selected vs placeholder
+              color: value ? '#333' : '#413f3f', // 👈 selected vs placeholder
             },
             inputAndroid: {
               width: width * 0.88,
               height,
-              fontSize: hp('1.6%'),
-              color: value ? '#333' : '#5d5d5d',
+              fontSize: hp('1.8%'),
+              color: value ? '#333' : '#302f2f',
             },
             iconContainer: {
               top: height * 0.25,

@@ -20,6 +20,7 @@ import CustomButton from '../../components/CustomButton';
 import WorkInfo from '../../customScreen/WorkInfo';
 import { isTablet } from '../../components/TabletResponsiveSize';
 import { rf } from '../../components/Resposive';
+import AppText from '../../components/AppText';
 
 const CommericalAc = ({ navigation }) => {
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -98,17 +99,17 @@ const CommericalAc = ({ navigation }) => {
     return value > 0 ? (
       <View style={styles.counter}>
         <TouchableOpacity style={styles.counterButton} onPress={onDecrement}>
-          <Text style={styles.counterText}>-</Text>
+          <AppText style={styles.counterText}>-</AppText>
         </TouchableOpacity>
-        <Text style={styles.counterValue}>{value}</Text>{' '}
+        <AppText style={styles.counterValue}>{value}</AppText>{' '}
         {/* ← Fixed: was `count` */}
         <TouchableOpacity style={styles.counterButton} onPress={onIncrement}>
-          <Text style={styles.counterText}>+</Text>
+          <AppText style={styles.counterText}>+</AppText>
         </TouchableOpacity>
       </View>
     ) : (
       <TouchableOpacity onPress={onIncrement}>
-        <Text style={styles.addText}>+ Add</Text>
+        <AppText style={styles.addText}>+ Add</AppText>
       </TouchableOpacity>
     );
   };
@@ -118,7 +119,7 @@ const CommericalAc = ({ navigation }) => {
       <Header
         title="Commerical Ac"
         onBack={() => navigation.goBack()}
-        // onHelp={() => alert('Help for Home')}
+      // onHelp={() => alert('Help for Home')}
       />
 
       <ScrollView
@@ -129,7 +130,7 @@ const CommericalAc = ({ navigation }) => {
           <Image source={images.bannerOne} style={HomeScreenStyles.workimage} />
         </View>
 
-        <Text style={HomeScreenStyles.workheadText}>Select Type of AC</Text>
+        <AppText style={HomeScreenStyles.workheadText}>Select Type of AC</AppText>
 
         {acTypes.map((ac, index) => (
           <View key={index} style={HomeScreenStyles.card}>
@@ -147,9 +148,9 @@ const CommericalAc = ({ navigation }) => {
                     style={styles.workacIconstyle}
                     resizeMode={FastImage.resizeMode.contain}
                   />
-                  <Text style={[styles.title, { marginLeft: wp(3) }]}>
+                  <AppText style={[styles.title, { marginLeft: wp(3) }]}>
                     {ac.name}
-                  </Text>
+                  </AppText>
 
                   {ac.showButtons ? (
                     <View style={HomeScreenStyles.workbuttonContainer}>
@@ -160,23 +161,23 @@ const CommericalAc = ({ navigation }) => {
                             ac.count.repair > 0
                               ? 'repair'
                               : ac.count.installation > 0
-                              ? 'installation'
-                              : ac.count.service > 0
-                              ? 'service'
-                              : 'repair';
+                                ? 'installation'
+                                : ac.count.service > 0
+                                  ? 'service'
+                                  : 'repair';
                           handleDecrement(index, activeType);
                         }}
                       >
-                        <Text style={HomeScreenStyles.workbuttonText}>-</Text>
+                        <AppText style={HomeScreenStyles.workbuttonText}>-</AppText>
                       </TouchableOpacity>
-                      <Text style={HomeScreenStyles.workcount}>
+                      <AppText style={HomeScreenStyles.workcount}>
                         {ac.totalCount}
-                      </Text>
+                      </AppText>
                       <TouchableOpacity
                         style={HomeScreenStyles.workbutton}
                         onPress={() => handleIncrement(index, 'repair')}
                       >
-                        <Text style={styles.workbuttonText}>+</Text>
+                        <AppText style={styles.workbuttonText}>+</AppText>
                       </TouchableOpacity>
                     </View>
                   ) : (
@@ -184,7 +185,7 @@ const CommericalAc = ({ navigation }) => {
                       style={styles.addButton}
                       onPress={() => handleIncrement(index, 'repair')}
                     >
-                      <Text style={styles.addText}>+ Add</Text>
+                      <AppText style={styles.addText}>+ Add</AppText>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -192,7 +193,7 @@ const CommericalAc = ({ navigation }) => {
               {isExpanded[index] && (
                 <View style={styles.subOptions}>
                   <View style={styles.subOption}>
-                    <Text style={styles.subText}>Repair</Text>
+                    <AppText style={styles.subText}>Repair</AppText>
                     {renderCounter(
                       ac.count.repair,
                       () => handleIncrement(index, 'repair'),
@@ -200,7 +201,7 @@ const CommericalAc = ({ navigation }) => {
                     )}
                   </View>
                   <View style={styles.subOption}>
-                    <Text style={styles.subText}>Installation</Text>
+                    <AppText style={styles.subText}>Installation</AppText>
                     {renderCounter(
                       ac.count.installation,
                       () => handleIncrement(index, 'installation'),
@@ -208,7 +209,7 @@ const CommericalAc = ({ navigation }) => {
                     )}
                   </View>
                   <View style={styles.subOption}>
-                    <Text style={styles.subText}>Service</Text>
+                    <AppText style={styles.subText}>Service</AppText>
                     {renderCounter(
                       ac.count.service,
                       () => handleIncrement(index, 'service'),

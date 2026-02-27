@@ -22,6 +22,7 @@ import HomeScreenStyles from '../Home/HomeScreenStyles';
 import SuccessPopupModal from '../../customScreen/SuccessPopupModal';
 import DeclineModal from '../../customScreen/DeclineModal';
 import CustomButton from '../../components/CustomButton';
+import AppText from '../../components/AppText';
 
 const AMCRequestFrom = ({ navigation }) => {
   const [reqStatus, setReqStatus] = useState('Under Review'); // 'Scheduled', 'ReScheduled', 'Under Review'
@@ -108,7 +109,7 @@ const AMCRequestFrom = ({ navigation }) => {
             <View style={styles.statusBarRow}>
               <View style={styles.statusInfo}>
                 <Image source={images.AMCicon} style={styles.icon} />
-                <Text style={styles.statusText}>AMC</Text>
+                <AppText style={styles.statusText}>AMC</AppText>
               </View>
               <View
                 style={[
@@ -125,7 +126,7 @@ const AMCRequestFrom = ({ navigation }) => {
                   },
                 ]}
               >
-                <Text
+                <AppText
                   style={[
                     styles.statusBadgeText,
                     {
@@ -147,36 +148,36 @@ const AMCRequestFrom = ({ navigation }) => {
                       : reqStatus === 'complete'
                         ? 'Completed'
                         : 'Under Review'}
-                </Text>
+                </AppText>
               </View>
             </View>
             <View style={styles.statusInfo}>
-              <Text style={styles.label}>Request ID</Text>
-              <Text style={[styles.value, { marginLeft: hp(1) }]}>#12345</Text>
+              <AppText style={styles.label}>Request ID</AppText>
+              <AppText style={[styles.value, { marginLeft: hp(1) }]}>#12345</AppText>
             </View>
           </View>
 
           <View style={styles.copperRow}>
             <View style={styles.detailRow}>
-              <Text style={styles.label}>Name</Text>
-              <Text style={styles.value}>Sachin</Text>
+              <AppText style={styles.label}>Name</AppText>
+              <AppText style={styles.value}>Sachin</AppText>
             </View>
             <View style={[styles.detailRow, { paddingRight: hp(3) }]}>
-              <Text style={styles.label}>Place Type</Text>
-              <Text style={styles.value}>Residental</Text>
+              <AppText style={styles.label}>Place Type</AppText>
+              <AppText style={styles.value}>Residental</AppText>
             </View>
           </View>
           <View style={styles.copperRow}>
             <View style={styles.detailRow}>
-              <Text style={styles.label}>Address</Text>
-              <Text style={styles.value}> 149, Vijay Nagar, Indore</Text>
+              <AppText style={styles.label}>Address</AppText>
+              <AppText style={styles.value}> 149, Vijay Nagar, Indore</AppText>
             </View>
           </View>
 
           {/* Assigned Agent */}
           {['Scheduled', 'ReScheduled'].includes(reqStatus) && (
             <>
-              <Text style={styles.sectionTitle}>Assigned Agent</Text>
+              <AppText style={styles.sectionTitle}>Assigned Agent</AppText>
               <View style={styles.agentContainer}>
                 <View style={styles.agentInfo}>
                   <Image source={images.userphoto} style={styles.agentImage} />
@@ -191,14 +192,14 @@ const AMCRequestFrom = ({ navigation }) => {
                         source={images.profile}
                         style={[styles.icon, { resizeMode: 'contain' }]}
                       />
-                      <Text style={styles.agentName}>Mohan Verma</Text>
+                      <AppText style={styles.agentName}>Mohan Verma</AppText>
                     </View>
-                    <Text style={styles.agentTitle}>AC Doctor agent</Text>
+                    <AppText style={styles.agentTitle}>AC Doctor agent</AppText>
                   </View>
                 </View>
                 <View style={styles.actionButtons}>
                   <TouchableOpacity style={styles.viewProfileButton}>
-                    <Text style={styles.viewProfileText}>View Profile</Text>
+                    <AppText style={styles.viewProfileText}>View Profile</AppText>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.chatButton}>
                     <Image source={images.chatIcon} style={styles.chatIcon} />
@@ -216,12 +217,12 @@ const AMCRequestFrom = ({ navigation }) => {
                 onPress={() => toggleExpand(acName)}
                 style={styles.acHeader}
               >
-                <Text style={[styles.label, { marginLeft: wp(1) }]}>
+                <AppText style={[styles.label, { marginLeft: wp(1) }]}>
                   {acName}
-                </Text>
-                <Text style={styles.label}>
+                </AppText>
+                <AppText style={styles.label}>
                   {expandedAC === acName ? '▲' : '▼'}
-                </Text>
+                </AppText>
               </TouchableOpacity>
 
               {expandedAC === acName ? (
@@ -229,17 +230,17 @@ const AMCRequestFrom = ({ navigation }) => {
                   {Object.entries(acData[acName]).map(([key, detail]) => (
                     <>
                       <View key={key} style={styles.copperRow}>
-                        <Text style={styles.label}>
+                        <AppText style={styles.label}>
                           {detail.title
                             ? detail.title.charAt(0).toUpperCase() +
                             detail.title.slice(1)
                             : key}
-                        </Text>
-                        <Text
+                        </AppText>
+                        <AppText
                           style={[styles.value, { fontFamily: Fonts.semiBold }]}
                         >
                           {detail.value}
-                        </Text>
+                        </AppText>
                       </View>
                     </>
                   ))}
@@ -263,17 +264,17 @@ const AMCRequestFrom = ({ navigation }) => {
             // }
             style={[styles.doneButton, { backgroundColor: COLORS.white }]}
           >
-            <Text
+            <AppText
               style={[styles.doneButtonText, { color: COLORS.textHeading }]}
             >
               Cancel Request
-            </Text>
+            </AppText>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.doneButton, styles.secondButton]}
             onPress={() => setRescheduleReqVisible(true)}
           >
-            <Text style={styles.doneButtonText}>Reschedule</Text>
+            <AppText style={styles.doneButtonText}>Reschedule</AppText>
           </TouchableOpacity>
         </View>
       )}
