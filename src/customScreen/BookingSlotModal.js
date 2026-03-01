@@ -8,7 +8,7 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
-  Platform, KeyboardAvoidingView
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -16,6 +16,7 @@ import {
 } from 'react-native-responsive-screen';
 import { COLORS } from '../utils/colors';
 import AppText from '../components/AppText';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const BookingSlotModal = ({
   visible,
@@ -124,21 +125,174 @@ const BookingSlotModal = ({
   };
 
   return (
-    <Modal visible={visible} transparent animationType="slide" statusBarTranslucent>
-      <View style={[styles.overlay, { justifyContent: 'flex-end' }]}>
+    // <Modal visible={visible} transparent animationType="slide" statusBarTranslucent>
+    //   <View style={[styles.overlay]}>
+    //     <Pressable style={styles.backdrop} onPress={onClose} />
+    //     <KeyboardAwareScrollView
+    //       enableOnAndroid
+    //       extraScrollHeight={20}
+    //       keyboardShouldPersistTaps="handled"
+    //       showsVerticalScrollIndicator={false}
+    //     >
+    //       <View style={[
+    //         styles.modalContent,
+    //         { maxHeight: isReschedule ? '90%' : '85%', }
+    //       ]}>
+
+    //         {/* Scrollable Content */}
+    //         <ScrollView
+    //           keyboardShouldPersistTaps="handled"
+    //           showsVerticalScrollIndicator={false}
+    //           contentContainerStyle={{
+    //             paddingBottom: hp(8),
+    //           }}
+    //         >
+
+    //           <AppText allowFontScaling={false} style={styles.title}>Book a Slot</AppText>
+
+    //           <AppText allowFontScaling={false} style={styles.sectionLabel}>Date</AppText>
+
+    //           <View style={styles.monthYearSelector}>
+    //             <TouchableOpacity
+    //               onPress={() => {
+    //                 if (selectedMonth === 0) {
+    //                   setSelectedMonth(11);
+    //                   setSelectedYear(y => y - 1);
+    //                 } else {
+    //                   setSelectedMonth(m => m - 1);
+    //                 }
+    //               }}
+    //             >
+    //               <AppText allowFontScaling={false} style={styles.navText}>{'<<'}</AppText>
+    //             </TouchableOpacity>
+
+    //             <AppText allowFontScaling={false} style={styles.monthText}>
+    //               {monthNames[selectedMonth]} {selectedYear}
+    //             </AppText>
+
+    //             <TouchableOpacity
+    //               onPress={() => {
+    //                 if (selectedMonth === 11) {
+    //                   setSelectedMonth(0);
+    //                   setSelectedYear(y => y + 1);
+    //                 } else {
+    //                   setSelectedMonth(m => m + 1);
+    //                 }
+    //               }}
+    //             >
+    //               <AppText style={styles.navText}>{'>>'}</AppText>
+    //             </TouchableOpacity>
+    //           </View>
+
+    //           <ScrollView
+    //             ref={scrollRef}
+    //             horizontal
+    //             showsHorizontalScrollIndicator={false}
+    //             style={styles.daysContainer}
+    //           >
+    //             {days.map((day, index) => {
+    //               const disabled = isPastDate(day.date);
+    //               return (
+    //                 <TouchableOpacity
+    //                   key={index}
+    //                   disabled={disabled}
+    //                   style={[
+    //                     styles.dayButton,
+    //                     selectedDay === index && !disabled && styles.selectedDay,
+    //                     disabled && styles.disabledDay,
+    //                   ]}
+    //                   onPress={() => setSelectedDay(index)}
+    //                 >
+    //                   <AppText
+    //                     style={[selectedDay === index ? styles.dateNumber : styles.disabledText, disabled && styles.disabledText,]}
+    //                   >
+    //                     {day.date}
+    //                   </AppText>
+    //                   <AppText
+    //                     style={[selectedDay === index ? styles.dayName : styles.disabledText, disabled && styles.disabledText,]}
+    //                   >
+    //                     {day.day}
+    //                   </AppText>
+    //                 </TouchableOpacity>
+    //               );
+    //             })}
+    //           </ScrollView>
+
+    //           <AppText style={styles.sectionLabel}>Time</AppText>
+
+    //           <View style={styles.timeContainer}>
+    //             {timeSlots.map((slot, index) => (
+    //               <TouchableOpacity
+    //                 key={index}
+    //                 style={[
+    //                   styles.timeButton,
+    //                   selectedTime === index && styles.selectedTime,
+    //                 ]}
+    //                 onPress={() => setSelectedTime(index)}
+    //               >
+    //                 <AppText style={selectedTime === index ? styles.selectedtimeLabel : styles.timeLabel}>{slot.label}</AppText>
+    //                 <AppText style={selectedTime === index ? styles.selectedtimeLabel : styles.timeText}>{slot.time}</AppText>
+    //               </TouchableOpacity>
+    //             ))}
+    //           </View>
+
+    //           {isReschedule && (
+    //             <>
+    //               <AppText style={styles.sectionLabel}>Reason of Rescheduling</AppText>
+    //               <TextInput
+    //                 style={styles.reasonInput}
+    //                 placeholder="Type here..."
+    //                 placeholderTextColor={COLORS.TextColor}
+    //                 multiline
+    //                 textAlignVertical="top"
+    //                 value={rescheduleReason}
+    //                 onChangeText={setRescheduleReason}
+    //                 allowFontScaling={false}
+    //                 includeFontPadding={false}
+    //               />
+    //             </>
+    //           )}
+    //         </ScrollView>
+
+
+    //         <TouchableOpacity
+    //           style={[styles.proceedButton, { marginVertical: 12 }]}
+    //           onPress={handleProceedPress}
+    //         >
+    //           <Text style={styles.proceedText}>Proceed</Text>
+    //         </TouchableOpacity>
+
+    //       </View>
+    //     </KeyboardAwareScrollView>
+    //   </View>
+    // </Modal>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      statusBarTranslucent
+    >
+      <View style={styles.overlay}>
+
         <Pressable style={styles.backdrop} onPress={onClose} />
-        <KeyboardAvoidingView
-          style={{
-            flex: 1,
-            // justifyContent: isReschedule ? 'flex-end' : 'flex-start',
-          }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        // keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 20}
-        >
-          <View style={[
+
+        <View
+          style={[
             styles.modalContent,
-            { maxHeight: isReschedule ? '90%' : '85%', }
-          ]}>
+            {
+              maxHeight: isReschedule ? '65%' : '45%',
+            },
+          ]}
+        >
+
+          <KeyboardAwareScrollView
+            enableOnAndroid
+            extraScrollHeight={20}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: hp(3) }}
+          >
+
 
             {/* Scrollable Content */}
             <ScrollView
@@ -255,17 +409,17 @@ const BookingSlotModal = ({
               )}
             </ScrollView>
 
-            {/* <View style={{ padding: 16 }}> */}
-            <TouchableOpacity
-              style={styles.proceedButton}
-              onPress={handleProceedPress}
-            >
-              <Text style={styles.proceedText}>Proceed</Text>
-            </TouchableOpacity>
-            {/* </View> */}
+          </KeyboardAwareScrollView>
 
-          </View>
-        </KeyboardAvoidingView>
+          <TouchableOpacity
+            style={styles.proceedButton}
+            onPress={handleProceedPress}
+          >
+            <Text style={styles.proceedText}>Proceed</Text>
+          </TouchableOpacity>
+
+        </View>
+
       </View>
     </Modal>
   );
@@ -283,10 +437,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalContent: {
+    width: '100%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 16,
+    paddingHorizontal: wp(5),
+    paddingVertical: hp(3),
   },
   title: {
     fontSize: hp(2),

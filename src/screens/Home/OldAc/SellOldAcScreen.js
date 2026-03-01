@@ -168,13 +168,18 @@ const SellOldAcScreen = ({ navigation }) => {
 
   // add ac
   const handleAddAnotherAc = () => {
+    if (!formData) return;
+
     setAllAcList(prev => [
       ...prev,
-      { ...formData, photos: [...formData.uploadedPhotos] }
+      {
+        ...formData,
+        photos: Array.isArray(formData.photos)
+          ? [...formData.photos]
+          : []
+      }
     ]);
 
-
-    // 👇 Full reset
     setFormData({
       brand: '',
       acType: '',
@@ -187,6 +192,7 @@ const SellOldAcScreen = ({ navigation }) => {
       dateTime: '',
       slotTime: ''
     });
+
     setShowAddMorePopup(false);
   };
 

@@ -32,6 +32,8 @@ import { getFcmToken } from '../../services/getFcmToken';
 import { Gettokenfrofcm } from '../../services/Gettokenforfcm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppText from '../../components/AppText';
+
+
 const phoneSchema = yup.object().shape({
   phoneNumber: yup
     .string()
@@ -54,16 +56,23 @@ const LoginScreen = ({ navigation }) => {
   });
   const dispatch = useDispatch();
 
+
+
   const onSubmit = async data => {
+
     try {
+      const token = await AsyncStorage.getItem('fcmToken');
+      console.log(token, "popopo")
       const postdata = {
         countryCode: callingCode,
         phoneNumber: data.phoneNumber,
-        // deviceToken: token,
+        deviceToken: token,
       };
+      console.log('postdata--->', postdata);
       setLoading(true);
       // ==== Save Token ====
       const res = await loginUser(postdata);
+      console.log('res data--->', res.data);
       await AsyncStorage.setItem('accessToken', res?.data?.assessToken);
       dispatch(setToken({ accessToken: res?.data?.assessToken }));
       navigation.navigate('Verification', {

@@ -77,12 +77,23 @@ export const getUserDeatil = async (userId) => {
   }
 };
 
-// api/profileApi.js
+// api/Notification.js
 export const getTNotification = async (payload) => {
   try {
     const res = await api.get(endPoint.NOTIFICATION, {
       params: payload,
     });
+    return res?.data;
+  } catch (error) {
+    console.error('API Error:', error);
+    throw error;
+  }
+};
+
+// api/NotificationDetail.js
+export const getTNotificationDetail = async (id) => {
+  try {
+    const res = await api.get(`${endPoint.NOTIFY_DETAILS}${id}`);
     return res?.data;
   } catch (error) {
     console.error('API Error:', error);

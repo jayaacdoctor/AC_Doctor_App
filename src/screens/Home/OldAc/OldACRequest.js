@@ -11,6 +11,7 @@ import {
   TextInput,
   Keyboard,
   BackHandler,
+  Alert,
 } from 'react-native';
 import Header from '../../../components/Header';
 import {
@@ -69,7 +70,6 @@ const OldACRequest = ({ navigation, route }) => {
   const fetchRequestDetails = async () => {
     try {
       const response = await getUserOldAcRequest(CreatedenquiryId);
-
       console.log("Enquiry Details:", response);
 
       if (response?.status) {
@@ -234,12 +234,16 @@ const OldACRequest = ({ navigation, route }) => {
       console.log("Reschedule Payload:", payload);
 
       const response = await RescheduleEnquiryRequest(payload);
-      console.log("Reschedule Payload:", response);
+      Alert.alert(
+        "API Response",
+        JSON.stringify(response, null, 2)
+      );
 
       if (response?.status) {
+        const data = response.data;
+        setEnquiryData(data);
         Toast.show(response.message);
-        setReqStatus("RESCHEDULED");
-
+        setReqStatus(response.data?.status || 'RESCHEDULED');
       }
 
     } catch (error) {
@@ -250,10 +254,23 @@ const OldACRequest = ({ navigation, route }) => {
   };
 
 
-  const getStatusStyle = status => {
-    return STATUS_CONFIG[status] || { bg: '#f0f0f0', text: '#666' };
+
+  const getStatusStyle = (status) => {
+    if (!status) {
+      return { bg: '#f0f0f0', text: '#666' };
+    }
+
+    const formattedStatus = String(status).trim().toUpperCase();
+
+    return (
+      STATUS_CONFIG[formattedStatus] || {
+        bg,
+        text
+      }
+    );
   };
-  const { bg, text } = getStatusStyle(enquiryData.status);
+
+  const { bg, text } = getStatusStyle(enquiryData?.status);
   return (
     <View style={styles.container}>
       <Header
@@ -342,11 +359,12 @@ const OldACRequest = ({ navigation, route }) => {
                 <View style={styles.detailRow}>
                   <AppText style={styles.label}>
                     {reqStatus === 'SCHEDULED'
-                      ? 'Inspection Date & Time'
+                      ? reqStatus === 'RESCHEDULED'
+                        ? 'Submitted On' : 'Inspection Date & Time'
                       : 'Submitted On'}
                   </AppText>
                   <AppText style={styles.value}>
-                    {reqStatus === 'SCHEDULED'
+                    {reqStatus === 'SCHEDULED' || 'RESCHEDULED'
                       ? `${selectdate} - ${selectTime}`
                       : enquiryData?.createdAt
                         ? new global.Date(enquiryData.createdAt).toLocaleDateString()
@@ -360,7 +378,7 @@ const OldACRequest = ({ navigation, route }) => {
                     </View>))}
                 </View>
               </View>
-              {reqStatus !== 'Schedule' && (
+              {reqStatus !== 'SCHEDULED' && (
                 <View style={styles.copperRow}>
                   <View style={styles.detailRow}>
                     <AppText style={styles.label}>Number of AC</AppText>
@@ -891,7 +909,6 @@ const OldACRequest = ({ navigation, route }) => {
                   style={[styles.doneButton, styles.secondButton]}
                   onPress={() => {
                     setSResheduleVisible(true);
-                    setReqStatus('RESCHEDULED'); // mark as RESCHEDULED
                   }}
                 >
                   <AppText style={styles.doneButtonText}>Reschedule</AppText>

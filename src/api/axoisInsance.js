@@ -8,6 +8,7 @@ import { Alert } from 'react-native';
 const api = axios.create({
   // baseURL: 'https://api.acdoctor.in/api/v1/',
   baseURL: "http://137.59.53.70:8080/api/v1",
+  // baseURL: "http://192.168.1.21:8080/api/v1",
   // baseURL: 'https://devyn-unawaked-kaylin.ngrok-free.dev/api/v1',
   // baseURL: 'https://hematoid-autohypnotic-rey.ngrok-free.dev/api/v1/',
   // baseURL: 'https://drusilla-watchful-overlavishly.ngrok-free.dev/api/v1/',
@@ -29,7 +30,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
       console.log('Authorization Header:', config.headers.Authorization);
     } else {
-      console.log('❌ No Token Found');
       delete config.headers.Authorization;
     }
 

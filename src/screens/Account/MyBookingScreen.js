@@ -24,7 +24,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const MyBookingScreen = ({ navigation }) => {
-  const [activeTab, setActiveTab] = useState('ALL');
+  const [activeTab, setActiveTab] = useState('All');
   const [loading, setLoading] = useState(false);
   const userId = store?.getState()?.auth?.user;
   const [allRequests, setAllRequests] = useState([]);

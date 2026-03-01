@@ -409,16 +409,12 @@ const HomeScreen = () => {
   };
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-
+  const infiniteData = [...logos, ...logos];
   useEffect(() => {
-    if (!pages?.[0]?.length) return;
+    if (!logos?.length) return;
 
     const interval = setInterval(() => {
       let nextIndex = currentIndex + 1;
-
-      if (nextIndex >= pages[0].length) {
-        nextIndex = 0;
-      }
 
       flatListRef.current?.scrollToIndex({
         index: nextIndex,
@@ -426,10 +422,21 @@ const HomeScreen = () => {
       });
 
       setCurrentIndex(nextIndex);
-    }, 2500);
+
+      // 👇 Jab original data length cross ho jaye
+      if (nextIndex === logos.length) {
+        setTimeout(() => {
+          flatListRef.current?.scrollToIndex({
+            index: 0,
+            animated: false, // 👈 no animation = no jump effect
+          });
+          setCurrentIndex(0);
+        }, 300);
+      }
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, [currentIndex]);
+  }, [currentIndex, logos]);
 
   const truncateWords = (text = '', limit = 20) => {
     if (typeof text !== 'string') return '';
@@ -443,12 +450,12 @@ const HomeScreen = () => {
     <SafeAreaView
       style={[
         styles.safeArea,
-        { backgroundColor: dynamicStyles.safeArea.backgroundColor },
+        { backgroundColor: 'white' },
       ]}
       edges={['top', 'left', 'right']}
     >
       <StatusBar
-        barStyle={scheme === 'dark' ? 'light-content' : 'dark-content'}
+        barStyle={'dark-content'}
         translucent={true}
       />
       {serviceDetails.length === 0 ? (
@@ -558,17 +565,22 @@ const HomeScreen = () => {
 
 
         {/* Request a Quote */}
-        <View style={[styles.reqcontainer, { minHeight: isTablet ? hp(21) : hp(17) }]}>
+        <View style={[styles.reqcontainer, { minHeight: isTablet ? hp(21) : hp(18) }]}>
           <AppText style={styles.reqtitle}>Request a Quote</AppText>
           <View style={styles.reqgrid}>
             {requestQuote.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                style={styles.reqoption}
+                style={styles.reqView}
                 onPress={item.action}
               >
-                <FastImage source={item.icon} style={styles.reqicon} />
-                <AppText style={styles.reqlabel} numberOfLines={1}>{item.label}</AppText>
+                <View style={styles.imageReq}>
+                  <Image source={item.icon} style={styles.reqicon} resizeMode={'contain'} />
+                </View>
+                <View style={styles.ReqText} >
+                  <AppText style={styles.reqText} numberOfLines={2}
+                    ellipsizeMode="tail">{item.label}</AppText>
+                </View>
               </TouchableOpacity>
             ))}
           </View>
@@ -604,24 +616,29 @@ const HomeScreen = () => {
           ) : (
             <FlatList
               ref={flatListRef}
-              data={logos}
+              data={infiniteData}
               horizontal
-              scrollEnabled={false} // 👈 IMPORTANT
+              scrollEnabled={true}
               showsHorizontalScrollIndicator={false}
               keyExtractor={(_, index) => `logo-${index}`}
+              getItemLayout={(data, index) => ({
+                length: 110, // width + margin
+                offset: 110 * index,
+                index,
+              })}
               renderItem={({ item }) => (
                 <Image
                   source={{ uri: item?.logo }}
                   style={{
-                    width: 120,
+                    width: 100,
                     height: 60,
                     marginRight: 10,
                   }}
                   resizeMode="contain"
                 />
               )}
-
             />
+
 
           )}
         </View>

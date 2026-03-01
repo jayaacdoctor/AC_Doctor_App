@@ -23,6 +23,7 @@ import OldACRequest from '../screens/Home/OldAc/OldACRequest';
 import ProfileDetail from '../screens/Account/ProfileDetail';
 import ManageAddressScreen from '../screens/Account/ManageAddressScreen';
 import NotificationScreeen from '../screens/Account/NotificationScreeen';
+import NotificationDetailScreen from '../screens/Account/NotificationDetailScreen';
 import MyRequestsScreen from '../screens/Account/MyRequestsScreen';
 import MyBookingScreen from '../screens/Account/MyBookingScreen';
 import OtherScreen from '../screens/Home/Other/OtherScreen';
@@ -135,6 +136,10 @@ const AppNavigator = () => {
             <Stack.Screen
               name="NotificationScreeen"
               component={NotificationScreeen}
+            />
+            <Stack.Screen
+              name="NotificationDetailScreen"
+              component={NotificationDetailScreen}
             />
             <Stack.Screen
               name="MyRequestsScreen"

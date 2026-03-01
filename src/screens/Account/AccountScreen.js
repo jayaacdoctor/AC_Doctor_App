@@ -87,7 +87,7 @@ const AccountScreenComponent = () => {
 
       if (data !== null) {
         const parsedData = JSON.parse(data);
-        console.log('Booking Data --->', parsedData);
+        // Alert.alert(String(parsedData));
         setBooking(parsedData); // or set state
       }
     } catch (error) {
@@ -157,12 +157,12 @@ const AccountScreenComponent = () => {
     <SafeAreaView
       style={[
         Homestyles.safeArea,
-        { backgroundColor: dynamicStyles.safeArea.backgroundColor },
+        { backgroundColor: 'white' },
       ]}
     >
       <StatusBar
-        barStyle={scheme === 'dark' ? 'light-content' : 'dark-content'}
-        backgroundColor="transparent"
+        barStyle='dark-content'
+        // backgroundColor="transparent"
         translucent={true}
       />
       {/* Header with Location Icon and Add Location Text */}
@@ -254,7 +254,7 @@ const AccountScreenComponent = () => {
         ]}
       >
         <View style={{ alignItems: 'center' }}>
-          <AppText style={Homestyles.accountBlueText}>{!booking.length ? 0 : booking}</AppText>
+          <AppText style={Homestyles.accountBlueText}>{booking || 0}</AppText>
           <AppText style={Homestyles.accountNumber}>Services Booked</AppText>
         </View>
         <View

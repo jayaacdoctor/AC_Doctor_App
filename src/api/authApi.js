@@ -4,6 +4,7 @@ import endPoint from './endPoint';
 export const loginUser = async data => {
   try {
     const res = await api.post(endPoint.LOGIN, data);
+    console.log('Login Response:', res.data);
     return res;
   } catch (error) {
     throw error;
@@ -34,7 +35,7 @@ export const resendOTP = async payload => {
         countryCode: payload.countryCode,
       },
     );
-     return res.data; 
+    return res.data;
   } catch (error) {
     console.log("RESEND ERROR:", error?.response?.data);
     throw error;

@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Keyboard,
+  TouchableOpacity,
 } from 'react-native';
 
 import Header from '../../components/Header';
@@ -32,8 +33,10 @@ import { postAMCRequest } from '../../api/homeApi';
 import Toast from 'react-native-simple-toast';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import AppText from '../../components/AppText';
+import HomeScreenStyles, { faqData } from '../Home/HomeScreenStyles';
 
 const AMCFrom = ({ navigation }) => {
+  const [expandedIndex, setExpandedIndex] = useState(null);
   const [editStatus, setEditStatus] = useState(false);
   const [successVisible, setSuccessVisible] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -111,6 +114,10 @@ const AMCFrom = ({ navigation }) => {
     finally {
       setLoading(false);
     }
+  };
+  // FAQ's Toggle
+  const toggleExpand = index => {
+    setExpandedIndex(expandedIndex === index ? null : index);
   };
 
   return (
@@ -222,7 +229,38 @@ const AMCFrom = ({ navigation }) => {
             HeadingStyle={{ marginLeft: isTablet ? wp(2) : wp(2) }}
           />
           {/* </View> */}
+          <View style={[HomeScreenStyles.worksliderview]}>
+            <Image
+              source={images.bannerTwo}
+              style={[HomeScreenStyles.workimage, { width: '89%' }]}
+            />
+          </View>
+
+          <AppText style={[HomeScreenStyles.workheadText, { margin: hp('1%') }]}>
+            FAQs
+          </AppText>
+
+          {/* FAQ Items */}
+          {faqData.map((item, index) => (
+            <View key={index} style={HomeScreenStyles.faqItem}>
+              <TouchableOpacity
+                onPress={() => toggleExpand(index)}
+                style={HomeScreenStyles.faquestionContainer}
+              >
+                <AppText style={HomeScreenStyles.faquestionText}>
+                  {item.question}
+                </AppText>
+                <AppText style={HomeScreenStyles.faqarrow}>
+                  {expandedIndex === index ? '︿' : '﹀'}
+                </AppText>
+              </TouchableOpacity>
+              {expandedIndex === index && (
+                <AppText style={HomeScreenStyles.faqanswerText}>{item.answer}</AppText>
+              )}
+            </View>
+          ))}
         </KeyboardAwareScrollView>
+
 
       </ScrollView>
 

@@ -7,6 +7,7 @@ const endPoint = {
   UPDATE_PROFILE: 'user/profile-update',
   UPDATE_USERDETAIL: 'user/get-profile/',
   NOTIFICATION: 'user/notification-list',
+  NOTIFY_DETAILS: 'user/notification/',
   DELETE_NOTIFICATION: 'user/notification/delete/',
   LOG_OUT: 'user/logout/',
 

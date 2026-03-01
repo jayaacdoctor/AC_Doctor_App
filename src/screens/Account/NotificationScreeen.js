@@ -25,9 +25,11 @@ import Header from '../../components/Header';
 import AppText from '../../components/AppText';
 import { DeleteNotification, getTNotification } from '../../api/profileApi';
 import { store } from '../../redux/store';
+import { useNavigation } from '@react-navigation/native';
 
 
-const NotificationScreeen = ({ navigation }) => {
+const NotificationScreeen = () => {
+  const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
   const [allNotifications, setAllNotifications] = useState([]);
   const user = store?.getState()?.auth?.user;
@@ -193,11 +195,20 @@ const NotificationScreeen = ({ navigation }) => {
     const created = new Date(date);
     const now = new Date();
 
-    const diffInMs = now - created;
-    const diffInHours = diffInMs / (1000 * 60 * 60);
+    // Convert both to Indian date only (remove time)
+    const createdDate = new Date(
+      created.getFullYear(),
+      created.getMonth(),
+      created.getDate()
+    );
 
-    // If within 24 hours
-    if (diffInHours < 24) {
+    const todayDate = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate()
+    );
+
+    if (createdDate.getTime() === todayDate.getTime()) {
       return 'Today';
     }
 
@@ -234,7 +245,6 @@ const NotificationScreeen = ({ navigation }) => {
       } else {
         setLoadingMore(true);
       }
-
       const data = {
         page: pageNumber,
         limit: 10,
@@ -272,7 +282,13 @@ const NotificationScreeen = ({ navigation }) => {
         }
         overshootRight={false}
       >
-        <View
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            navigation.navigate('NotificationDetailScreen', {
+              notificationId: item?._id,
+            });
+          }}
           style={[
             styles.notifCard,
             { backgroundColor: item?.isChecked ? '#fff' : '#F2F8FF' },
@@ -297,7 +313,7 @@ const NotificationScreeen = ({ navigation }) => {
           <AppText style={styles.notifTime}>
             {formatNotificationTime(item?.createdAt)}
           </AppText>
-        </View>
+        </TouchableOpacity>
       </Swipeable>
     );
   };

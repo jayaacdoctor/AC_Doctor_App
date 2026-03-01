@@ -1,6 +1,7 @@
 import messaging from '@react-native-firebase/messaging';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import { Platform, PermissionsAndroid } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class NotificationService {
   // ✅ Permission + iOS registration
@@ -35,6 +36,10 @@ class NotificationService {
       await messaging().registerDeviceForRemoteMessages();
       const token = await messaging().getToken();
       console.log('FCM Token:--', token);
+      if (token) {
+        await AsyncStorage.setItem('fcmToken', token);
+        console.log('FCM Token saved:', token);
+      }
       return token;
     } catch (error) {
       console.log('Token Error:', error);

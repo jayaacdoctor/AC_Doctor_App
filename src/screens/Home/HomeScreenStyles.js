@@ -113,7 +113,8 @@ export default StyleSheet.create({
   reqgrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   reqoption: {
     padding: wp('0%'),
@@ -133,6 +134,23 @@ export default StyleSheet.create({
     marginTop: hp('1%'),
     fontFamily: Fonts.medium,
   },
+  reqView: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: hp(2),
+    paddingVertical: 10,
+  },
+  reqText: {
+    fontSize: isTablet ? wp(2.2) : wp(3.4),
+    color: COLORS.black,
+    textAlign: 'center',
+    fontFamily: Fonts.medium,
+    // backgroundColor: 'pink'
+  },
+  imageReq: {
+    alignItems: 'center', width: isTablet ? wp(8) : wp(18), height: isTablet ? wp(8) : wp(16)
+  },
+  ReqText: { width: isTablet ? wp(8) : wp(20), height: isTablet ? wp(4) : wp(10), alignItems: 'center', },
   uticontainer: {
     margin: hp('1%'),
     borderRadius: wp('3%'),

@@ -60,7 +60,8 @@ const BookingDetailsScreen = ({ route }) => {
       }
 
       const { dirs } = ReactNativeBlobUtil.fs;
-      const fileName = `Invoice_${bookingId}.pdf`;
+      console.log('Download URL:', url);
+      const fileName = `Invoice_${String(bookingId)}.pdf`;
       const filePath = `${dirs.DownloadDir}/${fileName}`;
 
       // 2. Download Logic
@@ -72,12 +73,10 @@ const BookingDetailsScreen = ({ route }) => {
           path: filePath,
           description: 'Downloading Invoice...',
           mime: 'application/pdf',
-          description: 'Invoice Download',
           title: fileName,
-          mediaScannable: true, //store the file in internal storeage 
+          mediaScannable: true,
           storeInDownloads: true,
         },
-        path: filePath,
       })
         .fetch('GET', url)
         .then((res) => {
@@ -196,7 +195,7 @@ const BookingDetailsScreen = ({ route }) => {
           {/* Download Invoice Button */}
           {detailsData?.invoiceUrl && (
             <TouchableOpacity
-              activeOpacity={2}
+              activeOpacity={0.7}
               style={styles.invoiceButton}
               onPress={() => downloadInvoice(detailsData.invoiceUrl, detailsData.bookingId)}
               disabled={downloading}
